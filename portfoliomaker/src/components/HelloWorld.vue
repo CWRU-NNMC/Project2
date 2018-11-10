@@ -1,4 +1,43 @@
 <template>
+<v-app dark>
+  <v-container>
+  <v-layout>
+
+  <v-carousel>
+    <v-carousel-item
+      v-for="(item,i) in items"
+      :key="i"
+      :src="item.src"
+    ></v-carousel-item>
+  </v-carousel>
+
+  </v-layout>
+  </v-container>
+</v-app>
+</template>
+
+<script>
+  export default {
+    data () {
+      return {
+        items: [
+          {
+            src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg'
+          },
+          {
+            src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg'
+          },
+          {
+            src: 'https://cdn.vuetifyjs.com/images/carousel/bird.jpg'
+          },
+          {
+            src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg'
+          }
+        ]
+      }
+    }
+  }
+</script>
   <div class="hello">
     <h1>{{ msg }}</h1>
     <p>
