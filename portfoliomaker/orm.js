@@ -1,4 +1,4 @@
-const connection = require('../config/connection')
+const connection = require('./connection.js')
 
 const orm = (() => {
 
@@ -40,7 +40,7 @@ const orm = (() => {
               resolve(res);
           })
       })
-  },
+  }
 
   const updateOne = (table, vals, condition) => {
       return new Promise((resolve, reject) => {
@@ -53,14 +53,13 @@ const orm = (() => {
   }
 
   return {
-    selectAll: selectAll,
-    selectSome: selectSome,
-    selectOne: selectOne,
-    insertOne: insertOne,
-    updateOne, updateOne
+    selectAll,
+    selectSome,
+    insertOne,
+    updateOne
   }
 
-})
+})()
 
 
 module.exports = orm;
