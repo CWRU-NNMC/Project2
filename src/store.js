@@ -11,27 +11,24 @@ export default new Vuex.Store({
         userLoggedIn: false,
         userName: false,
         userId: 0,
-        currentPortfolio: {},
-        userPageInfo: {}
+        currentPageJson: {},
     },
     mutations: {
         setPage(state, data) {
-            state.userPageInfo = data
+            state.currentPageJson = data
         }
     },
     getters: {
-        getPageInfo: state => state.userPageInfo
+        getPageInfo: state => state.currentPageJson
     },
     actions: {
-        getUserPage(context, {to}) {
+        getPageJson(context, {to}) {
             return new Promise((resolve, reject) => {
-                console.log(to)
                 let queryString = `/api${to.fullPath}`
                 axios.post(queryString, to.id).then(({data}) => {
-                    console.log(data)
-                    console.log('gotten')
                     context.commit('setPage', {data})
                 }).then(() => resolve())
+                .catch(() => reject())
             })
         }
     }
