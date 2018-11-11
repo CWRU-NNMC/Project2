@@ -2,11 +2,14 @@ const { selectAll, selectSome, selectSomeWhere, selectSomeJoin, insertOne, updat
 
 const dbLib = (() => {
 
+
+
   // takes a user name, and returns relevant information for their user info page
   const userPageFunction = name => {
     // Grab the corresponding userID, to be used in Promise.all 
     return selectSomeWhere('users', 'username', name, ['id'])
     .then(data => {
+      if (data.length === 0) throw new Error(`Error: No such user '${name}' found.`)
       let id = data[0].id
       // make two DB calls, one for user info and one for portfolio info
       return Promise.all([
@@ -17,7 +20,8 @@ const dbLib = (() => {
     // parse the user info and portfolio info into a single object
     .then(userData => {
       let user = userData[0][0]
-      let portfolioArray = userData[1]
+      
+      let portfolioArray = userData[1].length === 0 ? [] : userData[1]
       return {
         userName: user.username,
         userId: user.id,
