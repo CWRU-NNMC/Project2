@@ -1,4 +1,4 @@
-const { selectAll, selectSome, selectSomeWhere, insertOne, updateOne } = require('./orm')
+const { selectAll, selectSome, selectSomeWhere, selectSomeJoin, insertOne, updateOne } = require('./orm')
 
 const dbLib = (() => {
 
@@ -28,13 +28,22 @@ const dbLib = (() => {
       }
     })
   }
+  // takes a portfolio name, and return relevant information needed to render the page. Can also be used on a User Dashboard page
+  const portfolioPageFunction = name => {
+    // grab the corresponding portfolio ID
+    return selectSomeWhere('portfolios', 'name', name, ['id'])
+    .then(data => {
+      let id = data[0].id
+      return selectSomeJoin('portfolios', 'projects', ['config', 'name'], ['id', 'imageurl', 'githuburl', 'description'], 'portfolios.id', 'projects.portfolioid', 'portfolios.id', id)
+    })
+  }
 
   // public methods
   return {
-    userPageFunction
+    userPageFunction,
+    portfolioPageFunction
   }
 })()
-
 
 module.exports = dbLib
 
