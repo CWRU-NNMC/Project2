@@ -3,6 +3,7 @@ const connection = require('./connection.js')
 const orm = (() => {
 
     const questions = num => Array(num).fill('?').toString();
+    const dblQuestions = num => Array(num).fill('??').toString();
 
     const sqlVals = object => {
         let arrPairs = Object.entries(object)
@@ -26,6 +27,20 @@ const orm = (() => {
             connection.query(queryString, (err, res) => {
                 if (err) throw err
                 resolve(res)
+            })
+        })
+    }
+
+    const selectSomeWhere = (table, whereCol, whereVal, selectCols) => {
+        return new Promise((resolve, reject) => {            
+            let queryString = `SELECT ${dblQuestions(selectCols.length)} FROM ${table} WHERE ?? = ?`;
+            // let q2 = `SELECT ?,?,? FROM ${table} WHERE ?? = ?`
+            let vals = [...selectCols, whereCol, whereVal]
+            // console.log('query', queryString)
+            // console.log('vals', vals)
+            connection.query(queryString, vals, (err, res) => {
+                if (err) throw err;
+                resolve(res);
             })
         })
     }
@@ -54,6 +69,7 @@ const orm = (() => {
     return {
         selectAll,
         selectSome,
+        selectSomeWhere,
         insertOne,
         updateOne
     }
