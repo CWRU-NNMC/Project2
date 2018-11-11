@@ -15,11 +15,24 @@ export default new Vuex.Store({
         userPageInfo: {}
     },
     mutations: {
-
+        setPage(state, data) {
+            state.userPageInfo = data
+        }
     },
     getters: {
-
+        getPageInfo: state => state.userPageInfo
     },
     actions: {
+        getUserPage(context, {to}) {
+            return new Promise((resolve, reject) => {
+                console.log(to)
+                let queryString = `/api${to.fullPath}`
+                axios.post(queryString, to.id).then(({data}) => {
+                    console.log(data)
+                    console.log('gotten')
+                    context.commit('setPage', {data})
+                }).then(() => resolve())
+            })
+        }
     }
 })
