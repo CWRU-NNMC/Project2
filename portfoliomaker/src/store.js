@@ -8,7 +8,11 @@ Vue.use(VueAxios, axios);
 
 export default new Vuex.Store({
     state: {
-
+        userLoggedIn: false,
+        userName: false,
+        userId: 0,
+        currentPortfolio: {},
+        userPageInfo: {}
     },
     mutations: {
 
@@ -17,9 +21,9 @@ export default new Vuex.Store({
 
     },
     actions: {
-        getPortfolio (commit) {
-            let queryUrl = `/portfolio/${commit.portfolioName}`
-            axios.get(queryUrl).then(response => response.json())
-        }
+        // getPortfolio : ({ commit }) => {
+        //     let queryUrl = `/portfolio/${commit.portfolioName}`
+        //     axios.get(queryUrl).then(response => response.json())
+        // }
     }
 })
