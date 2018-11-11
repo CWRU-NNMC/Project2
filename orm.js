@@ -45,6 +45,22 @@ const orm = (() => {
         })
     }
 
+    const selectSomeJoin = (table1, table2, t1Cols, t2Cols, t1Key, t2Key, conditionCol, conditionVal) => {
+        return new Promise((resolve, reject) => {
+            let table1Selectors = t1Cols.map(value => `${table1}.${value}`)
+            let table2Selectors = t2Cols.map(value => `${table2}.${value}`)
+            let selectors = [...table1Selectors, ...table2Selectors]
+            
+            // console.log('t1', table1Selectors)
+            // console.log('t2', table2Selectors)
+            let queryString = `SELECT ${dblQuestions(selectors.length)} FROM ?? INNER JOIN ?? ON ?? = ?? WHERE ?? = ?`
+            let vals = [...table1Selectors, ...table2Selectors, table1, table2, t1Key, t2Key, conditionCol, conditionVal]
+            connection.query(queryString, vals, (err, res) => {
+                if (err) throw err;
+                resolve(res)
+            })
+        })
+    }
     const insertOne = (table, cols, vals) => {
         return new Promise((resolve, reject) => {
             let queryString = `INSERT INTO ${table} (${cols.toString()}) VALUES (${questions(vals.length)});`;
@@ -71,7 +87,8 @@ const orm = (() => {
         selectSome,
         selectSomeWhere,
         insertOne,
-        updateOne
+        updateOne,
+        selectSomeJoin
     }
 
 })()
