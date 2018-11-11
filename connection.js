@@ -11,8 +11,5 @@ const localConfig = {
 const connection = process.env.JAWSDB_URL ? mysql.createConnection(process.env.JAWSDB_URL) : mysql.createConnection(localConfig)
 
 
-
-
-
 connection.connect();
 module.exports = connection;

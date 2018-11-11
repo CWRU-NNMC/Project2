@@ -8,7 +8,7 @@ app.use(express.urlencoded({
 app.use(express.static('./dist'))
 app.get('*', (_, res) => {
     res.sendFile(path.join(__dirname, 'dist', 'index.html'))
-  })
+})
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT);
