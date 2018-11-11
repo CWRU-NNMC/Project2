@@ -3,7 +3,10 @@
 USE usysutc9ey5bm5dx;
 
 -- ************************************** `users`
-
+-- DROP TABLE IF EXISTS `templates`;
+-- DROP TABLE IF EXISTS `projects`;
+-- DROP TABLE IF EXISTS `portfolios`;
+-- DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users`
 (
  `id`          integer NOT NULL AUTO_INCREMENT ,
@@ -44,7 +47,7 @@ PRIMARY KEY (`id`)
 
 CREATE TABLE `portfolios`
 (
- `id`           integer NOT NULL ,
+ `id`           integer NOT NULL AUTO_INCREMENT,
  `technologies` integer NOT NULL ,
  `description`  varchar(5000) NOT NULL ,
  `usersid`      integer NOT NULL ,
