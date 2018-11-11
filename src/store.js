@@ -21,9 +21,5 @@ export default new Vuex.Store({
 
     },
     actions: {
-        // getPortfolio : ({ commit }) => {
-        //     let queryUrl = `/portfolio/${commit.portfolioName}`
-        //     axios.get(queryUrl).then(response => response.json())
-        // }
     }
 })
