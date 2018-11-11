@@ -31,7 +31,7 @@ const dbLib = (() => {
 
   // public methods
   return {
-    userPageFunction: userPageFunction
+    userPageFunction
   }
 })()
 
