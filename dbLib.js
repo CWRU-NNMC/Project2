@@ -9,7 +9,7 @@ const dbLib = (() => {
     // Grab the corresponding userID, to be used in Promise.all 
     return selectSomeWhere('users', 'username', name, ['id'])
     .then(data => {
-      if (data.length === 0) throw new Error(`Error: No such user '${name}' found.`)
+      if (data.length === 0) throw new Error(`500: No such user '${name}' found.`)
       let id = data[0].id
       // make two DB calls, one for user info and one for portfolio info
       return Promise.all([
@@ -32,11 +32,14 @@ const dbLib = (() => {
       }
     })
   }
+
+
   // takes a portfolio name, and return relevant information needed to render the page. Can also be used on a User Dashboard page
   const portfolioPageFunction = name => {
     // grab the corresponding portfolio ID
     return selectSomeWhere('portfolios', 'name', name, ['id'])
     .then(data => {
+      if (data.length === 0) throw new Error(`500: No such portfolio '${name}' found.`)
       let id = data[0].id
       return selectSomeJoin('portfolios', 'projects', ['config', 'name'], ['id', 'imageurl', 'githuburl', 'description'], 'portfolios.id', 'projects.portfolioid', 'portfolios.id', id)
     })
