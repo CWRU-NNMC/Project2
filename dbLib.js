@@ -45,14 +45,22 @@ const dbLib = (() => {
     })
   }
 
-  // adds a new user to the database
+  // adds a new user to the database, takes a user object with the following keys: 
+  // userName, email, pw, preferences (JSON), location (optional), userImage (optional)
+  // returns confirmation message
   const addNewUser = user => {
     let location = user.location || null
     let userImage = user.userImage || null
     return insertOne('users', ['username', 'email', 'pw', 'preferences', 'location', 'userimage'], [user.userName, user.email, user.pw, user.preferences, location, userImage])
+    .then(results => {
+      if (results.affedtedRows === 0) throw new Error(`500: User '${user.userName}' not added.`)
+      return results
+    })
   }
 
-  // updates user information
+  // updates user information, takes a user object with two keys: userName and updates.
+  // updates should be an object with key/value pairs corresponding to column names/values to be updated
+  // returns confirmation message
   const updateUser = updateObj => {
     let { userName, updates } = updateObj
     return updateOne('users', updates, `username = '${userName}'`)
