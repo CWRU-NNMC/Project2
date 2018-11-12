@@ -1,5 +1,5 @@
 <template>
-  <v-toolbar>
+  <v-toolbar dark>
     <v-toolbar-title class="headline text-uppercase">
         <span>Our Clever Name</span>
         <span class="font-weight-light">Oh Yeah</span>
@@ -11,8 +11,7 @@
     <v-menu offset-y>
       <v-btn
         slot="activator"
-        color="primary"
-        dark
+        light
       >
     <span class="mr-2"><v-icon>widgets</v-icon></span>
       </v-btn>

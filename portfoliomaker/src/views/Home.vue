@@ -1,9 +1,39 @@
 <template>
-  <div class="home">
-  <h1> Hey </h1>
-    <img alt="Vue logo" src="../assets/logo.png">
-  </div>
+  <v-container>
+  <v-layout>
+  <v-carousel>
+    <v-carousel-item
+      v-for="(item,i) in items"
+      :key="i"
+      :src="item.src"
+    ></v-carousel-item>
+  </v-carousel>
+  </v-layout>
+  </v-container>
+
 </template>
 
 <script>
+  export default {
+    data () {
+      return {
+        items: [
+          {
+            src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg'
+          },
+          {
+            src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg'
+          },
+          {
+            src: 'https://cdn.vuetifyjs.com/images/carousel/bird.jpg'
+          },
+          {
+            src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg'
+          }
+        ]
+      }
+    }
+  }
 </script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
