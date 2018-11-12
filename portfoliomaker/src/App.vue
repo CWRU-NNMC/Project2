@@ -1,95 +1,23 @@
 <template>
-
-  <v-app>
-    <v-toolbar app>
-      <v-toolbar-title class="headline text-uppercase">
-        <span>Very Clever Name</span>
-        <span class="font-weight-light">Ohhh Yeah</span>
-      </v-toolbar-title>
-      <v-spacer></v-spacer>
-
-
-      <div class="text-xs-center">
-    <v-menu transition="slide-x-transition">
-      <v-btn 
-      flat
-      slot="activator">
-        <span class="mr-2"><v-icon>widgets</v-icon></span>
-      </v-btn>
-    <v-list>
-      <v-list-tile v-for="option in options" :key="option" :action="option.action" @click="">
-        <router-link to="/">
-        <v-list-tile-title v-text="option.action"></v-list-tile-title>
-        </router-link>
-        </v-list-tile>
-      </v-list>
-    </v-menu>
-      </v-btn> 
-      </div> 
-      </v-toolbar>
-
-
-    <v-content>
-      <HelloWorld/>
-    </v-content>
-      <v-footer class="pa-3">
-    <v-spacer></v-spacer>
-    <span>Colin Burns, Nate Becker, Nathan Golba, Mike Bixel</span>
-    <v-spacer></v-spacer>
-    <div>&copy; {{ new Date().getFullYear() }}</div>
-  </v-footer>
-  </v-app>
-</template>
-
-<script>
-import HelloWorld from './components/HelloWorld'
-
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  },
-  data () {
-    return {
-      options: [
-        {
-            action: 'Login'
-        },
-        {
-            action: 'Sign Up'
-        }
-      ]
-    }
-  }
-}
-</script>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+  <div>
+    <app-header></app-header>
+    <app-body></app-body>
+    <app-footer></app-footer>
   </div>
 </template>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+<script>
+import body from './components/body'
+import head from './components/head'
+import foot from './components/foot'
+export default {
+  name: 'App',
+  components: {
+    'app-header': head,
+    'app-footer': foot,
+    'app-body': body
+  }
 }
-#nav {
-  padding: 30px;
-}
+</script>
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
 
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
