@@ -14,7 +14,7 @@ const orm = (() => {
         return new Promise((resolve, reject) => {
             let queryString = `SELECT * FROM ${table};`;
             connection.query(queryString, (err, res) => {
-                if (err) throw err;
+                if (err) reject(err);
                 resolve(res)
             })
         })
@@ -25,7 +25,7 @@ const orm = (() => {
             let colList = cols.join(', ')
             let queryString = `SELECT ${colList} FROM ${table}`
             connection.query(queryString, (err, res) => {
-                if (err) throw err
+                if (err) reject(err)
                 resolve(res)
             })
         })
@@ -39,7 +39,7 @@ const orm = (() => {
             // console.log('query', queryString)
             // console.log('vals', vals)
             connection.query(queryString, vals, (err, res) => {
-                if (err) throw err;
+                if (err) reject(err);
                 resolve(res);
             })
         })
@@ -56,7 +56,7 @@ const orm = (() => {
             let queryString = `SELECT ${dblQuestions(selectors.length)} FROM ?? INNER JOIN ?? ON ?? = ?? WHERE ?? = ?`
             let vals = [...table1Selectors, ...table2Selectors, table1, table2, t1Key, t2Key, conditionCol, conditionVal]
             connection.query(queryString, vals, (err, res) => {
-                if (err) throw err;
+                if (err) reject(err);
                 resolve(res)
             })
         })
@@ -64,9 +64,9 @@ const orm = (() => {
     const insertOne = (table, cols, vals) => {
         return new Promise((resolve, reject) => {
             let queryString = `INSERT INTO ${table} (${cols.toString()}) VALUES (${questions(vals.length)});`;
-            console.log(queryString)
+            // console.log(queryString)
             connection.query(queryString, vals, (err, res) => {
-                if (err) throw err;
+                if (err) reject(err);
                 resolve(res);
             })
         })
@@ -76,7 +76,7 @@ const orm = (() => {
         return new Promise((resolve, reject) => {
             let queryString = `UPDATE ${table} SET ${sqlVals(vals)} WHERE ${condition};`;
             connection.query(queryString, (err, res) => {
-                if (err) throw err;
+                if (err) reject(err);
                 resolve(res);
             })
         })
