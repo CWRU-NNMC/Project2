@@ -45,10 +45,30 @@ const dbLib = (() => {
     })
   }
 
+  // adds a new user to the database
+  const addNewUser = user => {
+    let location = user.location || null
+    let userImage = user.userImage || null
+    return insertOne('users', ['username', 'email', 'pw', 'preferences', 'location', 'userimage'], [user.userName, user.email, user.pw, user.preferences, location, userImage])
+  }
+
+  // updates user information
+  const updateUser = updateObj => {
+    let { userName, updates } = updateObj
+    return updateOne('users', updates, `username = '${userName}'`)
+    .then(results => {
+      if (results.affectedRows === 0) throw new Error('500: No rows updated.')
+      return results
+    })
+  }
+
+
   // public methods
   return {
     userPageFunction,
-    portfolioPageFunction
+    portfolioPageFunction,
+    addNewUser,
+    updateUser
   }
 })()
 
