@@ -53,7 +53,7 @@ const dbLib = (() => {
     let userImage = user.userImage || null
     return insertOne('users', ['username', 'email', 'pw', 'preferences', 'location', 'userimage'], [user.userName, user.email, user.pw, user.preferences, location, userImage])
     .then(results => {
-      if (results.affedtedRows === 0) throw new Error(`500: User '${user.userName}' not added.`)
+      if (results.affectedRows === 0) throw new Error(`500: User '${user.userName}' not added.`)
       return results
     })
   }
@@ -69,6 +69,7 @@ const dbLib = (() => {
       return results
     })
   }
+
 
 
   // public methods
