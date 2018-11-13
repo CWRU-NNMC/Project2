@@ -57,7 +57,7 @@ CREATE TABLE `portfolios`
 
 PRIMARY KEY (`id`),
 KEY `fkIdx_15` (`usersid`),
-CONSTRAINT `FK_15` FOREIGN KEY `fkIdx_15` (`usersid`) REFERENCES `users` (`id`)
+CONSTRAINT `FK_15` FOREIGN KEY `fkIdx_15` (`usersid`) REFERENCES `users` (`id`) ON DELETE CASCADE
 );
 
 
@@ -78,7 +78,7 @@ CREATE TABLE `projects`
  `createdAt`   TIMESTAMP NOT NULL ,
 PRIMARY KEY (`id`),
 KEY `fkIdx_25` (`usersid`),
-CONSTRAINT `FK_25` FOREIGN KEY `fkIdx_25` (`usersid`) REFERENCES `users` (`id`),
+CONSTRAINT `FK_25` FOREIGN KEY `fkIdx_25` (`usersid`) REFERENCES `users` (`id`) ON DELETE CASCADE,
 KEY `fkIdx_28` (`portfolioid`),
 CONSTRAINT `FK_28` FOREIGN KEY `fkIdx_28` (`portfolioid`) REFERENCES `portfolios` (`id`)
 );
