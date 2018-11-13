@@ -1,4 +1,4 @@
-const { selectAll, selectSome, selectSomeWhere, selectSomeJoin, insertOne, updateOne } = require('./orm')
+const { selectAll, selectSome, selectSomeWhere, selectSomeJoin, insertOne, updateOne, deleteOne } = require('./orm')
 
 const dbLib = (() => {
 
@@ -107,6 +107,17 @@ const dbLib = (() => {
     })
   }
 
+  const deleteUser = name => {
+    return deleteOne('users', `username = '${name}'`)
+    .then(results => {
+      if (results.affectedRows === 0) throw new Error('500: No user deleted.')
+      return results
+    })
+  }
+
+
+
+
 
   // Handles errors that are thrown by MySQL. Stick this in the catch block to 'translate' them
   const dbErrorHandler = error => {
@@ -115,8 +126,8 @@ const dbLib = (() => {
       1048: 'Missing information, ensure all fields are filled out.',
       1452: 'The parent user or portfolio in question does not exist.'
     }
-    let message = errorInfo[error.errno] || `Undocumented error code ${error.errno}`
-    return message
+    let message = errorInfo[error.errno] || `Undocumented error code ${error.errno || error}`
+    console.log(message)
   }
   // public methods
   return {
@@ -128,7 +139,8 @@ const dbLib = (() => {
     updatePortfolio,
     addNewProject,
     updateProject,
-    dbErrorHandler
+    dbErrorHandler,
+    deleteUser
   }
 })()
 
