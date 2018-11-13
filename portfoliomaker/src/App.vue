@@ -1,7 +1,7 @@
 <template>
   <div>
     <app-header></app-header>
-    <app-port1></app-port1>
+    <app-home></app-home>
     <app-footer></app-footer>
   </div>
 </template>
@@ -15,6 +15,7 @@ import user from './views/User'
 import login from './views/Login'
 import portTemp1 from './views/portTemp1'
 import portTemp2 from './views/portTemp2'
+
 export default {
   name: 'App',
   components: {

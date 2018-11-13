@@ -1,8 +1,10 @@
 <template>
+<v-content>
   <v-toolbar dark>
+    <v-toolbar-side-icon><v-icon>home</v-icon></v-toolbar-side-icon>
     <v-toolbar-title class="headline text-uppercase">
-        <span>Our Clever Name</span>
-        <span class="font-weight-light">Oh Yeah</span>
+        <span>Bro, Do You Even Vue?</span>
+        <span class="font-weight-light">Yeah, kinda</span>
       </v-toolbar-title>
     <v-spacer></v-spacer>
 
@@ -27,12 +29,13 @@
       </v-list>
     </v-menu>
   </div>
-
 </v-toolbar>
+</v-content>
 </template>
 
 <script>
 //route button to login / sign up
+
 export default {
   data () {
     return {
@@ -48,3 +51,6 @@ export default {
   }
 }
 </script>
+<style scoped>
+
+</style>
