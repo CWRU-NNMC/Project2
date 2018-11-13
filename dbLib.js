@@ -115,6 +115,22 @@ const dbLib = (() => {
     })
   }
 
+  const deletePortfolio = name => {
+    return deleteOne('portfolios', `name = '${name}'`)
+    .then(results => {
+      if (results.affectedRows === 0) throw new Error('500: No portfolio deleted.')
+      return results
+    })
+  }
+
+  const deleteProject = id => {
+    return deleteOne('projects', `id = '${id}'`)
+    .then(results => {
+      if (results.affectedRows === 0) throw new Error('500: No portfolio deleted.')
+      return results
+    })
+  }
+
 
 
 
@@ -140,7 +156,9 @@ const dbLib = (() => {
     addNewProject,
     updateProject,
     dbErrorHandler,
-    deleteUser
+    deleteUser,
+    deletePortfolio,
+    deleteProject
   }
 })()
 
