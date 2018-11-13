@@ -69,15 +69,66 @@ const dbLib = (() => {
       return results
     })
   }
+  
+  const addNewPortfolio = portfolio => {
+    let { technologies, description, usersid, config, name } = portfolio
+    if (name.length > 20) throw new Error('500: Portfolio name exceeds length (20 characters maximum')
+    return insertOne('portfolios', ['technologies', 'description', 'usersid', 'config', 'name'], [technologies, description, usersid, config, name])
+    .then(results => {
+      if (results.affectedRows === 0) throw new Error('500: Portfolio not added.')
+      return results
+    })
+  }
+
+  const updatePortfolio = updateObj => {
+    let { portfolioName, updates } = updateObj
+    return updateOne('portfolios', updates, `name = '${portfolioName}'`)
+    .then(results => {
+      if (results.affectedRows === 0) throw new Error('500: No rows updated.')
+      return results
+    })
+  }
+
+  const addNewProject = project => {
+    let { imageurl, githuburl, description, usersid, portfolioid } = project
+    return insertOne('projects', ['imageurl', 'githuburl', 'description', 'usersid', 'portfolioid'], [imageurl, githuburl, description, usersid, portfolioid])
+    .then(results => {
+      if (results.affectedRows === 0) throw new Error('500: Project not added.')
+      return results
+    })
+  }
+
+  const updateProject = updateObj => {
+    let { projectId, updates } = updateObj
+    return updateOne('projects', updates, `id = '${projectId}'`)
+    .then(results => {
+      if (results.affectedRows === 0) throw new Error('500: No rows updated.')
+      return results
+    })
+  }
 
 
-
+  // Handles errors that are thrown by MySQL. Stick this in the catch block to 'translate' them
+  const dbErrorHandler = error => {
+    const errorInfo = {
+      1062: 'Sorry, this name is already taken, please choose another.',
+      1048: 'Missing information, ensure all fields are filled out.',
+      1452: 'The parent user or portfolio in question does not exist.'
+    }
+    let message = errorInfo[error.errno] || `Undocumented error code ${error.errno}`
+    return message
+  }
   // public methods
   return {
     userPageFunction,
     portfolioPageFunction,
     addNewUser,
-    updateUser
+    updateUser,
+    addNewPortfolio,
+    updatePortfolio,
+    addNewProject,
+    updateProject,
+    dbErrorHandler
   }
 })()
 
