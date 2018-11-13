@@ -10,26 +10,45 @@
                                 <img
                                     class="img-circle elevation-7 mb-1"
                                     src="../assets/logo.png"
-                                    alt="Pro Image"
-                                    >
+                                    alt="Pro Image">
                             </v-avatar>
                             <br>
                             <br>
                         <div class="headline">Your <span style="font-weight:bold">Name</span></div>
                             <br>
                             <v-layout pl-5>
-                                <p>I Was
-                                Thinking Maybe
-                                Put Language
-                                Icons Here</p>
+                                <img 
+                                    class="elevation-2"
+                                    src="../assets/js.png"
+                                    alt="js Image"
+                                    height="35"
+                                    width="35">
+                                     <img 
+                                    class="elevation-2"
+                                    src="../assets/css.png"
+                                    alt="css Image"
+                                    height="35"
+                                    width="35">
+                                     <img 
+                                    class="elevation-2"
+                                    src="../assets/html.png"
+                                    alt="html Image"
+                                    height="35"
+                                    width="35">
+                                     <img 
+                                    class="elevation-2"
+                                    src="../assets/logo.png"
+                                    alt="vue Image"
+                                    height="35"
+                                    width="35">
                             </v-layout>
                         </div>
                     </v-flex>
                         <v-flex xs12 md4 pl-4>
                             <v-card>
-                                <v-card-title primary-title> 
+                                <v-card-title class="card-title" primary-title> 
                                     <div>
-                                        <h3 class="headline mb-1">About Myself</h3>
+                                        <h3 class="headline mb-1 wut">About Myself</h3>
                                     </div>
                                 </v-card-title>
                                     <v-container>
@@ -39,9 +58,9 @@
                         </v-flex>
                         <v-flex xs12 md4 pl-4>
                             <v-card>
-                                <v-card-title primary-title> 
+                                <v-card-title class="card-title" primary-title> 
                                     <div>
-                                        <h3 class="headline mb-1">Links to Repo With images?</h3>
+                                        <h3 class="headline mb-1 wut">Links to Repo With Images?</h3>
                                     </div>
                                 </v-card-title>
                                     <v-container>
@@ -62,6 +81,12 @@
         color: white  
     }
     h3 {
-        border-bottom: 2px dashed green
+        border-bottom: 2px dashed gainsboro
+    }
+    .card-title {
+        background-image: radial-gradient(green,gainsboro)
+    }
+    .wut {
+        color: white
     }
 </style>

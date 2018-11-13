@@ -1,16 +1,15 @@
 <template>
-<v-container>
-<v-layout>
-<v-carousel>
-<v-carousel-item
-v-for="(item,i) in items"
-:key="i"
-:src="item.src"
-></v-carousel-item>
-</v-carousel>
-</v-layout>
-</v-container>
-
+	<v-container>
+		<v-layout>
+			<v-carousel>
+				<v-carousel-item
+					v-for="(item,i) in items"
+					:key="i"
+					:src="item.src">
+				</v-carousel-item>
+			</v-carousel>
+		</v-layout>
+	</v-container>
 </template>
 
 <script>
