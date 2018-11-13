@@ -80,7 +80,7 @@ PRIMARY KEY (`id`),
 KEY `fkIdx_25` (`usersid`),
 CONSTRAINT `FK_25` FOREIGN KEY `fkIdx_25` (`usersid`) REFERENCES `users` (`id`) ON DELETE CASCADE,
 KEY `fkIdx_28` (`portfolioid`),
-CONSTRAINT `FK_28` FOREIGN KEY `fkIdx_28` (`portfolioid`) REFERENCES `portfolios` (`id`)
+CONSTRAINT `FK_28` FOREIGN KEY `fkIdx_28` (`portfolioid`) REFERENCES `portfolios` (`id`) ON DELETE CASCADE
 );
 
 
