@@ -82,13 +82,24 @@ const orm = (() => {
         })
     }
 
+    const deleteOne = (table, condition) => {
+        return new Promise((resolve, reject) => {
+            let queryString = `DELETE FROM ?? WHERE ${condition}`
+            connection.query(queryString, [table], (err, res) => {
+                if (err) reject(err);
+                resolve(res);
+            })
+        })
+    }
+
     return {
         selectAll,
         selectSome,
         selectSomeWhere,
         insertOne,
         updateOne,
-        selectSomeJoin
+        selectSomeJoin,
+        deleteOne
     }
 
 })()
