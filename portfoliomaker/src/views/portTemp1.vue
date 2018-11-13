@@ -8,39 +8,43 @@
                         <div class="text-xs-center">
                             <v-avatar size="250px">
                                 <img
-                                    class="img-circle elevation-7 mb-1"
+                                    class="img-circle elevation-13 mb-1"
                                     src="../assets/logo.png"
                                     alt="Pro Image">
                             </v-avatar>
                             <br>
                             <br>
-                        <div class="headline">Your <span style="font-weight:bold">Name</span></div>
+                        <div class="headline"><span class="text-lowercase">LOWER </span><span class="text-uppercase" style="font-weight:bold"> upper</span></div>
                             <br>
+                            <v-layout pl-3>
+                            <v-layout pl-5>
                             <v-layout pl-5>
                                 <img 
-                                    class="elevation-2"
+                                    class="elevation-10"
                                     src="../assets/js.png"
                                     alt="js Image"
                                     height="35"
                                     width="35">
-                                     <img 
-                                    class="elevation-2"
+                                <img 
+                                    class="elevation-10"
                                     src="../assets/css.png"
                                     alt="css Image"
                                     height="35"
                                     width="35">
-                                     <img 
-                                    class="elevation-2"
+                                <img 
+                                    class="elevation-10"
                                     src="../assets/html.png"
                                     alt="html Image"
                                     height="35"
                                     width="35">
-                                     <img 
-                                    class="elevation-2"
+                                <img 
+                                    class="elevation-10"
                                     src="../assets/logo.png"
                                     alt="vue Image"
                                     height="35"
                                     width="35">
+                            </v-layout>
+                            </v-layout>
                             </v-layout>
                         </div>
                     </v-flex>
@@ -52,7 +56,18 @@
                                     </div>
                                 </v-card-title>
                                     <v-container>
-                                        <p>Please Hire Me</p>
+                                        <p>Please</p>
+                                        <br>
+                                        <p>Hire</p>
+                                        <br>
+                                        <p>Me</p>
+                                        <br>
+                                        <p>I</p>
+                                        <br>
+                                        <p>Am</p>
+                                        <br>
+                                        <p>Poor</p>
+                                        <br>
                                     </v-container>
                             </v-card>
                         </v-flex>
@@ -65,6 +80,8 @@
                                 </v-card-title>
                                     <v-container>
                                         <p> Maybe this should be a carousel</p>
+                                        <br>
+                                        <p> ...Or Maybe a grid </p>
                                     </v-container>
                             </v-card>
                         </v-flex>
@@ -77,14 +94,11 @@
 
 <style scoped>
     .v-content {
-        background-image: radial-gradient(green,gainsboro) ;
+        background-image: radial-gradient(gainsboro,MediumSpringGreen,gainsboro) ;
         color: white  
     }
-    h3 {
-        border-bottom: 2px dashed gainsboro
-    }
     .card-title {
-        background-image: radial-gradient(green,gainsboro)
+        background-image: linear-gradient(MediumSpringGreen,darkSlateGray,gainsboro)
     }
     .wut {
         color: white

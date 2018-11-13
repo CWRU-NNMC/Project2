@@ -3,8 +3,8 @@
     <v-toolbar dark>
         <v-toolbar-side-icon><v-icon>home</v-icon></v-toolbar-side-icon>
             <v-toolbar-title class="headline text-uppercase">
-                <span>Bro, Do You Even Vue?</span>
-                <span class="font-weight-light text-lowercase">Yeah, kinda</span>
+                <span class="lubbalubba">Bro, Do You Even Vue? </span>
+                <span class="font-weight-light text-lowercase lubbalubba"> ...Yeah, kinda</span>
             </v-toolbar-title>
 <v-spacer></v-spacer>
             <div class="text-xs-center">
@@ -47,6 +47,10 @@ export default {
   }
 }
 </script>
-<style scoped>
 
+<style>
+    .lubbalubba {
+        font-family: 'Orbitron', sans-serif;
+    }
 </style>
+

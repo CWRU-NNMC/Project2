@@ -11,8 +11,8 @@
 
 <style>
 .v-footer{
-    font-family: 'Open Sans Condensed', sans-serif;
-    font-size: 20px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 14px;
     font-weight: bold;
 }
 </style>
