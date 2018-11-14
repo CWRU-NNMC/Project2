@@ -44,22 +44,24 @@ app.post('/api/portfolio/:name', (req, res) => {
 
 // adds a new user to the DB
 app.post('/api/manage/user/:name', (req, res) => {
-    checkUserName(req.params.name)
-    .then(reply => {
-        if (!reply) throw new Error('This username is unavailable.')
-        return addNewUser(req.body)
-    })
+    // checkUserName(req.params.name)
+    // .then(reply => {
+    //     if (!reply) throw new Error('This username is unavailable.')
+    //     return addNewUser(req.body)
+    // })
+    addNewUser(req.body)
     .then(results => res.send(results))
     .catch(err => res.status(500).send(`${err}`))
 })
 
 // adds a new portfolio to the DB
 app.post('/api/manage/portfolio/:name', (req, res) => {
-    checkPortfolioName(req.params.name)
-    .then(reply => {
-        if (!reply) throw new Error('This Portfolio Name is unavailable.')
-        return addNewPortfolio(req.body)
-    })
+    // checkPortfolioName(req.params.name)
+    // .then(reply => {
+    //     if (!reply) throw new Error('This Portfolio Name is unavailable.')
+    //     return addNewPortfolio(req.body)
+    // })
+    addNewPortfolio(req.body)
     .then(results => res.send(results))
     .catch(err => res.status(500).send(`${err}`))
 })
