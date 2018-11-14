@@ -64,7 +64,8 @@ const dbLib = (() => {
   const addNewUser = user => {
     let location = user.location || null
     let userImage = user.userImage || null
-    return insertOne('users', ['username', 'email', 'pw', 'preferences', 'location', 'userimage'], [user.userName, user.email, user.pw, user.preferences, location, userImage])
+    let preferences = JSON.stringify(user.preferences)
+    return insertOne('users', ['username', 'email', 'pw', 'preferences', 'location', 'userimage'], [user.userName, user.email, user.pw, preferences, location, userImage])
     .then(results => {
       if (results.affectedRows === 0) throw new Error(`500: User '${user.userName}' not added.`)
       return results
@@ -85,8 +86,9 @@ const dbLib = (() => {
   
   const addNewPortfolio = portfolio => {
     let { technologies, description, usersid, config, name } = portfolio
+    let configJSON = JSON.stringify(config)
     if (name.length > 20) throw new Error('500: Portfolio name exceeds length (20 characters maximum')
-    return insertOne('portfolios', ['technologies', 'description', 'usersid', 'config', 'name'], [technologies, description, usersid, config, name])
+    return insertOne('portfolios', ['technologies', 'description', 'usersid', 'config', 'name'], [technologies, description, usersid, configJSON, name])
     .then(results => {
       if (results.affectedRows === 0) throw new Error('500: Portfolio not added.')
       return results
