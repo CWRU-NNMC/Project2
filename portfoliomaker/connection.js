@@ -9,7 +9,5 @@ const localConfig = {
   port: 3306
 }
 const connection = process.env.JAWSDB_URL ? mysql.createConnection(process.env.JAWSDB_URL) : mysql.createConnection(localConfig)
-
-
 connection.connect();
 module.exports = connection;
