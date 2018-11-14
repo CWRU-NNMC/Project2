@@ -19,7 +19,7 @@
                             v-for="item in items"
                             :key="item"
                             :title="item.title"
-                            @click="item">
+                            @click="goTo(item.title)">
                             <v-list-tile-title v-text="item.title"></v-list-tile-title>
                         </v-list-tile>
                     </v-list>
@@ -44,6 +44,15 @@ export default {
         }
       ]
     }
+  },
+  methods: {
+      goTo(item) {
+          if(item === 'Login') {
+              this.$router.replace({ name: 'login'})
+          }else{
+              this.$router.replace({ name: 'signUp'})
+          }      
+      }
   }
 }
 </script>

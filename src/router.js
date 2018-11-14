@@ -4,6 +4,7 @@ import Home from './views/Home.vue'
 import User from './views/User.vue'
 import Portfolio from './views/Portfolio.vue'
 import Login from './views/Login.vue' 
+import SignUp from './views/Sign-Up.vue'
 import store from './store'
 
 Vue.use(Router)
@@ -20,6 +21,11 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: Login
+    },
+    {
+      path: '/sign-up',
+      name: 'signUp',
+      component: SignUp
     },
     {
       path: '/user/:id',
