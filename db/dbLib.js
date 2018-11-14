@@ -5,12 +5,12 @@ const dbLib = (() => {
 
   const checkUserName = name => {
     return selectSomeWhere('users', 'username', name, ['username'])
-    .then(data => data.length ? 'Name unavailable.' : 'Name available.')
+    .then(data => !data.length)
   }
 
   const checkPortfolioName = name => {
     return selectSomeWhere('portfolios', 'name', name, ['name'])
-    .then(data => data.length ? 'Name unavailable.' : 'Name available.')
+    .then(data => !data.length)
   }
 
 
