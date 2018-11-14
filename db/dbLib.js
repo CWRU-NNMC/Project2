@@ -54,7 +54,7 @@ const dbLib = (() => {
     .then(data => {
       if (data.length === 0) throw new Error(`500: No such portfolio '${name}' found.`)
       let id = data[0].id
-      return selectSomeJoin('portfolios', 'projects', ['config', 'name'], ['id', 'imageurl', 'githuburl', 'description', 'public'], 'portfolios.id', 'projects.portfolioid', 'portfolios.id', id)
+      return selectSomeJoin('portfolios', 'projects', ['config', 'name', 'public'], ['id', 'imageurl', 'githuburl', 'description'], 'portfolios.id', 'projects.portfolioid', 'portfolios.id', id)
     })
   }
 
