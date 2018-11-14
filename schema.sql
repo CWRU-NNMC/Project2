@@ -3,7 +3,10 @@
 USE usysutc9ey5bm5dx;
 
 -- ************************************** `users`
-
+-- DROP TABLE IF EXISTS `templates`;
+-- DROP TABLE IF EXISTS `projects`;
+-- DROP TABLE IF EXISTS `portfolios`;
+-- DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users`
 (
  `id`          integer NOT NULL AUTO_INCREMENT ,
@@ -44,7 +47,7 @@ PRIMARY KEY (`id`)
 
 CREATE TABLE `portfolios`
 (
- `id`           integer NOT NULL ,
+ `id`           integer NOT NULL AUTO_INCREMENT,
  `technologies` integer NOT NULL ,
  `description`  varchar(5000) NOT NULL ,
  `usersid`      integer NOT NULL ,
@@ -54,7 +57,7 @@ CREATE TABLE `portfolios`
 
 PRIMARY KEY (`id`),
 KEY `fkIdx_15` (`usersid`),
-CONSTRAINT `FK_15` FOREIGN KEY `fkIdx_15` (`usersid`) REFERENCES `users` (`id`)
+CONSTRAINT `FK_15` FOREIGN KEY `fkIdx_15` (`usersid`) REFERENCES `users` (`id`) ON DELETE CASCADE
 );
 
 
@@ -75,9 +78,9 @@ CREATE TABLE `projects`
  `createdAt`   TIMESTAMP NOT NULL ,
 PRIMARY KEY (`id`),
 KEY `fkIdx_25` (`usersid`),
-CONSTRAINT `FK_25` FOREIGN KEY `fkIdx_25` (`usersid`) REFERENCES `users` (`id`),
+CONSTRAINT `FK_25` FOREIGN KEY `fkIdx_25` (`usersid`) REFERENCES `users` (`id`) ON DELETE CASCADE,
 KEY `fkIdx_28` (`portfolioid`),
-CONSTRAINT `FK_28` FOREIGN KEY `fkIdx_28` (`portfolioid`) REFERENCES `portfolios` (`id`)
+CONSTRAINT `FK_28` FOREIGN KEY `fkIdx_28` (`portfolioid`) REFERENCES `portfolios` (`id`) ON DELETE CASCADE
 );
 
 

@@ -16,6 +16,7 @@ import login from './views/Login'
 import portTemp1 from './views/portTemp1'
 import portTemp2 from './views/portTemp2'
 
+
 export default {
   name: 'App',
   components: {
@@ -29,5 +30,6 @@ export default {
   }
 }
 </script>
+
 
 
