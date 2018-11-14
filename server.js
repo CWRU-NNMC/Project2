@@ -1,6 +1,6 @@
 const path = require('path');
 const express = require('express');
-const  { userPageFunction, portfolioPageFunction, checkUserName, checkPortfolioName, addNewUser, addNewPortfolio, addNewProject } = require('./db/dbLib')
+const  { userPageFunction, portfolioPageFunction, checkUserName, checkPortfolioName, addNewUser, addNewPortfolio, addNewProject, updateUser, updatePortfolio, updateProject, deletePortfolio, deleteProject, deleteUser } = require('./db/dbLib')
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({
@@ -75,15 +75,62 @@ app.post('/api/manage/project/:portfolioname', (req, res) => {
 // ** "PUT" routes for updating the database
 
 // updates existing user info
-app.put('/api/manage/user/:name')
+app.put('/api/manage/user/:name', (req, res) => {
+    let updateObj = {
+        userName: req.params.name,
+        updates: req.body
+    }
+    updateUser(updateObj)
+    .then(results => res.send(results))
+    .catch(err => res.status(500).send(`${err}`))
+})
 
 // updates existing portfolio info
-app.put('/api/manage/portfolio/:name')
+app.put('/api/manage/portfolio/:name', (req, res) => {
+    let updateObj = {
+        portfolioName: req.params.name,
+        updates: req.body
+    }
+    updatePortfolio(updateObj)
+    .then(results => res.send(results))
+    .catch(err => res.status(500).send(`${err}`))
+})
+
 
 // updates existing project info
-app.put('/api/manage/project/:id')
+app.put('/api/manage/project/:id', (req, res) => {
+    let updateObj = {
+        projectId: req.params.id,
+        updates: req.body
+    }
+    updateProject(updateObj)
+    .then(results => res.send(results))
+    .catch(err => res.status(500).send(`${err}`))
+})
 
 // ** "DELETE" routes for deleting from the database
+
+// deletes existing user, cascades
+app.delete('/api/manage/user/:name', (req, res) => {
+    deleteUser(req.params.name)
+    .then(results => res.send(results))
+    .catch(err => res.status(500).send(`${err}`))
+})
+
+// deletes existing portfolio, cascades
+app.delete('/api/manage/portfolio/:name', (req, res) => {
+    deletePortfolio(req.params.name)
+    .then(results => res.send(results))
+    .catch(err => res.status(500).send(err))
+})
+
+// deletes existing project TODO: update Portfolio config on project delete
+// needs to be done after we actually create the format for the config
+app.delete('/api/manage/project/:id', (req, res) => {
+    deleteProject(req.params.id)
+    .then(results => res.send(results))
+    .catch(err => res.status(500).send(err))
+})
 
 app.get('*', (_, res) => {
     res.sendFile(path.join(__dirname, 'dist', 'index.html'))
