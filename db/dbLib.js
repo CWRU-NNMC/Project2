@@ -3,13 +3,27 @@ const { selectAll, selectSome, selectSomeWhere, selectSomeJoin, insertOne, updat
 const dbLib = (() => {
 
 
+  const checkUserName = name => {
+    return selectSomeWhere('users', 'username', name, ['username'])
+    .then(data => data.length ? 'Name unavailable.' : 'Name available.')
+  }
+
+  const checkPortfolioName = name => {
+    return selectSomeWhere('portfolios', 'name', name, ['name'])
+    .then(data => data.length ? 'Name unavailable.' : 'Name available.')
+  }
+
 
   // takes a user name, and returns relevant information for their user info page
   const userPageFunction = name => {
     // Grab the corresponding userID, to be used in Promise.all 
     return selectSomeWhere('users', 'username', name, ['id'])
     .then(data => {
-      if (data.length === 0) throw new Error(`500: No such user '${name}' found.`)
+      // if (data.length === 0) throw new Error(`500: No such user '${name}' found.`)
+      if (data.length === 0) throw {
+        code: 500,
+        message: `No such user '${name}' found.`
+      }
       let id = data[0].id
       // make two DB calls, one for user info and one for portfolio info
       return Promise.all([
@@ -32,7 +46,6 @@ const dbLib = (() => {
       }
     })
   }
-
 
   // takes a portfolio name, and return relevant information needed to render the page. Can also be used on a User Dashboard page
   const portfolioPageFunction = name => {
@@ -147,6 +160,8 @@ const dbLib = (() => {
   }
   // public methods
   return {
+    checkUserName,
+    checkPortfolioName,
     userPageFunction,
     portfolioPageFunction,
     addNewUser,
