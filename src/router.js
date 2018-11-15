@@ -6,6 +6,7 @@ import Portfolio from './views/Portfolio.vue'
 import Login from './views/Login.vue' 
 import SignUp from './views/Sign-Up.vue'
 import store from './store'
+import SecureComponent from "./views/Secure.vue"
 
 Vue.use(Router)
 
@@ -26,6 +27,11 @@ export default new Router({
       path: '/sign-up',
       name: 'signUp',
       component: SignUp
+    },
+    {
+      path: "/secure",
+      name: "secure",
+      component: SecureComponent
     },
     {
       path: '/user/:id',

@@ -15,20 +15,28 @@
 							</div>
 						</v-card-title>
 							<v-container>
-								<v-form v-model="valid">
-									<v-text-field
-										v-model="name"
-										:rules="nameRules"
-										:counter="10"
-										label="Name"
-										required> 
-									</v-text-field>
-									<v-text-field
-										v-model="email"
-										:rules="emailRules"
-										label="E-mail"
+								<v-form>
+									<v-text-field 
+										name= "username"
+										v-model="input.username"
+										:counter="16"
+										label="Username"
 										required>
 									</v-text-field>
+									<v-text-field
+										name= "password"
+										v-model="input.password"
+										:counter="16"
+										label="Password"
+										required>
+									</v-text-field>
+                                    <v-btn @click='login()'>Login</v-btn>
+									<p v-if="errors.length">
+    									<b>Please correct the following error(s):</b>
+										<ul>
+										<li v-for="error in errors">{{ error }}</li>
+										</ul>
+  									</p>
 								</v-form>
 							</v-container>
 						</v-card>
@@ -39,17 +47,48 @@
 	</v-app>
 </template>
 
+<script>
+    export default {
+        name: 'Login',
+        data() {
+            return {		
+				errors:[],		
+                input: {
+                    username: null,
+                    password: null,
+                }
+            }
+        },
+        methods: {
+            login() {
+				this.errors = [];
+				if(!this.input.username) {
+								this.errors.push("Username required.");
+								this.input.username = null;
+							} 
+				if(!this.input.password) {
+							 	this.errors.push("Password required.");
+								this.input.password = null;
+							}				
+                if(this.input.username !== null && this.input.password !== null) {
+							this.errors = [];
+							if(this.input.username == this.$parent.Account.username && this.input.password == this.$parent.Account.password) {								
+								this.$emit("authenticated", true);
+								this.$router.replace({ name: "secure" });
+							}																																																																							
+						}
+					}
+                }
+            }
+</script>
 
 <style scoped>
-	.container {
-		font-family: 'Orbitron', sans-serif;
-		font-size: 20px;
-		font-weight: bold;
-	}
-	.v-content {
-		background-image: radial-gradient(gainsboro,orange,gainsboro);
-	}
-	.lubbalubba {
-		font-family: 'Orbitron', sans-serif;
-	}
+    #login {
+        width: 500px;
+        border: 1px solid #CCCCCC;
+        background-color: #FFFFFF;
+        margin: auto;
+        margin-top: 200px;
+        padding: 20px;
+    }
 </style>
