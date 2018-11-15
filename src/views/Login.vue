@@ -77,7 +77,20 @@
 							if(this.input.username == this.$parent.Account.username && this.input.password == this.$parent.Account.password) {								
 								this.$emit("authenticated", true);
 								this.$router.replace({ name: "secure" });
-							}																																																																							
+							}
+							if(this.input.username != this.$parent.Account.username ) {
+								this.errors.push("That username does not exist");
+								this.input.username = null;
+								this.input.password = null;
+								this.$emit("authenticated", false);
+							}
+							else if (this.input.username = this.$parent.Account.username && this.input.password != this.$parent.Account.password ) {
+								this.errors.push("Invalid password");
+								this.input.username = null;
+								this.input.password = null;
+								this.$emit("authenticated", false);
+							}
+
 						}
 					}
                 }
