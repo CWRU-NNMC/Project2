@@ -15,7 +15,7 @@
 							</div>
 						</v-card-title>
 							<v-container>
-								<v-form>
+								<v-form class = 'form'>
 									<v-text-field 
 										name= "username"
 										v-model="input.username"
@@ -33,7 +33,7 @@
                                     <v-btn @click='login()'>Login</v-btn>
 									<p v-if="errors.length">
     									<b>Please correct the following error(s):</b>
-										<ul>
+										<ul class = 'errors'>
 										<li v-for="error in errors">{{ error }}</li>
 										</ul>
   									</p>
@@ -65,10 +65,12 @@
 				if(!this.input.username) {
 								this.errors.push("Username required.");
 								this.input.username = null;
+								this.$emit("authenticated", false);
 							} 
 				if(!this.input.password) {
 							 	this.errors.push("Password required.");
 								this.input.password = null;
+								this.$emit("authenticated", false);
 							}				
                 if(this.input.username !== null && this.input.password !== null) {
 							this.errors = [];
@@ -91,4 +93,12 @@
         margin-top: 200px;
         padding: 20px;
     }
+
+	.form {
+		text-align: center;
+	}
+
+	.errors {
+		list-style-type: none;
+	}
 </style>
