@@ -51,14 +51,11 @@ export default new Router({
       name: 'portfolio',
       component: Portfolio,
       beforeEnter: (to, from, next) => {
-        // if (user authorized to see page) {
         store.dispatch('getPageJson', {to}).then(res => {
           if(!res) next('/invalid-portfolio')
           else if (store.getters.getPageHidden) next('/construction')
           else next()
         })
-        // }
-        // else next('/')
       }
     },
     {
