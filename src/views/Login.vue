@@ -114,4 +114,8 @@
 	.errors {
 		list-style-type: none;
 	}
+
+	.v-content {
+		background-image: radial-gradient(gainsboro,orange,gainsboro)
+	}
 </style>
