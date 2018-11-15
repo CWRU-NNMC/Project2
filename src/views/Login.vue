@@ -67,7 +67,7 @@
 								this.input.username = null;
 								this.$emit("authenticated", false);
 							} 
-				if(!this.input.password) {
+				else if(!this.input.password) {
 							 	this.errors.push("Password required.");
 								this.input.password = null;
 								this.$emit("authenticated", false);
@@ -79,7 +79,7 @@
 								this.$router.replace({ name: "secure" });
 							}
 							if(this.input.username != this.$parent.Account.username ) {
-								this.errors.push("That username does not exist");
+								this.errors.push("That username/password is invalid");
 								this.input.username = null;
 								this.input.password = null;
 								this.$emit("authenticated", false);
