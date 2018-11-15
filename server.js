@@ -1,6 +1,6 @@
 const path = require('path');
 const express = require('express');
-const  { userPageFunction, portfolioPageFunction, checkUserName, checkPortfolioName, addNewUser, addNewPortfolio, addNewProject, updateUser, updatePortfolio, updateProject, deletePortfolio, deleteProject, deleteUser } = require('./db/dbLib')
+const  { userPageFunction, portfolioPageFunction, checkUserName, checkPortfolioName, addNewUser, addNewPortfolio, addNewProject, updateUser, updatePortfolio, updateProject, deletePortfolio, deleteProject, deleteUser, authUser } = require('./db/dbLib')
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({
@@ -8,6 +8,15 @@ app.use(express.urlencoded({
 }));
 
 app.use(express.static('./dist'))
+
+
+// ** AUTH route for validating users. takes an object with two keys: userName and password
+//    returns an object, object.auth is a boolean indicating success
+app.post('/api/user/auth/', (req, res) => {
+    authUser(req.body)
+        .then(reply => res.send(reply))
+        .catch(err => res.status(500).send(err))
+})
 
 // ** "GET" routes that are actually written as POST routes because of Vue-reasons
 

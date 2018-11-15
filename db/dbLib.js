@@ -13,6 +13,27 @@ const dbLib = (() => {
     .then(data => !data.length)
   }
 
+  const authUser = loginObject => {
+    let { userName, password } = loginObject
+    return selectSomeWhere('users', 'username', userName, ['username', 'pw'])
+    .then(data => {
+      if (data.length === 0) return {
+        code: 404,
+        message: `The username '${userName}' is incorrect.`,
+        auth: false
+      }
+      if (data[0].pw !== password) return {
+        code: 403,
+        message: 'The password you entered is incorrect.',
+        auth: false
+      }
+      return {
+        code: 200,
+        auth: true
+      }
+    })
+  }
+
 
   // takes a user name, and returns relevant information for their user info page
   const userPageFunction = name => {
@@ -175,7 +196,8 @@ const dbLib = (() => {
     dbErrorHandler,
     deleteUser,
     deletePortfolio,
-    deleteProject
+    deleteProject,
+    authUser
   }
 })()
 
