@@ -12,10 +12,10 @@ export default new Vuex.Store({
         userLoggedIn: false,
         userName: '',
         password: '',
-        userAuthorized: '',
-        // userId: 0,
+        userToken: '',
         currentPageJson: {},
-        nameAvailable: false
+        nameAvailable: false,
+        error: ''
     },
     mutations: {
         setPage(state, data) {
@@ -26,6 +26,9 @@ export default new Vuex.Store({
         },
         setAuthorized(state, data) {
             state.userAuthorized = data
+        },
+        setFailState (state, error) {
+            state.error = error
         }
     },
     getters: {
@@ -34,16 +37,11 @@ export default new Vuex.Store({
         getNameAvailable: state => state.nameAvailable
     },
     actions: {
-        getPageJson(context, {to}) {
-            return new Promise((resolve, reject) => {
+        getPortfolioJson(context, {to}) {
                 let queryString = `/api${to.fullPath}`
-                axios.post(queryString, to.id).then(({data}) => {
-                    context.commit('setPage', {data})
-                }).then(() => resolve(true))
-                .catch((error) => {
-                    console.log(error); 
-                    resolve(false)})   /// this resolves if user/portfolio doesn't exist. router calling it checks for boolean
-            })
+                return axios.post(queryString, to.id)
+                .then(({data}) => context.commit('setPage', {data}))
+                .catch(error => context.commit('setFailState', error))
         },
         authUser({state, commit}){
             let userCredentials = {userName: state.userName, password: state.password}

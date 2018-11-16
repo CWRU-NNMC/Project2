@@ -26,14 +26,12 @@ export default new Router({
       component: Home
     },
     {
-      path: '/user/:id',
+      path: '/user',
       name: 'user',
       component: User,
       beforeEnter: (to, from, next) => {
-        // if (user authorized to see page) {
-        store.dispatch('getPageJson', {to}).then(res => res ? next() : next('/invalid-user'))
-        // }
-        // else next('/login')
+        if (store.state.userToken) store.dispatch('getUserPage', {userName: store.state.userName, userToken: store.state.userToken}).then(res => res ? next() : next('/invalid-user'))
+        else next('/login')
       }
     },
     {
@@ -51,7 +49,7 @@ export default new Router({
       name: 'portfolio',
       component: Portfolio,
       beforeEnter: (to, from, next) => {
-        store.dispatch('getPageJson', {to}).then(res => {
+        store.dispatch('getPortfolioJson', {to}).then(res => {
           if(!res) next('/invalid-portfolio')
           else if (store.getters.getPageHidden) next('/construction')
           else next()
