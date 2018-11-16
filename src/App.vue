@@ -8,9 +8,8 @@
 </template>
 
 <script>
-import head from './components/head'
-import foot from './components/foot'
-import wut from './views/PortConstruction'
+import head from './components/Head'
+import foot from './components/Foot'
 
 export default {
   name: 'App',
@@ -38,13 +37,7 @@ export default {
         },            
   components: {
     'app-header': head,
-    'app-footer': foot,
-    'app-wut': wut
+    'app-footer': foot
   }
 }
 </script>
-
-
-
-
-
