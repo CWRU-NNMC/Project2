@@ -3,13 +3,48 @@ const { selectAll, selectSome, selectSomeWhere, selectSomeJoin, insertOne, updat
 const dbLib = (() => {
 
 
+  const checkUserName = name => {
+    return selectSomeWhere('users', 'username', name, ['username'])
+    .then(data => !data.length)
+  }
+
+  const checkPortfolioName = name => {
+    return selectSomeWhere('portfolios', 'name', name, ['name'])
+    .then(data => !data.length)
+  }
+
+  const authUser = loginObject => {
+    let { userName, password } = loginObject
+    return selectSomeWhere('users', 'username', userName, ['username', 'pw'])
+    .then(data => {
+      if (data.length === 0) return {
+        code: 404,
+        message: `The username '${userName}' is incorrect.`,
+        auth: false
+      }
+      if (data[0].pw !== password) return {
+        code: 403,
+        message: 'The password you entered is incorrect.',
+        auth: false
+      }
+      return {
+        code: 200,
+        auth: true
+      }
+    })
+  }
+
 
   // takes a user name, and returns relevant information for their user info page
   const userPageFunction = name => {
     // Grab the corresponding userID, to be used in Promise.all 
     return selectSomeWhere('users', 'username', name, ['id'])
     .then(data => {
-      if (data.length === 0) throw new Error(`500: No such user '${name}' found.`)
+      // if (data.length === 0) throw new Error(`500: No such user '${name}' found.`)
+      if (data.length === 0) throw {
+        code: 500,
+        message: `No such user '${name}' found.`
+      }
       let id = data[0].id
       // make two DB calls, one for user info and one for portfolio info
       return Promise.all([
@@ -33,7 +68,6 @@ const dbLib = (() => {
     })
   }
 
-
   // takes a portfolio name, and return relevant information needed to render the page. Can also be used on a User Dashboard page
   const portfolioPageFunction = name => {
     // grab the corresponding portfolio ID
@@ -41,7 +75,7 @@ const dbLib = (() => {
     .then(data => {
       if (data.length === 0) throw new Error(`500: No such portfolio '${name}' found.`)
       let id = data[0].id
-      return selectSomeJoin('portfolios', 'projects', ['config', 'name'], ['id', 'imageurl', 'githuburl', 'description'], 'portfolios.id', 'projects.portfolioid', 'portfolios.id', id)
+      return selectSomeJoin('portfolios', 'projects', ['config', 'name', 'public'], ['id', 'imageurl', 'githuburl', 'description'], 'portfolios.id', 'projects.portfolioid', 'portfolios.id', id)
     })
   }
 
@@ -51,7 +85,8 @@ const dbLib = (() => {
   const addNewUser = user => {
     let location = user.location || null
     let userImage = user.userImage || null
-    return insertOne('users', ['username', 'email', 'pw', 'preferences', 'location', 'userimage'], [user.userName, user.email, user.pw, user.preferences, location, userImage])
+    let preferences = JSON.stringify(user.preferences)
+    return insertOne('users', ['username', 'email', 'pw', 'preferences', 'location', 'userimage'], [user.userName, user.email, user.pw, preferences, location, userImage])
     .then(results => {
       if (results.affectedRows === 0) throw new Error(`500: User '${user.userName}' not added.`)
       return results
@@ -72,8 +107,9 @@ const dbLib = (() => {
   
   const addNewPortfolio = portfolio => {
     let { technologies, description, usersid, config, name } = portfolio
+    let configJSON = JSON.stringify(config)
     if (name.length > 20) throw new Error('500: Portfolio name exceeds length (20 characters maximum')
-    return insertOne('portfolios', ['technologies', 'description', 'usersid', 'config', 'name'], [technologies, description, usersid, config, name])
+    return insertOne('portfolios', ['technologies', 'description', 'usersid', 'config', 'name'], [technologies, description, usersid, configJSON, name])
     .then(results => {
       if (results.affectedRows === 0) throw new Error('500: Portfolio not added.')
       return results
@@ -147,6 +183,8 @@ const dbLib = (() => {
   }
   // public methods
   return {
+    checkUserName,
+    checkPortfolioName,
     userPageFunction,
     portfolioPageFunction,
     addNewUser,
@@ -158,7 +196,8 @@ const dbLib = (() => {
     dbErrorHandler,
     deleteUser,
     deletePortfolio,
-    deleteProject
+    deleteProject,
+    authUser
   }
 })()
 

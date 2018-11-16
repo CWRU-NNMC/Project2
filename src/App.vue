@@ -1,7 +1,7 @@
 <template>
   <div>
     <app-header></app-header>
-    <app-port1></app-port1>
+    <router-view/>
     <app-footer></app-footer>
   </div>
 </template>
