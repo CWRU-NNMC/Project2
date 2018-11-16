@@ -13,7 +13,6 @@ import CreatorChooseTemplate from './components/CreatorChooseTemplate.vue'
 import CreatorProject from './components/CreatorProject.vue' 
 import CreatorSkillsEdu from './components/CreatorSkillsEdu.vue' 
 import store from './store'
-import SecureComponent from "./views/Secure.vue"
 
 
 Vue.use(Router)
@@ -27,29 +26,12 @@ export default new Router({
       component: Home
     },
     {
-      path: '/login',
-      name: 'login',
-      component: Login
-    },
-    {
-      path: '/sign-up',
-      name: 'signUp',
-      component: SignUp
-    },
-    {
-      path: "/secure",
-      name: "secure",
-      component: SecureComponent
-    },
-    {
-      path: '/user/:id',
+      path: '/user',
       name: 'user',
       component: User,
       beforeEnter: (to, from, next) => {
-        // if (user authorized to see page) {
-        store.dispatch('getPageJson', {to}).then(res => res ? next() : next('/invalid-user'))
-        // }
-        // else next('/login')
+        if (store.state.userToken) store.dispatch('getUserPage', {userName: store.state.userName, userToken: store.state.userToken}).then(() => next())
+        else next('/login')
       }
     },
     {
