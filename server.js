@@ -37,7 +37,7 @@ app.post('/api/portfolio/query/:name', (req, res) => {
 
 // returns an object with all relevant information on a user
 app.post('/api/user/:name', (req, res) => {
-    userPageFunction(req.params.name)
+    userPageFunction(req.params.name, req.body.token)
         .then(json => res.status(200).send(json))
         .catch(err => res.status(err.code).send(err.message))
 })

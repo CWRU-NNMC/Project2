@@ -1,4 +1,6 @@
 const { selectAll, selectSome, selectSomeWhere, selectSomeJoin, insertOne, updateOne, deleteOne } = require('./orm')
+const jwt = require('jsonwebtoken')
+
 
 const dbLib = (() => {
 
@@ -27,25 +29,33 @@ const dbLib = (() => {
         message: 'The password you entered is incorrect.',
         auth: false
       }
-      return {
-        code: 200,
-        auth: true
-      }
+      const options = { expiresIn: '1d', issuer: 'localhost' }
+      const secret = process.env.JWT_SECRET
+      const token = jwt.sign({ foo: 'bar' }, secret, options)
+      // console.log(token)
+        return {
+          code: 200,
+          auth: true,
+          token,
+          userName
+        }      
     })
   }
 
 
   // takes a user name, and returns relevant information for their user info page
-  const userPageFunction = name => {
+  const userPageFunction = (name, token) => {
     // Grab the corresponding userID, to be used in Promise.all 
-    return selectSomeWhere('users', 'username', name, ['id'])
+    return selectSomeWhere('users', 'username', name, ['id', 'username'])
     .then(data => {
       // if (data.length === 0) throw new Error(`500: No such user '${name}' found.`)
       if (data.length === 0) throw {
         code: 500,
         message: `No such user '${name}' found.`
       }
+      let userName = data[0].username
       let id = data[0].id
+      // let tokenMatch = 
       // make two DB calls, one for user info and one for portfolio info
       return Promise.all([
         selectSomeWhere('users', 'id', id, ['id', 'username','email', 'userimage', 'location']),
