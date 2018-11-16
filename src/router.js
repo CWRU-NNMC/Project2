@@ -13,6 +13,7 @@ import CreatorChooseTemplate from './components/CreatorChooseTemplate.vue'
 import CreatorProject from './components/CreatorProject.vue' 
 import CreatorSkillsEdu from './components/CreatorSkillsEdu.vue' 
 import store from './store'
+import SecureComponent from "./views/Secure.vue"
 
 
 Vue.use(Router)
@@ -34,6 +35,11 @@ export default new Router({
       path: '/sign-up',
       name: 'signUp',
       component: SignUp
+    },
+    {
+      path: "/secure",
+      name: "secure",
+      component: SecureComponent
     },
     {
       path: '/user/:id',
