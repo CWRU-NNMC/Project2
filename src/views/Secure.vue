@@ -1,17 +1,18 @@
 <template>
     <div id="secure">
-        <h1>Secure Area</h1>
-        <p>
-            This is a secure area
-        </p>
+<port1></port1>
     </div>
 </template>
 
 <script>
+import port1 from "../components/PortTemp1"
     export default {
         name: 'Secure',
         data() {
             return {};
+        },
+        components: {
+            "port1": port1
         }
     }
 </script>
