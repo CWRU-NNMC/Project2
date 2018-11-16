@@ -1,8 +1,9 @@
 const { selectAll, selectSome, selectSomeWhere, selectSomeJoin, insertOne, updateOne, deleteOne } = require('./orm')
 const jwt = require('jsonwebtoken')
+require('dotenv').config()
 
 // jwt params
-const options = { expiresIn: '1d', issuer: 'localhost' }
+const options = { expiresIn: '5s', issuer: 'localhost' }
 const secret = process.env.JWT_SECRET
 
 
@@ -32,10 +33,8 @@ const dbLib = (() => {
         code: 403,
         message: 'The password you entered is incorrect.',
         auth: false
-      }
-
-      const token = jwt.sign({ userName }, secret, options)
-      // console.log(token)
+      } 
+      const token = jwt.sign({ user: userName }, secret, options)
         return {
           code: 200,
           auth: true,
@@ -51,16 +50,19 @@ const dbLib = (() => {
     // Grab the corresponding userID, to be used in Promise.all 
     return selectSomeWhere('users', 'username', name, ['id', 'username'])
     .then(data => {
-      // if (data.length === 0) throw new Error(`500: No such user '${name}' found.`)
       if (data.length === 0) throw {
         code: 500,
         message: `No such user '${name}' found.`
       }
+      // grab the user name requested, verify that it corresponds to the token, else throw an error
       let userName = data[0].username
       let result = jwt.verify(token, secret, options)
+      if (userName !== result.user) throw {
+        code: 403,
+        message: `You do not have access to this user page.`
+      }
       console.log(result)
       let id = data[0].id
-      // let tokenMatch = 
       // make two DB calls, one for user info and one for portfolio info
       return Promise.all([
         selectSomeWhere('users', 'id', id, ['id', 'username','email', 'userimage', 'location']),

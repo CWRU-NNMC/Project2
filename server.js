@@ -37,9 +37,11 @@ app.post('/api/portfolio/query/:name', (req, res) => {
 
 // returns an object with all relevant information on a user
 app.post('/api/user/:name', (req, res) => {
+    console.log(req.params.name, req.body.token)
     userPageFunction(req.params.name, req.body.token)
         .then(json => res.status(200).send(json))
-        .catch(err => res.status(err.code).send(err.message))
+        // .catch(err => console.log(err))
+        .catch(err => res.status(err.code || '500').send(err.message || 'Internal server error'))
 })
 
 // returns an object with all the relevant information on a portfolio
