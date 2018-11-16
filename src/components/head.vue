@@ -3,12 +3,12 @@
     <v-toolbar dark>
         <v-toolbar-side-icon><v-icon @click="goTo('home')">home</v-icon></v-toolbar-side-icon>
             <v-toolbar-title class="headline text-uppercase">
-                <span class="lubbalubba">Bro, Do You Even Vue? </span>
-                <span class="font-weight-light text-lowercase lubbalubba"> ...Yeah, kinda</span>
+                <span class="fontify">Bro, Do You Even Vue? </span>
+                <span class="font-weight-light text-lowercase fontify"> ...Yeah, kinda</span>
             </v-toolbar-title>
 <v-spacer></v-spacer>
-            <v-btn light @click="goTo('signUp')">Sign Up</v-btn>
-            <v-btn light @click="goTo('login')">Login</v-btn>
+            <v-btn light @click="goTo('signUp')"><span class="fontify">Sign Up</span></v-btn>
+            <v-btn light @click="goTo('login')"><span class="fontify">Login</span></v-btn>
         </v-toolbar>
 </v-content>
 </template>
@@ -38,7 +38,7 @@ export default {
 </script>
 
 <style>
-    .lubbalubba {
+    .fontify {
         font-family: 'Orbitron', sans-serif;
     }
 </style>

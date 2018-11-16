@@ -4,7 +4,7 @@ import Home from './views/Home.vue'
 import User from './views/User.vue'
 import Portfolio from './views/Portfolio.vue'
 import Login from './views/Login.vue' 
-import Signup from './views/Signup.vue'
+import SignUp from './views/Sign-Up.vue'
 import Creator from './views/Creator.vue'
 import InvalidPortfolio from './views/InvalidPortfolio.vue'
 import PortConstruction from './views/PortConstruction.vue'
@@ -13,7 +13,6 @@ import CreatorChooseTemplate from './components/CreatorChooseTemplate.vue'
 import CreatorProject from './components/CreatorProject.vue' 
 import CreatorSkillsEdu from './components/CreatorSkillsEdu.vue' 
 import store from './store'
-import SecureComponent from "./views/Secure.vue"
 
 
 Vue.use(Router)
@@ -35,11 +34,6 @@ export default new Router({
       path: '/sign-up',
       name: 'signUp',
       component: SignUp
-    },
-    {
-      path: "/secure",
-      name: "secure",
-      component: SecureComponent
     },
     {
       path: '/user/:id',
@@ -82,7 +76,7 @@ export default new Router({
     {
       path: '/signup',
       name: 'signup',
-      component: Signup
+      component: SignUp
     },
     {
       path: '/portfolio-creator',

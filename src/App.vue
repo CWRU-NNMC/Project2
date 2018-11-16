@@ -10,14 +10,7 @@
 <script>
 import head from './components/head'
 import foot from './components/foot'
-
-import home from './views/Home'
-import user from './views/User'
-import login from './views/Login'
-import signIn from './views/Sign-Up'
-import portTemp1 from './views/portTemp1'
-import portTemp2 from './views/portTemp2'
-
+import wut from './views/PortConstruction'
 
 export default {
   name: 'App',
@@ -46,14 +39,12 @@ export default {
   components: {
     'app-header': head,
     'app-footer': foot,
-    'app-home': home,
-    'app-user': user,
-    'app-login': login,
-    'app-port1': portTemp1,
-    'app-port2': portTemp2
+    'app-wut': wut
   }
 }
 </script>
+
+
 
 
 
