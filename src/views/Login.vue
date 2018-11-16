@@ -17,7 +17,6 @@
 									dark
 									hide-slider
 									icons-and-text>
-								<v-tabs-slider color="white"></v-tabs-slider>
 								<v-tab>
 									<span class="fontify">Login</span>
 									<v-icon>face</v-icon>
@@ -38,7 +37,7 @@
 															v-model="input.password"
 															:counter="16"
 															label="Password"
-															:type="show3 ? 'text' : 'password'"
+															:type="show ? 'text' : 'password'"
 															class="input-group--focused"
 															required>
 														</v-text-field>
@@ -69,7 +68,7 @@ export default {
 	name: 'Login',
 	data() {
 		return {
-			show3: false,		
+			show: false,		
 			errors:[],		
 			input: {
 				username: null,
