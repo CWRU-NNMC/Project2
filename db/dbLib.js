@@ -1,6 +1,10 @@
 const { selectAll, selectSome, selectSomeWhere, selectSomeJoin, insertOne, updateOne, deleteOne } = require('./orm')
 const jwt = require('jsonwebtoken')
 
+// jwt params
+const options = { expiresIn: '1d', issuer: 'localhost' }
+const secret = process.env.JWT_SECRET
+
 
 const dbLib = (() => {
 
@@ -29,9 +33,8 @@ const dbLib = (() => {
         message: 'The password you entered is incorrect.',
         auth: false
       }
-      const options = { expiresIn: '1d', issuer: 'localhost' }
-      const secret = process.env.JWT_SECRET
-      const token = jwt.sign({ foo: 'bar' }, secret, options)
+
+      const token = jwt.sign({ userName }, secret, options)
       // console.log(token)
         return {
           code: 200,
@@ -54,6 +57,8 @@ const dbLib = (() => {
         message: `No such user '${name}' found.`
       }
       let userName = data[0].username
+      let result = jwt.verify(token, secret, options)
+      console.log(result)
       let id = data[0].id
       // let tokenMatch = 
       // make two DB calls, one for user info and one for portfolio info
