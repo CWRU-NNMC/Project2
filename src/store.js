@@ -15,6 +15,7 @@ export default new Vuex.Store({
         userToken: '',
         userAuthorized: false,
         currentPageJson: {},
+        currentProject: {},
         nameAvailable: false,
         error: ''
     },
@@ -44,11 +45,11 @@ export default new Vuex.Store({
         getNameAvailable: state => state.nameAvailable
     },
     actions: {
-        getPortfolioJson(context, {to}) {
+        getPortfolioJson({commit}, {to}) {
                 let queryString = `/api${to.fullPath}`
                 return axios.post(queryString, to.id)
-                .then(({data}) => context.commit('setPage', {data}))
-                .catch(error => context.commit('setFailState', error))
+                .then(({data}) => commit('setPage', {data}))
+                .catch(error => commit('setFailState', error))
         },
         getUserPage({ commit }, {userData}){
             let queryString = `/api/user/${userData.userName}`
@@ -71,13 +72,13 @@ export default new Vuex.Store({
         checkNameAvailable ({commit}, {name, pageType}) {
             commit('setNameAvailable', false)
             let queryString = `/api/${pageType}/query/${name}`
-            axios.post(queryString, name).then(res => commit('setNameAvailable', {res}))
+            return axios.post(queryString, name).then(res => commit('setNameAvailable', {res}))
         },
         addUserOrPort (context, {name, data, pageType}){
             if (!context.state.nameAvailable) return false;
             else{
-            let queryString = `/api/manage/${pageType}/${name}`
-            return axios.post(queryString, data).then(() => router.push({path: `/${pageType}/${name}`}))
+                let queryString = `/api/manage/${pageType}/${name}`
+                return axios.post(queryString, data).then(() => true)
             }
         },
         addProject (context, {name, data}) {
