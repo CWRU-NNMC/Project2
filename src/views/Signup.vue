@@ -65,7 +65,7 @@
 <script>
 import head from '../components/Head'
 export default {
-        data () {
+    data () {
       return {
         active: null,
         selectedFile: null
@@ -81,6 +81,7 @@ export default {
         onFileSelected(event) {
             // need code to store img file in db not sure if this will work but its a general idea at least
             this.selectedFile = event.target.files[0]
+            console.log(event)
         }
     },
     components: {

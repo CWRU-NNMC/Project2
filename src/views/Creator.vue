@@ -1,6 +1,16 @@
-// create your own template view, vue cli tutorial w/ max
+<template>
+    <h1> this is a creator page </h1>
+</template>
+<script>
+    import head from '../components/Head'
 
-needs CreatorBio, CreatorChoose... CreatorProject, CreatorSkills
+    export default {
+    components: {
+        'app-head': head
+    }
+}
+</script>
+
 
 
 

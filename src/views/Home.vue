@@ -1,53 +1,39 @@
 <template>
-	<v-app>
-		<v-content>
+<v-app>
+	<div>
 		<app-head></app-head>
-			<v-container>
-				<v-layout>
-					<v-carousel>
-						<v-carousel-item
-							v-for="(item,i) in items"
-							:key="i"
-							:src="item.src">
-						</v-carousel-item>
-					</v-carousel>
-				</v-layout>
-			</v-container>
-		</v-content>
-	</v-app>
+		<app-bio></app-bio>
+		<app-edu></app-edu>
+		<v-btn @click="goTo('creator')" id="btn">Add New</v-btn>
+	</div>
+</v-app>
 </template>
 
 <script>
 import head from '../components/Head'
+import bio from '../components/UserBio'
+import eduSkills from '../components/UserSkillsEdu'
 
-  export default {
-    data () {
-      return {
-        items: [
-          {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg'
-          },
-          {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg'
-          },
-          {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/bird.jpg'
-          },
-          {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg'
-          }
-        ]
-      }
+export default {
+    data() {
+        return {
+            pageJson: $store.getters.getPageInfo
+            // ^ probably descructure this so it's not a pain 
+        }
+    },
+    beforeRouteUpdate(to, from, next) {
+        $store.dispatch('getPageJson', {to}).then(() => {
+    })
     },
     components: {
-      'app-head': head
-    }
-  }
-</script>
-
-  <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-	.v-content {
-	background-image: radial-gradient(gainsboro,mediumspringgreen,gainsboro)
+        'app-head': head,
+		'app-bio': bio,
+		'app-edu': eduSkills
+    },
+	methods: { 
+		goTo(item) {
+          this.$router.push({ name: item})
+		}
 	}
-</style>
+}
+</script>

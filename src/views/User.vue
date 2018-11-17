@@ -1,8 +1,19 @@
 <template>
-    <h1>User</h1>
+<v-app>
+	<div>
+		<app-head></app-head>
+		<app-bio></app-bio>
+		<app-edu></app-edu>
+		<v-btn @click="goTo('creator')" id="btn">Add New</v-btn>
+	</div>
+</v-app>
 </template>
 
 <script>
+import head from '../components/Head'
+import bio from '../components/CreatorBio'
+import eduSkills from '../components/CreatorSkillsEdu'
+
 export default {
     data() {
         return {
@@ -13,5 +24,16 @@ export default {
     beforeRouteUpdate(to, from, next) {
         $store.dispatch('getPageJson', {to}).then(() => {
     })
-}}
+    },
+    components: {
+        'app-head': head,
+		'app-bio': bio,
+		'app-edu': eduSkills
+    },
+	methods: { 
+		goTo(item) {
+          this.$router.push({ name: item})
+		}
+	}
+}
 </script>

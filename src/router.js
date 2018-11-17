@@ -4,7 +4,7 @@ import Home from './views/Home.vue'
 import User from './views/User.vue'
 import Portfolio from './views/Portfolio.vue'
 import Login from './views/Login.vue' 
-import SignUp from './views/Sign-Up.vue'
+import SignUp from './views/Signup.vue'
 import Creator from './views/Creator.vue'
 import InvalidPortfolio from './views/InvalidPortfolio.vue'
 import PortConstruction from './views/PortConstruction.vue'
@@ -67,16 +67,6 @@ export default new Router({
           else next()
         })
       }
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component: Login
-    },
-    {
-      path: '/signup',
-      name: 'signup',
-      component: SignUp
     },
     {
       path: '/portfolio-creator',
