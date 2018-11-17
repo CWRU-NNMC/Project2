@@ -10,40 +10,20 @@
 <script>
 import head from './components/head'
 import foot from './components/foot'
+import creatorProject from './components/CreatorProject.vue'
 
 import home from './views/Home'
 import user from './views/User'
 import login from './views/Login'
-import signIn from './views/Sign-Up'
+import signIn from './views/Signup'
 import portTemp1 from './views/portTemp1'
 import portTemp2 from './views/portTemp2'
 
 
 export default {
-  name: 'App',
-  data() {
-            return {
-                authenticated: false,
-                Account: {
-                    username: "TwoCats",
-                    password: "password"
-                }
-            }
-        },
-  mounted() {
-            if(!this.authenticated) {
-                this.$router.replace({ name: "home" });
-            }
-        },
-  methods: {
-            setAuthenticated(status) {
-                this.authenticated = status;
-            },
-            logout() {
-                this.authenticated = false;
-            }
-        },            
+  name: 'App',          
   components: {
+    'app-creator-project': creatorProject,
     'app-header': head,
     'app-footer': foot,
     'app-home': home,

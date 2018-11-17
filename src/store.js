@@ -45,6 +45,9 @@ export default new Vuex.Store({
         },
         setUserName (state, name) {
             state.userName = name
+        },
+        buildPortfolio (state, key, value) {
+            state.portfolioBuildInfo[key] = value
         }
     },
     getters: {
