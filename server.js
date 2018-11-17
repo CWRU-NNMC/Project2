@@ -88,23 +88,15 @@ app.post('/api/manage/project/:portfolioname', (req, res) => {
 // ** "PUT" routes for updating the database
 
 // updates existing user info
-app.put('/api/manage/user/:name', (req, res) => {
-    let updateObj = {
-        userName: req.params.name,
-        updates: req.body
-    }
-    updateUser(updateObj)
+app.put('/api/manage/user/:name', (req, res) => {    
+    updateUser(req.body)
     .then(results => res.send(results))
     .catch(err => res.status(500).send(`${err}`))
 })
 
 // updates existing portfolio info
 app.put('/api/manage/portfolio/:name', (req, res) => {
-    let updateObj = {
-        portfolioName: req.params.name,
-        updates: req.body
-    }
-    updatePortfolio(updateObj)
+    updatePortfolio(req.body)
     .then(results => res.send(results))
     .catch(err => res.status(500).send(`${err}`))
 })
@@ -112,11 +104,7 @@ app.put('/api/manage/portfolio/:name', (req, res) => {
 
 // updates existing project info
 app.put('/api/manage/project/:id', (req, res) => {
-    let updateObj = {
-        projectId: req.params.id,
-        updates: req.body
-    }
-    updateProject(updateObj)
+    updateProject(req.body)
     .then(results => res.send(results))
     .catch(err => res.status(500).send(`${err}`))
 })
@@ -125,14 +113,14 @@ app.put('/api/manage/project/:id', (req, res) => {
 
 // deletes existing user, cascades
 app.delete('/api/manage/user/:name', (req, res) => {
-    deleteUser(req.params.name)
+    deleteUser(req.body)
     .then(results => res.send(results))
     .catch(err => res.status(500).send(`${err}`))
 })
 
 // deletes existing portfolio, cascades
 app.delete('/api/manage/portfolio/:name', (req, res) => {
-    deletePortfolio(req.params.name)
+    deletePortfolio(req.body)
     .then(results => res.send(results))
     .catch(err => res.status(500).send(err))
 })
@@ -140,7 +128,7 @@ app.delete('/api/manage/portfolio/:name', (req, res) => {
 // deletes existing project TODO: update Portfolio config on project delete
 // needs to be done after we actually create the format for the config
 app.delete('/api/manage/project/:id', (req, res) => {
-    deleteProject(req.params.id)
+    deleteProject(req.body)
     .then(results => res.send(results))
     .catch(err => res.status(500).send(err))
 })
