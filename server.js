@@ -13,6 +13,7 @@ app.use(express.static('./dist'))
 // ** AUTH route for validating users. takes an object with two keys: userName and password
 //    returns an object, object.auth is a boolean indicating success
 app.post('/api/user/auth/', (req, res) => {
+    console.log(req.body)
     authUser(req.body)
         .then(reply => res.send(reply))
         .catch(err => res.status(500).send(err))

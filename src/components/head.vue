@@ -7,8 +7,9 @@
                 <span class="font-weight-light text-lowercase lubbalubba"> ...Yeah, kinda</span>
             </v-toolbar-title>
 <v-spacer></v-spacer>
-            <v-btn light @click="goTo('signUp')">Sign Up</v-btn>
-            <v-btn light @click="goTo('login')">Login</v-btn>
+            <v-btn light v-if='!user' @click="goTo('signUp')">Sign Up</v-btn>
+            <v-btn light v-if='!user' @click="goTo('login')">Login</v-btn>
+            <v-btn light v-if='user' @click="logout()">Logout</v-btn>
         </v-toolbar>
 </v-content>
 </template>
@@ -19,19 +20,19 @@
 export default {
   data () {
     return {
-      items: [
-        {
-            title: 'Login'
-        },
-        {
-            title: 'Sign Up'
-        }
-      ]
+        user: this.$store.getters.getUser
     }
   },
   methods: {
       goTo(item) {
           this.$router.push({ name: item})
+      },
+      logout() {
+          this.$store.commit('setUserName', '')
+          this.user = this.$store.getters.getUser
+          this.$store.commit('setToken', '')
+          this.$router.push({name: 'login'})
+
       }    
   }
 }

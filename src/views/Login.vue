@@ -61,51 +61,47 @@
         },
         methods: {
             login() {
+				var token = this.$store.getters.getToken
+				if(token){
+					console.log('token exists')
+				}
 				this.errors = [];
+				//check for username input
 				if(!this.input.username) {
 								this.errors.push("Username required.");
 								this.input.username = null;
-<<<<<<< HEAD
-=======
-								this.$emit("authenticated", false);
->>>>>>> a658120a2e771d2cf4d226a779f084b6996a9ea7
 							} 
+				//check for password input
 				else if(!this.input.password) {
 							 	this.errors.push("Password required.");
 								this.input.password = null;
-<<<<<<< HEAD
-=======
-								this.$emit("authenticated", false);
->>>>>>> a658120a2e771d2cf4d226a779f084b6996a9ea7
-							}				
+							}			
+				//check if the credentials are valid and respond accordingly	
                 if(this.input.username !== null && this.input.password !== null) {
 							this.errors = [];
-							if(this.input.username == this.$parent.Account.username && this.input.password == this.$parent.Account.password) {								
-<<<<<<< HEAD
-								this.$router.replace({ name: "user" });
-=======
-								this.$emit("authenticated", true);
-								this.$router.replace({ name: "secure" });
->>>>>>> a658120a2e771d2cf4d226a779f084b6996a9ea7
+							var credentials = {
+								userName: this.input.username,
+								password: this.input.password
 							}
-							if(this.input.username != this.$parent.Account.username ) {
-								this.errors.push("That username/password is invalid");
-								this.input.username = null;
-								this.input.password = null;
-<<<<<<< HEAD
-=======
-								this.$emit("authenticated", false);
->>>>>>> a658120a2e771d2cf4d226a779f084b6996a9ea7
-							}
-							else if (this.input.username = this.$parent.Account.username && this.input.password != this.$parent.Account.password ) {
-								this.errors.push("Invalid password");
-								this.input.username = null;
-								this.input.password = null;
-<<<<<<< HEAD
-=======
-								this.$emit("authenticated", false);
->>>>>>> a658120a2e771d2cf4d226a779f084b6996a9ea7
-							}
+							
+							console.log(this.$store.getters.getUser)
+							this.$store.dispatch('authUser', credentials)
+							.then(() =>{
+								console.log(this.$store.getters.getUser)
+								this.$router.push({name: 'home'})
+								})
+							.catch(err => console.log(err))
+
+							// if(this.input.username != this.$parent.Account.username ) {
+							// 	this.errors.push("That username/password is invalid");
+							// 	this.input.username = null;
+							// 	this.input.password = null;
+							// }
+							// else if (this.input.username = this.$parent.Account.username && this.input.password != this.$parent.Account.password ) {
+							// 	this.errors.push("Invalid password");
+							// 	this.input.username = null;
+							// 	this.input.password = null;
+							// }
 
 						}
 					}

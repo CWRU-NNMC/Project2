@@ -29,7 +29,8 @@ const dbLib = (() => {
       }
       return {
         code: 200,
-        auth: true
+        auth: true,
+        userName: userName
       }
     })
   }
