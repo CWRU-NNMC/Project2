@@ -1,6 +1,24 @@
 const { selectAll, selectSome, selectSomeWhere, selectSomeJoin, insertOne, updateOne, deleteOne } = require('./orm')
+const jwt = require('jsonwebtoken')
+require('dotenv').config()
+
+
+
 
 const dbLib = (() => {
+
+  // jwt params
+  const options = { expiresIn: '2d', issuer: 'localhost' }
+  const secret = process.env.JWT_SECRET
+
+  const verifyToken = (userName, token) => {    
+    const result = jwt.verify(token, secret, options)
+    if (userName !== result.user) throw {
+      code: 403,
+      message: `You do not have access to this user page.`
+    }
+    return result
+  }
 
 
   const checkUserName = name => {
@@ -26,25 +44,35 @@ const dbLib = (() => {
         code: 403,
         message: 'The password you entered is incorrect.',
         auth: false
-      }
-      return {
-        code: 200,
-        auth: true
-      }
+      } 
+      const token = jwt.sign({ user: userName }, secret, options)
+        return {
+          code: 200,
+          auth: true,
+          token,
+          userName
+        }      
     })
   }
 
 
   // takes a user name, and returns relevant information for their user info page
-  const userPageFunction = name => {
+  const userPageFunction = (name, token) => {
     // Grab the corresponding userID, to be used in Promise.all 
-    return selectSomeWhere('users', 'username', name, ['id'])
+    return selectSomeWhere('users', 'username', name, ['id', 'username'])
     .then(data => {
-      // if (data.length === 0) throw new Error(`500: No such user '${name}' found.`)
       if (data.length === 0) throw {
         code: 500,
         message: `No such user '${name}' found.`
       }
+      // grab the user name requested, verify that it corresponds to the token, else throw an error
+      let userName = data[0].username
+      // let result = jwt.verify(token, secret, options)
+      // if (userName !== result.user) throw {
+      //   code: 403,
+      //   message: `You do not have access to this user page.`
+      // }
+      verifyToken(userName, token)
       let id = data[0].id
       // make two DB calls, one for user info and one for portfolio info
       return Promise.all([
@@ -70,11 +98,14 @@ const dbLib = (() => {
 
   // takes a portfolio name, and return relevant information needed to render the page. Can also be used on a User Dashboard page
   const portfolioPageFunction = name => {
+    // let name = reqObject.portfolioName
     // grab the corresponding portfolio ID
     return selectSomeWhere('portfolios', 'name', name, ['id'])
     .then(data => {
+      console.log(data)
       if (data.length === 0) throw new Error(`500: No such portfolio '${name}' found.`)
       let id = data[0].id
+      console.log(id)
       return selectSomeJoin('portfolios', 'projects', ['config', 'name', 'public'], ['id', 'imageurl', 'githuburl', 'description'], 'portfolios.id', 'projects.portfolioid', 'portfolios.id', id)
     })
   }
@@ -96,8 +127,8 @@ const dbLib = (() => {
   // updates user information, takes a user object with two keys: userName and updates.
   // updates should be an object with key/value pairs corresponding to column names/values to be updated
   // returns confirmation message
-  const updateUser = updateObj => {
-    let { userName, updates } = updateObj
+  const updateUser = ({ userName, updates, token }) => {
+    verifyToken(userName, token)
     return updateOne('users', updates, `username = '${userName}'`)
     .then(results => {
       if (results.affectedRows === 0) throw new Error('500: No rows updated.')
@@ -105,19 +136,19 @@ const dbLib = (() => {
     })
   }
   
-  const addNewPortfolio = portfolio => {
-    let { technologies, description, usersid, config, name } = portfolio
+  const addNewPortfolio = ({ technologies, description, usersid, config, portfolioName, token, userName }) => {
+    verifyToken(userName, token)
     let configJSON = JSON.stringify(config)
-    if (name.length > 20) throw new Error('500: Portfolio name exceeds length (20 characters maximum')
-    return insertOne('portfolios', ['technologies', 'description', 'usersid', 'config', 'name'], [technologies, description, usersid, configJSON, name])
+    if (portfolioName.length > 20) throw new Error('500: Portfolio name exceeds length (20 characters maximum')
+    return insertOne('portfolios', ['technologies', 'description', 'usersid', 'config', 'name'], [technologies, description, usersid, configJSON, portfolioName])
     .then(results => {
       if (results.affectedRows === 0) throw new Error('500: Portfolio not added.')
       return results
     })
   }
 
-  const updatePortfolio = updateObj => {
-    let { portfolioName, updates } = updateObj
+  const updatePortfolio = ({ portfolioName, updates, token, userName }) => {
+    verifyToken(userName, token)
     return updateOne('portfolios', updates, `name = '${portfolioName}'`)
     .then(results => {
       if (results.affectedRows === 0) throw new Error('500: No rows updated.')
@@ -125,8 +156,8 @@ const dbLib = (() => {
     })
   }
 
-  const addNewProject = project => {
-    let { imageurl, githuburl, description, usersid, portfolioid } = project
+  const addNewProject = ({ imageurl, githuburl, description, usersid, portfolioid, userName, token }) => {
+    verifyToken(userName, token)
     return insertOne('projects', ['imageurl', 'githuburl', 'description', 'usersid', 'portfolioid'], [imageurl, githuburl, description, usersid, portfolioid])
     .then(results => {
       if (results.affectedRows === 0) throw new Error('500: Project not added.')
@@ -134,8 +165,8 @@ const dbLib = (() => {
     })
   }
 
-  const updateProject = updateObj => {
-    let { projectId, updates } = updateObj
+  const updateProject = ({ projectId, updates, userName, token }) => {
+    verifyToken(userName, token)
     return updateOne('projects', updates, `id = '${projectId}'`)
     .then(results => {
       if (results.affectedRows === 0) throw new Error('500: No rows updated.')
@@ -143,24 +174,27 @@ const dbLib = (() => {
     })
   }
 
-  const deleteUser = name => {
-    return deleteOne('users', `username = '${name}'`)
+  const deleteUser = ({ userName, token }) => {
+    verifyToken(userName, token)
+    return deleteOne('users', `username = '${userName}'`)
     .then(results => {
       if (results.affectedRows === 0) throw new Error('500: No user deleted.')
       return results
     })
   }
 
-  const deletePortfolio = name => {
-    return deleteOne('portfolios', `name = '${name}'`)
+  const deletePortfolio = ({ userName, portfolioName, token }) => {
+    verifyToken(userName, token)
+    return deleteOne('portfolios', `name = '${portfolioName}'`)
     .then(results => {
       if (results.affectedRows === 0) throw new Error('500: No portfolio deleted.')
       return results
     })
   }
 
-  const deleteProject = id => {
-    return deleteOne('projects', `id = '${id}'`)
+  const deleteProject = ({ userName, token, projectId }) => {
+    verifyToken(userName, token)
+    return deleteOne('projects', `id = '${projectId}'`)
     .then(results => {
       if (results.affectedRows === 0) throw new Error('500: No portfolio deleted.')
       return results

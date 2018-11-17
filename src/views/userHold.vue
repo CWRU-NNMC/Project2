@@ -44,9 +44,6 @@ export default {
 }
 </script>
 
+<style>
 
-<style scoped>
-	.v-content {
-	background-image: radial-gradient(gainsboro,mediumspringgreen,gainsboro)
-	}
 </style>

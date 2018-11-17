@@ -65,55 +65,66 @@
 <script>
 import head from '../components/Head'
 export default {
-	name: 'Login',
-	data() {
-		return {
-			show: false,		
-			errors:[],		
-			input: {
-				username: null,
-				password: null
-			}
-		}
-	},
-	methods: {
-		login() {
-			this.errors = []
-			if(!this.input.username) {
-				this.errors.push("Username required.")
-				this.input.username = null
-				this.$emit("authenticated", false)
-			} 
-			else if(!this.input.password) {
-				this.errors.push("Password required.")
-				this.input.password = null
-				this.$emit("authenticated", false)
-			}				
-			if(this.input.username !== null && this.input.password !== null) {
-				this.errors = []
-				if(this.input.username == this.$parent.Account.username && this.input.password == this.$parent.Account.password) {								
-					this.$emit("authenticated", true)
-					this.$router.replace({ name: "secure" })
+        name: 'Login',
+        data() {
+            return {		
+				errors:[],		
+                input: {
+                    username: null,
+                    password: null,
+                }
+            }
+        },
+        methods: {
+            login() {
+				var token = this.$store.getters.getToken
+				if(token){
+					console.log('token exists')
 				}
-				if(this.input.username != this.$parent.Account.username ) {
-					this.errors.push("That username/password is invalid")
-					this.input.username = null
-					this.input.password = null
-					this.$emit("authenticated", false)
+				this.errors = [];
+				//check for username input
+				if(!this.input.username) {
+								this.errors.push("Username required.");
+								this.input.username = null;
+							} 
+				//check for password input
+				else if(!this.input.password) {
+							 	this.errors.push("Password required.");
+								this.input.password = null;
+							}			
+				//check if the credentials are valid and respond accordingly	
+                if(this.input.username !== null && this.input.password !== null) {
+							this.errors = [];
+							var credentials = {
+								userName: this.input.username,
+								password: this.input.password
+							}
+							
+							console.log(this.$store.getters.getUser)
+							this.$store.dispatch('authUser', credentials)
+							.then(() =>{
+								console.log(this.$store.getters.getUser)
+								this.$router.push({name: 'home'})
+								})
+							.catch(err => console.log(err))
+							// if(this.input.username != this.$parent.Account.username ) {
+							// 	this.errors.push("That username/password is invalid");
+							// 	this.input.username = null;
+							// 	this.input.password = null;
+							// }
+							// else if (this.input.username = this.$parent.Account.username && this.input.password != this.$parent.Account.password ) {
+							// 	this.errors.push("Invalid password");
+							// 	this.input.username = null;
+							// 	this.input.password = null;
+							// }
+						}
+					}
+                },
+				components: {
+					'app-head': head
 				}
-				else if (this.input.username = this.$parent.Account.username && this.input.password != this.$parent.Account.password ) {
-					this.errors.push("Invalid password")
-					this.input.username = null
-					this.input.password = null
-					this.$emit("authenticated", false)
-				}
-			}
-		}		
-	},
-	components: {
-		'app-head': head
-	}
-}
+            }
+
 </script>
 
 <style scoped>
@@ -132,7 +143,7 @@ export default {
 		list-style-type: none
 	}
 	.v-content {
-		background-image: radial-gradient(gainsboro,orange,gainsboro)
+		background-image: radial-gradient(pink,orange,pink,skyblue,orange,gainsboro)
 	}	
 	#btn {
         font-family: 'Orbitron', sans-serif;

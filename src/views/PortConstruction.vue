@@ -2,6 +2,7 @@
 <v-app>
     <v-app>
         <v-content>
+		<app-head></app-head>
             <v-container>
                 <v-layout>
 					<v-flex xs12 sm6 offset-sm3>
@@ -41,6 +42,16 @@
 	</v-app>
 </v-app>
 </template>
+
+<script>
+import head from '../components/Head'
+
+export default {
+    components: {
+        'app-head': head
+    }
+}
+</script>
 
 <style scoped>
 	.v-content {

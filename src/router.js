@@ -4,7 +4,7 @@ import Home from './views/Home.vue'
 import User from './views/User.vue'
 import Portfolio from './views/Portfolio.vue'
 import Login from './views/Login.vue' 
-import SignUp from './views/Signup.vue'
+import Signup from './views/Signup.vue'
 import Creator from './views/Creator.vue'
 import InvalidPortfolio from './views/InvalidPortfolio.vue'
 import PortConstruction from './views/PortConstruction.vue'
@@ -26,24 +26,12 @@ export default new Router({
       component: Home
     },
     {
-      path: '/login',
-      name: 'login',
-      component: Login
-    },
-    {
-      path: '/sign-up',
-      name: 'signUp',
-      component: SignUp
-    },
-    {
-      path: '/user/:id',
+      path: '/user',
       name: 'user',
       component: User,
       beforeEnter: (to, from, next) => {
-        // if (user authorized to see page) {
-        store.dispatch('getPageJson', {to}).then(res => res ? next() : next('/invalid-user'))
-        // }
-        // else next('/login')
+        if (store.state.userToken) store.dispatch('getUserPage', {userName: store.state.userName, userToken: store.state.userToken}).then(() => next())
+        else next('/login')
       }
     },
     {
@@ -67,6 +55,16 @@ export default new Router({
           else next()
         })
       }
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: Login
+    },
+    {
+      path: '/signup',
+      name: 'signup',
+      component: Signup
     },
     {
       path: '/portfolio-creator',

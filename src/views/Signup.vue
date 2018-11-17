@@ -95,7 +95,7 @@ export default {
         text-align: center
     }
     .v-content {
-        background-image: radial-gradient(gainsboro,skyblue,gainsboro)
+        background-image: radial-gradient(gainsboro,skyblue,gainsboro,khaki,skyblue)
     }
     .fontify {
         font-family: 'Orbitron', sans-serif;

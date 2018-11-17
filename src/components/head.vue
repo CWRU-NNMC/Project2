@@ -7,31 +7,30 @@
                 <span class="font-weight-light text-lowercase fontify"> ...Yeah, kinda</span>
             </v-toolbar-title>
 <v-spacer></v-spacer>
-            <v-btn light @click="goTo('signUp')"><span class="fontify">Sign Up</span></v-btn>
-            <v-btn light @click="goTo('login')"><span class="fontify">Login</span></v-btn>
+            <v-btn light v-if='!user' @click="goTo('signup')"><span class="fontify">Sign Up</span></v-btn>
+            <v-btn light v-if='!user' @click="goTo('login')"><span class="fontify">Login</span></v-btn>
+            <v-btn light v-if='user' @click="logout()"><span class="fontify">Logout</span></v-btn>
         </v-toolbar>
 </v-content>
 </template>
 
 <script>
-//route button to login / sign up
 
 export default {
   data () {
     return {
-      items: [
-        {
-            title: 'Login'
-        },
-        {
-            title: 'Sign Up'
-        }
-      ]
+        user: this.$store.getters.getUser
     }
   },
   methods: {
       goTo(item) {
           this.$router.push({ name: item})
+      },
+      logout() {
+          this.$store.commit('setUserName', '')
+          this.user = this.$store.getters.getUser
+          this.$store.commit('setToken', '')
+          this.$router.push({name: 'login'})
       }    
   }
 }

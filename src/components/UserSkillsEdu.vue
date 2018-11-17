@@ -1,11 +1,11 @@
 <template>
 
-    <v-content>
+
         <v-layout>
-            <v-flex xs12 sm8 offset-sm2>
+
                 <v-container>
                     <v-layout>
-                        <v-flex xs4>						
+                        <v-flex md4 sm12>						
                             <v-tabs
                             centered
                             dark
@@ -30,7 +30,7 @@
 
 
                         </v-flex>
-                        <v-flex xs8>
+                        <v-flex md4 sm12>
                         <v-tabs
                             centered
                             dark
@@ -53,10 +53,31 @@
                                     </v-tab-item>
                                 </v-tabs>
                             </v-flex> 
+                            <v-flex md4 sm12>
+                        <v-tabs
+                            centered
+                            dark
+                            hide-slider
+                            icons-and-text>
+                                <v-tab>
+                                    <span class="fontify">About You</span>
+                                    <v-icon>fingerprint</v-icon>
+                                </v-tab>
+                                    <v-tab-item>
+                                        <v-card>
+                                            <v-container>
+                                                <p>
+                                                    Pull from The bio they entered?
+                                                </p>
+                                            </v-container>
+                                        </v-card>
+                                    </v-tab-item>
+                                </v-tabs>
+                            </v-flex> 
                         </v-layout>
                     </v-container>
-            </v-flex>
+        
         </v-layout>
-    </v-content>
+
 
 </template>
