@@ -1,6 +1,5 @@
 <template>
   <div>
-    <app-header></app-header>
     <router-link v-if="authenticated" to="/login" v-on:click.native="logout()" replace>Logout</router-link>
     <router-view @authenticated="setAuthenticated" />
     <app-footer></app-footer>
@@ -8,7 +7,6 @@
 </template>
 
 <script>
-import head from './components/Head'
 import foot from './components/Foot'
 
 export default {
@@ -36,7 +34,6 @@ export default {
             }
         },            
   components: {
-    'app-header': head,
     'app-footer': foot
   }
 }

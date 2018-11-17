@@ -1,6 +1,7 @@
 <template>
 	<v-app>
         <v-content>
+		<app-head></app-head>
             <v-container>
                 <v-layout>
 					<v-flex xs12 sm6 offset-sm3>
@@ -28,14 +29,12 @@
 														<v-text-field 
 															name= "username"
 															v-model="input.username"
-															:counter="16"
 															label="Username"
 															required>
 														</v-text-field>
 														<v-text-field
 															name= "password"
 															v-model="input.password"
-															:counter="16"
 															label="Password"
 															:type="show ? 'text' : 'password'"
 															class="input-group--focused"
@@ -64,6 +63,7 @@
 </template>
 
 <script>
+import head from '../components/Head'
 export default {
 	name: 'Login',
 	data() {
@@ -109,6 +109,9 @@ export default {
 				}
 			}
 		}		
+	},
+	components: {
+		'app-head': head
 	}
 }
 </script>
@@ -138,3 +141,5 @@ export default {
 		color: white
     }
 </style>
+
+

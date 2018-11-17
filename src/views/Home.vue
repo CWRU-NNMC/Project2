@@ -1,6 +1,7 @@
 <template>
 	<v-app>
 		<v-content>
+		<app-head></app-head>
 			<v-container>
 				<v-layout>
 					<v-carousel>
@@ -17,6 +18,8 @@
 </template>
 
 <script>
+import head from '../components/Head'
+
   export default {
     data () {
       return {
@@ -35,6 +38,9 @@
           }
         ]
       }
+    },
+    components: {
+      'app-head': head
     }
   }
 </script>
