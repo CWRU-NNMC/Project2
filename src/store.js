@@ -3,6 +3,8 @@ import Vuex from 'vuex'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import router from './router'
+const dotenv = require('dotenv')
+dotenv.config()
 
 Vue.use(Vuex);
 Vue.use(VueAxios, axios);
@@ -17,7 +19,13 @@ export default new Vuex.Store({
         currentPageJson: {},
         currentProject: {},
         nameAvailable: false,
-        error: ''
+        error: '',
+        portfolioBuildInfo: {
+            name: '',
+            bio: '',
+            template: 0,
+            projects: []
+        }
     },
     mutations: {
         setPage(state, data) {
