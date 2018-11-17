@@ -53,7 +53,8 @@ CREATE TABLE `portfolios`
  `usersid`      integer NOT NULL ,
  `config`       json NOT NULL ,
  `name`         varchar(20) NOT NULL ,
- `createdAt`   TIMESTAMP NOT NULL,
+ `createdAt`    TIMESTAMP NOT NULL,
+ `public`       BOOLEAN DEFAULT FALSE,
 
 PRIMARY KEY (`id`),
 KEY `fkIdx_15` (`usersid`),

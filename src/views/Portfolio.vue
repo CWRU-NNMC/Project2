@@ -1,7 +1,8 @@
 <template>
-    <h1>hello</h1>
+    <port1></port1>
 </template>
 <script>
+import portTemp1 from "../components/PortTemp1"
 export default {
     data() {
         return {
@@ -12,6 +13,9 @@ export default {
     beforeRouteUpdate(to, from, next) {
         $store.dispatch('getPageJson', {to}).then(() => {
     })
-}
+    },
+    components: {
+        "port1": portTemp1
+    }
 }
 </script>
