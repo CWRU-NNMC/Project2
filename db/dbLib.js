@@ -8,7 +8,7 @@ require('dotenv').config()
 const dbLib = (() => {
 
   // jwt params
-  const options = { expiresIn: '5s', issuer: 'localhost' }
+  const options = { expiresIn: '2d', issuer: 'localhost' }
   const secret = process.env.JWT_SECRET
 
   const verifyToken = (userName, token) => {    
@@ -98,11 +98,14 @@ const dbLib = (() => {
 
   // takes a portfolio name, and return relevant information needed to render the page. Can also be used on a User Dashboard page
   const portfolioPageFunction = name => {
+    // let name = reqObject.portfolioName
     // grab the corresponding portfolio ID
     return selectSomeWhere('portfolios', 'name', name, ['id'])
     .then(data => {
+      console.log(data)
       if (data.length === 0) throw new Error(`500: No such portfolio '${name}' found.`)
       let id = data[0].id
+      console.log(id)
       return selectSomeJoin('portfolios', 'projects', ['config', 'name', 'public'], ['id', 'imageurl', 'githuburl', 'description'], 'portfolios.id', 'projects.portfolioid', 'portfolios.id', id)
     })
   }
@@ -133,11 +136,11 @@ const dbLib = (() => {
     })
   }
   
-  const addNewPortfolio = ({ technologies, description, usersid, config, name, token }) => {
+  const addNewPortfolio = ({ technologies, description, usersid, config, portfolioName, token, userName }) => {
     verifyToken(userName, token)
     let configJSON = JSON.stringify(config)
-    if (name.length > 20) throw new Error('500: Portfolio name exceeds length (20 characters maximum')
-    return insertOne('portfolios', ['technologies', 'description', 'usersid', 'config', 'name'], [technologies, description, usersid, configJSON, name])
+    if (portfolioName.length > 20) throw new Error('500: Portfolio name exceeds length (20 characters maximum')
+    return insertOne('portfolios', ['technologies', 'description', 'usersid', 'config', 'name'], [technologies, description, usersid, configJSON, portfolioName])
     .then(results => {
       if (results.affectedRows === 0) throw new Error('500: Portfolio not added.')
       return results
@@ -182,7 +185,7 @@ const dbLib = (() => {
 
   const deletePortfolio = ({ userName, portfolioName, token }) => {
     verifyToken(userName, token)
-    return deleteOne('portfolios', `name = '${userName}'`)
+    return deleteOne('portfolios', `name = '${portfolioName}'`)
     .then(results => {
       if (results.affectedRows === 0) throw new Error('500: No portfolio deleted.')
       return results

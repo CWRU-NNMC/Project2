@@ -23,22 +23,22 @@ app.post('/api/user/auth/', (req, res) => {
 
 // checks whether a user name is available for use. Returns true if available.
 app.post('/api/user/query/:name', (req, res) => {
-    checkUserName(req.params.name)
+    checkUserName(req.body.userName)
         .then(reply => res.send(reply))
         .catch(err => res.status(500).send(err))
 })
 
 // checks whether a portfolio name is available for use. Returns true if available.
 app.post('/api/portfolio/query/:name', (req, res) => {
-    checkPortfolioName(req.params.name)
+    checkPortfolioName(req.body.portfolioName)
         .then(reply => res.send(reply))
         .catch(err => res.status(500).send(err))
 })
 
 // returns an object with all relevant information on a user
 app.post('/api/user/:name', (req, res) => {
-    console.log(req.params.name, req.body.token)
-    userPageFunction(req.params.name, req.body.token)
+    console.log(req.body.userName, req.body.token)
+    userPageFunction(req.body.userName, req.body.token)
         .then(json => res.status(200).send(json))
         // .catch(err => console.log(err))
         .catch(err => res.status(err.code || '500').send(err.message || 'Internal server error'))
@@ -46,7 +46,7 @@ app.post('/api/user/:name', (req, res) => {
 
 // returns an object with all the relevant information on a portfolio
 app.post('/api/portfolio/:name', (req, res) => {
-    portfolioPageFunction(req.params.name)
+    portfolioPageFunction(req.body.portfolioName)
         .then(json => res.status(200).send(json))
         .catch(err => res.status(err.code || 500).send(err.message || 'Server Error.'))
 })
