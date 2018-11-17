@@ -23,28 +23,30 @@ app.post('/api/user/auth/', (req, res) => {
 
 // checks whether a user name is available for use. Returns true if available.
 app.post('/api/user/query/:name', (req, res) => {
-    checkUserName(req.params.name)
+    checkUserName(req.body.userName)
         .then(reply => res.send(reply))
         .catch(err => res.status(500).send(err))
 })
 
 // checks whether a portfolio name is available for use. Returns true if available.
 app.post('/api/portfolio/query/:name', (req, res) => {
-    checkPortfolioName(req.params.name)
+    checkPortfolioName(req.body.portfolioName)
         .then(reply => res.send(reply))
         .catch(err => res.status(500).send(err))
 })
 
 // returns an object with all relevant information on a user
 app.post('/api/user/:name', (req, res) => {
-    userPageFunction(req.params.name)
+    console.log(req.body.userName, req.body.token)
+    userPageFunction(req.body.userName, req.body.token)
         .then(json => res.status(200).send(json))
-        .catch(err => res.status(err.code).send(err.message))
+        // .catch(err => console.log(err))
+        .catch(err => res.status(err.code || '500').send(err.message || 'Internal server error'))
 })
 
 // returns an object with all the relevant information on a portfolio
 app.post('/api/portfolio/:name', (req, res) => {
-    portfolioPageFunction(req.params.name)
+    portfolioPageFunction(req.body.portfolioName)
         .then(json => res.status(200).send(json))
         .catch(err => res.status(err.code || 500).send(err.message || 'Server Error.'))
 })
@@ -86,23 +88,15 @@ app.post('/api/manage/project/:portfolioname', (req, res) => {
 // ** "PUT" routes for updating the database
 
 // updates existing user info
-app.put('/api/manage/user/:name', (req, res) => {
-    let updateObj = {
-        userName: req.params.name,
-        updates: req.body
-    }
-    updateUser(updateObj)
+app.put('/api/manage/user/:name', (req, res) => {    
+    updateUser(req.body)
     .then(results => res.send(results))
     .catch(err => res.status(500).send(`${err}`))
 })
 
 // updates existing portfolio info
 app.put('/api/manage/portfolio/:name', (req, res) => {
-    let updateObj = {
-        portfolioName: req.params.name,
-        updates: req.body
-    }
-    updatePortfolio(updateObj)
+    updatePortfolio(req.body)
     .then(results => res.send(results))
     .catch(err => res.status(500).send(`${err}`))
 })
@@ -110,11 +104,7 @@ app.put('/api/manage/portfolio/:name', (req, res) => {
 
 // updates existing project info
 app.put('/api/manage/project/:id', (req, res) => {
-    let updateObj = {
-        projectId: req.params.id,
-        updates: req.body
-    }
-    updateProject(updateObj)
+    updateProject(req.body)
     .then(results => res.send(results))
     .catch(err => res.status(500).send(`${err}`))
 })
@@ -123,14 +113,14 @@ app.put('/api/manage/project/:id', (req, res) => {
 
 // deletes existing user, cascades
 app.delete('/api/manage/user/:name', (req, res) => {
-    deleteUser(req.params.name)
+    deleteUser(req.body)
     .then(results => res.send(results))
     .catch(err => res.status(500).send(`${err}`))
 })
 
 // deletes existing portfolio, cascades
 app.delete('/api/manage/portfolio/:name', (req, res) => {
-    deletePortfolio(req.params.name)
+    deletePortfolio(req.body)
     .then(results => res.send(results))
     .catch(err => res.status(500).send(err))
 })
@@ -138,7 +128,7 @@ app.delete('/api/manage/portfolio/:name', (req, res) => {
 // deletes existing project TODO: update Portfolio config on project delete
 // needs to be done after we actually create the format for the config
 app.delete('/api/manage/project/:id', (req, res) => {
-    deleteProject(req.params.id)
+    deleteProject(req.body)
     .then(results => res.send(results))
     .catch(err => res.status(500).send(err))
 })
