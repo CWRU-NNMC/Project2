@@ -1,5 +1,12 @@
 const path = require('path');
 const express = require('express');
+const dotenv = require('dotenv');
+dotenv.config();
+const multer  = require('multer');
+const upload = multer({
+    dest: 'uploads/'
+});
+const cloudinary = require('cloudinary');
 const  { userPageFunction, portfolioPageFunction, checkUserName, checkPortfolioName, addNewUser, addNewPortfolio, addNewProject, updateUser, updatePortfolio, updateProject, deletePortfolio, deleteProject, deleteUser, authUser } = require('./db/dbLib')
 const app = express();
 app.use(express.json());
@@ -141,6 +148,16 @@ app.delete('/api/manage/project/:id', (req, res) => {
     deleteProject(req.params.id)
     .then(results => res.send(results))
     .catch(err => res.status(500).send(err))
+})
+
+
+// Cloudinary Image processing
+
+// app.post('/api/upload', upload.single('uploadProjectImg'), (req, res) => {
+app.post('/api/upload', upload.single('file'), (req, res) => {
+    cloudinary.uploader.upload(req.file.path, (result) => {
+        res.send(result.url)
+    })
 })
 
 app.get('*', (_, res) => {

@@ -17,9 +17,9 @@ export default new Vuex.Store({
         userToken: '',
         userAuthorized: false,
         currentPageJson: {},
-        currentProject: {},
         nameAvailable: false,
         error: '',
+        currentProjectImg: '',
         portfolioBuildInfo: {
             name: '',
             bio: '',
@@ -48,12 +48,16 @@ export default new Vuex.Store({
         },
         buildPortfolio (state, key, value) {
             state.portfolioBuildInfo[key] = value
+        },
+        setCurrentProjectImg (state, url) {
+            state.currentProjectImg = url
         }
     },
     getters: {
         getPageInfo: state => state.currentPageJson,
         getPageHidden: state => state.currentPageJson.public,
-        getNameAvailable: state => state.nameAvailable
+        getNameAvailable: state => state.nameAvailable,
+        getImgUrl: state => state.currentProjectImg
     },
     actions: {
         getPortfolioJson({commit}, {to}) {
@@ -91,6 +95,16 @@ export default new Vuex.Store({
                 let queryString = `/api/manage/${pageType}/${name}`
                 return axios.post(queryString, data).then(() => true)
             }
+        },
+        uploadProjectImg ({state, commit}, data) {
+            return axios.post('/api/upload', data, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }).then(res => commit('setCurrentProjectImg', res))
+        },
+        uploadUserImg () {
+
         },
         addProject (context, {name, data}) {
             let queryString = `/api/manage/project/${name}`

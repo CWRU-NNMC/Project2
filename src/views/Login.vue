@@ -34,7 +34,7 @@
 									<p v-if="errors.length">
     									<b>Please correct the following error(s):</b>
 										<ul class = 'errors'>
-										<li v-for="error in errors">{{ error }}</li>
+										<!-- <li v-for="error in errors">{{ error }}</li> -->
 										</ul>
   									</p>
 								</v-form>
