@@ -11,7 +11,7 @@
       </div>    
       <div>
         <label for="description">Description</label>
-        <input type="text" id="description">
+        <input type="text" id="description" v-model='description'>
       </div>
       <div></div>
   </div>
