@@ -8,10 +8,11 @@ import Signup from './views/Signup.vue'
 import Creator from './views/Creator.vue'
 import InvalidPortfolio from './views/InvalidPortfolio.vue'
 import PortConstruction from './views/PortConstruction.vue'
-import CreatorBio from './components/CreatorBio.vue' 
+import CreatorBasic from './components/CreatorBasic.vue' 
 import CreatorChooseTemplate from './components/CreatorChooseTemplate.vue' 
 import CreatorProject from './components/CreatorProject.vue' 
 import CreatorSkillsEdu from './components/CreatorSkillsEdu.vue' 
+import CreatorHome from './components/CreatorHome.vue'
 import store from './store'
 
 
@@ -71,15 +72,17 @@ export default new Router({
       name: 'creator',
       component: Creator,
       children: [
-        { path: 'bio', component: CreatorBio },
+        { path: 'basic', component: CreatorBasic },
         { path: 'skills', component: CreatorSkillsEdu },
         { path: 'projects', component: CreatorProject },
-        { path: 'templates', component: CreatorChooseTemplate}
+        { path: 'templates', component: CreatorChooseTemplate},
+        { path: '', component: CreatorHome }
       ]
-    },
-    {
-      path: '*',
-      redirect: '/'
     }
+    // ,
+    // {
+    //   path: '*',
+    //   redirect: '/'
+    // }
   ]
 })

@@ -17,7 +17,13 @@ export default new Vuex.Store({
         currentPageJson: {},
         currentProject: {},
         nameAvailable: false,
-        error: ''
+        error: '',
+        portfolioBuildInfo: {
+            name: '',
+            bio: '',
+            template: 0,
+            projects: []
+         }
     },
     mutations: {
         setPage(state, data) {
@@ -37,6 +43,9 @@ export default new Vuex.Store({
         },
         setUserName (state, name) {
             state.userName = name
+        },
+        buildPortfolio (state, key, value) {
+            state.portfolioBuildInfo[key] = value
         }
     },
     getters: {
@@ -72,7 +81,7 @@ export default new Vuex.Store({
         checkNameAvailable ({commit}, {name, pageType}) {
             commit('setNameAvailable', false)
             let queryString = `/api/${pageType}/query/${name}`
-            return axios.post(queryString, name).then(res => commit('setNameAvailable', {res}))
+            return axios.post(queryString, name).then(({data}) => commit('setNameAvailable', data))
         },
         addUserOrPort (context, {name, data, pageType}){
             if (!context.state.nameAvailable) return false;
