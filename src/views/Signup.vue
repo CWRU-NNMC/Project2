@@ -19,7 +19,7 @@
                                     hide-slider
                                     icons-and-text>
                                     <v-tab>
-                                        <span class="fontify">Sign Up - Basic Info</span>
+                                        <span class="fontify">Sign Up</span>
                                         <v-icon>accessibility_new</v-icon>
                                     </v-tab>
                                         <v-tab-item>

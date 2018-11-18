@@ -1,52 +1,54 @@
 <template>
-    <v-content>
+	<v-app>
+		<v-content>
 		<app-head></app-head>
-        <v-layout>
-            <v-flex xs12 sm8 offset-sm2>
-                <v-container>
-                    <app-gen></app-gen>
-                    <app-git></app-git> 
-                </v-container>
-            </v-flex>     
-        </v-layout>
-            </v-flex>
-        </v-layout>
-    </v-content>
-
+			<v-container>
+				<v-layout>
+					<v-carousel>
+						<v-carousel-item
+							v-for="(item,i) in items"
+							:key="i"
+							:src="item.src">
+						</v-carousel-item>
+					</v-carousel>
+				</v-layout>
+			</v-container>
+		</v-content>
+	</v-app>
 </template>
 
 <script>
 import head from '../components/Head'
-import git from '../components/UserSkillsEdu'
-import gen from '../components/UserBio'
 
-export default {
-    data() {
-        return {
-            pageJson: $store.getters.getPageInfo,
-            // ^ probably descructure this so it's not a pain 
-        }
-    },
-    beforeRouteUpdate(to, from, next) {
-        $store.dispatch('getPageJson', {to}).then(() => {
-    })
+  export default {
+    data () {
+      return {
+        items: [
+          {
+            src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg'
+          },
+          {
+            src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg'
+          },
+          {
+            src: 'https://cdn.vuetifyjs.com/images/carousel/bird.jpg'
+          },
+          {
+            src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg'
+          }
+        ]
+      }
     },
     components: {
-        'app-head': head,
-        'app-git': git,
-        'app-gen': gen
-    },
-	methods: { 
-		goTo(item) {
-          this.$router.push({ name: item})
-		}
-	}
-}
+      'app-head': head
+    }
+  }
 </script>
 
-
+  <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 	.v-content {
 	background-image: radial-gradient(gainsboro,mediumspringgreen,gainsboro)
 	}
 </style>
+

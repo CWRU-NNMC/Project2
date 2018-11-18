@@ -12,7 +12,7 @@
                             hide-slider
                             icons-and-text>
                                 <v-tab>
-                                    <span class="fontify">Your Skills</span>
+                                    <span class="fontify">Skills</span>
                                     <v-icon>desktop_mac</v-icon>
                                 </v-tab>
                                     <v-tab-item>
@@ -37,7 +37,7 @@
                             hide-slider
                             icons-and-text>
                                 <v-tab>
-                                    <span class="fontify">Your Education</span>
+                                    <span class="fontify">Edu</span>
                                     <v-icon>account_balance</v-icon>
                                 </v-tab>
                                     <v-tab-item>
