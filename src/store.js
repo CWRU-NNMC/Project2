@@ -60,7 +60,6 @@ export default new Vuex.Store({
         },
         authUser({commit}, credentials){
             return axios.post('/api/user/auth/', credentials).then(res => {
-                console.log(res)
                 if (res.data.auth){
                     commit('setToken', res.data.token)
                     commit('setUserName', res.data.userName)

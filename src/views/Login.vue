@@ -20,6 +20,7 @@
 										name= "username"
 										v-model="input.username"
 										:counter="16"
+										maxlength='16'
 										label="Username"
 										required>
 									</v-text-field>
@@ -27,7 +28,9 @@
 										name= "password"
 										v-model="input.password"
 										:counter="16"
+										type= 'password'
 										label="Password"
+										maxlength='16'
 										required>
 									</v-text-field>
                                     <v-btn @click='login()'>Login</v-btn>
@@ -61,20 +64,14 @@
         },
         methods: {
             login() {
-				var token = this.$store.getters.getToken
-				if(token){
-					console.log('token exists')
-				}
 				this.errors = [];
 				//check for username input
 				if(!this.input.username) {
 								this.errors.push("Username required.");
-								this.input.username = null;
 							} 
 				//check for password input
 				else if(!this.input.password) {
 							 	this.errors.push("Password required.");
-								this.input.password = null;
 							}			
 				//check if the credentials are valid and respond accordingly	
                 if(this.input.username !== null && this.input.password !== null) {
@@ -83,26 +80,12 @@
 								userName: this.input.username,
 								password: this.input.password
 							}
-							
-							console.log(this.$store.getters.getUser)
+
 							this.$store.dispatch('authUser', credentials)
 							.then(() =>{
-								console.log(this.$store.getters.getUser)
-								this.$router.push({name: 'home'})
+								this.$router.push({name: 'user'})
 								})
 							.catch(err => console.log(err))
-
-							// if(this.input.username != this.$parent.Account.username ) {
-							// 	this.errors.push("That username/password is invalid");
-							// 	this.input.username = null;
-							// 	this.input.password = null;
-							// }
-							// else if (this.input.username = this.$parent.Account.username && this.input.password != this.$parent.Account.password ) {
-							// 	this.errors.push("Invalid password");
-							// 	this.input.username = null;
-							// 	this.input.password = null;
-							// }
-
 						}
 					}
                 }

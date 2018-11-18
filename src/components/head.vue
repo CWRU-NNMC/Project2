@@ -7,9 +7,9 @@
                 <span class="font-weight-light text-lowercase lubbalubba"> ...Yeah, kinda</span>
             </v-toolbar-title>
 <v-spacer></v-spacer>
-            <v-btn light v-if='!user' @click="goTo('signUp')">Sign Up</v-btn>
-            <v-btn light v-if='!user' @click="goTo('login')">Login</v-btn>
-            <v-btn light v-if='user' @click="logout()">Logout</v-btn>
+            <v-btn light v-if='!loggedIn' @click="goTo('signUp')">Sign Up</v-btn>
+            <v-btn light v-if='!loggedIn' @click="goTo('login')">Login</v-btn>
+            <v-btn light v-if='loggedIn' @click="logout()">Logout</v-btn>
         </v-toolbar>
 </v-content>
 </template>
@@ -34,6 +34,11 @@ export default {
           this.$router.push({name: 'login'})
 
       }    
+  },
+  computed: {
+      loggedIn () {
+          return this.$store.getters.getUser
+      }
   }
 }
 </script>
