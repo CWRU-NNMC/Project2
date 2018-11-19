@@ -44,14 +44,19 @@ export default new Vuex.Store({
         setUserName (state, name) {
             state.userName = name
         },
-        buildPortfolio (state, key, value) {
+        buildPortfolio (state, {key, value}) {
             state.portfolioBuildInfo[key] = value
+        },
+        
+        setCurrentProjectImg (state, url) {
+            state.currentProjectImg = url
         }
     },
     getters: {
         getPageInfo: state => state.currentPageJson,
         getPageHidden: state => state.currentPageJson.public,
-        getNameAvailable: state => state.nameAvailable
+        getNameAvailable: state => state.nameAvailable,
+        getImgUrl: state => state.currentProjectImg
     },
     actions: {
         getPortfolioJson({commit}, {to}) {
@@ -101,6 +106,14 @@ export default new Vuex.Store({
         deleteElement (context, {name, pageType}){
             let queryString = `/api/manage/${pageType}/${name}`
             return axios.delete(queryString, name).then(() => true)
+        },
+        
+        uploadProjectImg ({state, commit}, data) {
+            return axios.post('/api/upload', data, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }).then(res => commit('setCurrentProjectImg', res))
         }
     }
 })
