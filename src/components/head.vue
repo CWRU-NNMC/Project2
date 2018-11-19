@@ -32,6 +32,11 @@ export default {
           this.$store.commit('setToken', '')
           this.$router.push({name: 'login'})
       }    
+  },
+  computed: {
+      loggedIn () {
+          return this.$store.getters.getUser
+      }
   }
 }
 </script>

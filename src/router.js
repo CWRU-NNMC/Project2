@@ -29,10 +29,10 @@ export default new Router({
       path: '/user',
       name: 'user',
       component: User,
-      beforeEnter: (to, from, next) => {
-        if (store.state.userToken) store.dispatch('getUserPage', {userName: store.state.userName, userToken: store.state.userToken}).then(() => next())
-        else next('/login')
-      }
+      // beforeEnter: (to, from, next) => {
+      //   if (store.state.userToken) store.dispatch('getUserPage', {userName: store.state.userName, userToken: store.state.userToken}).then(() => next())
+      //   else next('/login')
+      // }
     },
     {
       path: '/invalid-portfolio',

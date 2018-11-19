@@ -39,12 +39,14 @@
                                                                 name= "newEmail"
                                                                 label="Enter your email address">
                                                             </v-text-field>
-                                                            <v-text-field
-                                                                name= "image"
-                                                                label="Add an image"
-                                                                type="file" 
-                                                                @change="onFileSelected">
-                                                            </v-text-field>
+                                                            <v-icon>attachment</v-icon>
+                                                            <input
+                                                                type="file"
+                                                                name="file"
+                                                                id="userImg"
+                                                                ref="file"
+                                                                accept="image/*"
+                                                                v-on:change="processUpload()" />
                                                             <v-btn @click="goTo('login')" id="btn">Sign Up</v-btn>
                                                         </v-form>
                                                     </v-container>
@@ -68,20 +70,18 @@ export default {
     data () {
       return {
         active: null,
-        selectedFile: null
+        file: ''
       }
     },
     methods: {
-        pickFile () {
-            this.$refs.image.click ()
+        processUpload () {
+            this.file = this.$refs.file.files[0]
         },
-        goTo(item) {
-          this.$router.push({ name: item})
-        },
-        onFileSelected(event) {
-            // need code to store img file in db not sure if this will work but its a general idea at least
-            this.selectedFile = event.target.files[0]
-            console.log(event)
+        submitImage () {
+        let formData = new FormData();
+        formData.append('file', this.file);
+        formData.append('format', 'n9x5iuqt') // auto formatting 
+        this.$store.dispatch('uploadUserImg', formData).then(() => {})
         }
     },
     components: {

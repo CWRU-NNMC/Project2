@@ -62,7 +62,8 @@
                                     <v-container>
                                         <v-layout>
                                             <v-carousel
-                                                height="250">
+                                                height="600"
+                                                max-width="800">
                                                 <v-carousel-item
                                                     v-for="(item,i) in items"
                                                     :key="i"
@@ -80,6 +81,7 @@
                                         </v-layout>
                                     </v-container>
                                 </v-tab-item>
+                                
                                 </v-tabs>
                                 </div>
                             </v-container>

@@ -3,6 +3,8 @@ import Vuex from 'vuex'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import router from './router'
+const dotenv = require('dotenv')
+dotenv.config()
 
 Vue.use(Vuex);
 Vue.use(VueAxios, axios);
@@ -15,9 +17,15 @@ export default new Vuex.Store({
         userToken: '',
         userAuthorized: false,
         currentPageJson: {},
-        currentProject: {},
         nameAvailable: false,
-        error: ''
+        error: '',
+        currentProjectImg: '',
+        portfolioBuildInfo: {
+            name: '',
+            bio: '',
+            template: 0,
+            projects: []
+        }
     },
     mutations: {
         setPage(state, data) {
@@ -37,12 +45,19 @@ export default new Vuex.Store({
         },
         setUserName (state, name) {
             state.userName = name
+        },
+        buildPortfolio (state, key, value) {
+            state.portfolioBuildInfo[key] = value
+        },
+        setCurrentProjectImg (state, url) {
+            state.currentProjectImg = url
         }
     },
     getters: {
         getPageInfo: state => state.currentPageJson,
         getPageHidden: state => state.currentPageJson.public,
         getNameAvailable: state => state.nameAvailable,
+        getImgUrl: state => state.currentProjectImg, 
         getUser: state => state.userName,
         getToken: state => state.userToken
     },
@@ -58,17 +73,15 @@ export default new Vuex.Store({
             return axios.post(queryString, userData) 
                 .then(({res}) => res ? commit('setPage', res) : router.push({name: `/login`}))
         },
-        authUser({commit}, credentials){
-            return axios.post('/api/user/auth/', credentials).then(res => {
-                console.log(res)
+        authUser({state, commit}){
+            let userCredentials = {userName: state.userName, password: state.password}
+            return axios.post('/api/user/auth/', userCredentials).then(res => {
                 if (res.data.auth){
                     commit('setToken', res.data.token)
-                    commit('setUserName', res.data.userName)
-                    
+                    commit('setUserName', data.userName)
                 }
                 else {
                 commit('setFailState', res.message)
-                console.log('invalid user')
                 }
             })
         },
@@ -84,6 +97,27 @@ export default new Vuex.Store({
                 let queryString = `/api/manage/${pageType}/${name}`
                 return axios.post(queryString, data).then(() => true)
             }
+        },
+        uploadProjectImg ({state, commit}, data) {
+            return axios.post('/api/upload', data, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }).then(res => commit('setCurrentProjectImg', res))
+        },
+        uploadUserImg ({state}, data) {
+            return axios.post('/api/upload', data, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }).then(res => {
+                let userImgData = {
+                    userName: state.userName,
+                    token: state.token,
+                    updates: {userimage: res}
+                }
+                axios.put('/api/manage/user/${state.userName}', userImgData)
+            })
         },
         addProject (context, {name, data}) {
             let queryString = `/api/manage/project/${name}`

@@ -2,17 +2,14 @@
     <v-content>
 		<app-head></app-head>
         <v-layout>
-            <v-flex xs12 sm8 offset-sm2>
+            <v-flex xs12 sm8 offset-sm2 pl-4>
                 <v-container>
                     <app-gen></app-gen>
                     <app-git></app-git> 
                 </v-container>
             </v-flex>     
         </v-layout>
-            </v-flex>
-        </v-layout>
     </v-content>
-
 </template>
 
 <script>
@@ -44,9 +41,9 @@ export default {
 }
 </script>
 
-
 <style scoped>
 	.v-content {
 	background-image: radial-gradient(gainsboro,mediumspringgreen,gainsboro)
 	}
 </style>
+
