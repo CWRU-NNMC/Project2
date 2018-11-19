@@ -78,11 +78,10 @@ export default new Router({
         { path: 'templates', component: CreatorChooseTemplate},
         { path: '', component: CreatorHome }
       ]
+    },
+    {
+      path: '*',
+      redirect: '/'
     }
-    // ,
-    // {
-    //   path: '*',
-    //   redirect: '/'
-    // }
   ]
 })

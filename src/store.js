@@ -82,7 +82,7 @@ export default new Vuex.Store({
         getUserPage({ commit }, userData){
             let queryString = `/api/user/${userData.userName}`
             return axios.post(queryString, userData) 
-                .then(({res}) => res ? commit('setPage', res) : router.push({name: `/login`}))
+                .then(res => res ? commit('setPage', res) : router.push({name: `/login`}))
         },
         authUser({commit}, credentials){
             return axios.post('/api/user/auth/', credentials).then(res => {
