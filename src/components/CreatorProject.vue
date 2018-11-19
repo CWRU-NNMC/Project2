@@ -10,7 +10,7 @@
           <label for="repo"> Link to this project's GitHub repository.
             <input type="text" v-model='repo' id='repo'>
           </label>
-          <label for="live">
+          <label for="live"> Link to this deployed project.
             <input type="text" v-model='live' id='live'>
           </label>
           <v-container>
@@ -59,7 +59,7 @@
             formData.append('file', this.file);
             formData.append('format', 'kfunjy1s') // auto formatting 
             console.log(this.file)
-            this.$store.dispatch('uploadProjectImg', formData).then(() => this.imageurl = this.$store.getters.getImgUrl)
+            this.$store.dispatch('uploadProjectImg', formData).then(() => this.imageurl = this.$store.getters.getImgUrl.data)
         },
         storeData() {        
           let projectsPayload = this.$store.state.portfolioBuildInfo.projects.concat({
@@ -68,6 +68,7 @@
             description: this.description,
             liveurl: this.live
           })
+          console.log('payload', projectsPayload)
           this.$store.commit('buildPortfolio', {key: 'projects', value: projectsPayload})    
           this.stored = true
           console.log(this.$store.state)
@@ -88,3 +89,10 @@
     }
   }
 </script>
+
+
+<style scoped>
+input {
+  border: 1px solid black;
+}
+</style>
