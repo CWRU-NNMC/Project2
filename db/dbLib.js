@@ -156,9 +156,9 @@ const dbLib = (() => {
     })
   }
 
-  const addNewProject = ({ imageurl, githuburl, description, usersid, portfolioid, userName, token }) => {
+  const addNewProject = ({ imageurl, githuburl, description, usersid, portfolioid, userName, token, liveurl }) => {
     verifyToken(userName, token)
-    return insertOne('projects', ['imageurl', 'githuburl', 'description', 'usersid', 'portfolioid'], [imageurl, githuburl, description, usersid, portfolioid])
+    return insertOne('projects', ['imageurl', 'githuburl', 'description', 'usersid', 'portfolioid', 'liveurl'], [imageurl, githuburl, description, usersid, portfolioid, liveurl])
     .then(results => {
       if (results.affectedRows === 0) throw new Error('500: Project not added.')
       return results
