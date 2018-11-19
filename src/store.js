@@ -19,14 +19,15 @@ export default new Vuex.Store({
         currentPageJson: {},
         nameAvailable: false,
         error: '',
-        currentProjectImg: '',
         portfolioBuildInfo: {
             name: '',
             bio: '',
             template: 0,
-            projects: []
-        }
-        currentProject: {},
+            projects: [],
+            technologies: [],
+            portfolioId: 0,
+            usersId: 0
+         }
     },
     mutations: {
         setPage(state, data) {
@@ -47,9 +48,10 @@ export default new Vuex.Store({
         setUserName (state, name) {
             state.userName = name
         },
-        buildPortfolio (state, key, value) {
+        buildPortfolio (state, {key, value}) {
             state.portfolioBuildInfo[key] = value
         },
+        
         setCurrentProjectImg (state, url) {
             state.currentProjectImg = url
         }
@@ -58,9 +60,7 @@ export default new Vuex.Store({
         getPageInfo: state => state.currentPageJson,
         getPageHidden: state => state.currentPageJson.public,
         getNameAvailable: state => state.nameAvailable,
-        getImgUrl: state => state.currentProjectImg, 
-        getUser: state => state.userName,
-        getToken: state => state.userToken
+        getImgUrl: state => state.currentProjectImg
     },
     actions: {
         getPortfolioJson({commit}, {to}) {
@@ -91,7 +91,7 @@ export default new Vuex.Store({
         checkNameAvailable ({commit}, {name, pageType}) {
             commit('setNameAvailable', false)
             let queryString = `/api/${pageType}/query/${name}`
-            return axios.post(queryString, name).then(res => commit('setNameAvailable', {res}))
+            return axios.post(queryString, name).then(({data}) => commit('setNameAvailable', data))
         },
         addUserOrPort (context, {name, data, pageType}){
             if (!context.state.nameAvailable) return false;
@@ -132,6 +132,29 @@ export default new Vuex.Store({
         deleteElement (context, {name, pageType}){
             let queryString = `/api/manage/${pageType}/${name}`
             return axios.delete(queryString, name).then(() => true)
-        }
+        },
+        
+        uploadProjectImg ({state, commit}, data) {
+            return axios.post('/api/upload', data, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }).then(res => commit('setCurrentProjectImg', res))
+        },
+        uploadUserImg ({state}, data) {
+            return axios.post('/api/upload', data, {
+                headers: {
+                'Content-Type': 'multipart/form-data'
+                }
+            }).then(res => {
+                let userImgData = {
+                    userName: state.userName,
+                    token: state.token,
+                    updates: {userimage: res}
+                }
+                axios.put(`/api/manage/user/${state.userName}`, userImgData)
+            })
+
+        },
     }
 })

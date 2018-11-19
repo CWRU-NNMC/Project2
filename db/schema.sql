@@ -48,7 +48,7 @@ PRIMARY KEY (`id`)
 CREATE TABLE `portfolios`
 (
  `id`           integer NOT NULL AUTO_INCREMENT,
- `technologies` integer NOT NULL ,
+ `technologies` json NOT NULL ,
  `description`  varchar(5000) NOT NULL ,
  `usersid`      integer NOT NULL ,
  `config`       json NOT NULL ,
@@ -77,6 +77,7 @@ CREATE TABLE `projects`
  `usersid`     integer NOT NULL ,
  `portfolioid` integer NOT NULL ,
  `createdAt`   TIMESTAMP NOT NULL ,
+ `liveurl`     varchar(500) NOT NULL ,
 PRIMARY KEY (`id`),
 KEY `fkIdx_25` (`usersid`),
 CONSTRAINT `FK_25` FOREIGN KEY `fkIdx_25` (`usersid`) REFERENCES `users` (`id`) ON DELETE CASCADE,

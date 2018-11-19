@@ -1,5 +1,11 @@
 const path = require('path');
 const express = require('express');
+const multer  = require('multer');
+const upload = multer({
+    dest: 'uploads/'
+});
+require('dotenv').config()
+const cloudinary = require('cloudinary')
 const  { userPageFunction, portfolioPageFunction, checkUserName, checkPortfolioName, addNewUser, addNewPortfolio, addNewProject, updateUser, updatePortfolio, updateProject, deletePortfolio, deleteProject, deleteUser, authUser } = require('./db/dbLib')
 const app = express();
 app.use(express.json());
@@ -23,14 +29,14 @@ app.post('/api/user/auth/', (req, res) => {
 
 // checks whether a user name is available for use. Returns true if available.
 app.post('/api/user/query/:name', (req, res) => {
-    checkUserName(req.body.userName)
+    checkUserName(req.params.name)
         .then(reply => res.send(reply))
         .catch(err => res.status(500).send(err))
 })
 
 // checks whether a portfolio name is available for use. Returns true if available.
 app.post('/api/portfolio/query/:name', (req, res) => {
-    checkPortfolioName(req.body.portfolioName)
+    checkPortfolioName(req.params.name)
         .then(reply => res.send(reply))
         .catch(err => res.status(500).send(err))
 })
@@ -132,6 +138,17 @@ app.delete('/api/manage/project/:id', (req, res) => {
     .then(results => res.send(results))
     .catch(err => res.status(500).send(err))
 })
+
+
+// Cloudinary Image processing
+
+// app.post('/api/upload', upload.single('uploadProjectImg'), (req, res) => {
+    app.post('/api/upload', upload.single('file'), (req, res) => {
+        cloudinary.uploader.upload(req.file.path, (result) => {
+            res.send(result.url)
+        })
+    })
+    
 
 app.get('*', (_, res) => {
     res.sendFile(path.join(__dirname, 'dist', 'index.html'))
