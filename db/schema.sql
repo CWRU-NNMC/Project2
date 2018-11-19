@@ -77,6 +77,7 @@ CREATE TABLE `projects`
  `usersid`     integer NOT NULL ,
  `portfolioid` integer NOT NULL ,
  `createdAt`   TIMESTAMP NOT NULL ,
+ `liveurl`     varchar(500) NOT NULL ,
 PRIMARY KEY (`id`),
 KEY `fkIdx_25` (`usersid`),
 CONSTRAINT `FK_25` FOREIGN KEY `fkIdx_25` (`usersid`) REFERENCES `users` (`id`) ON DELETE CASCADE,
