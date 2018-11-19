@@ -3,6 +3,7 @@
 </template>
 <script>
 import portTemp1 from "../components/PortTemp1"
+import portTemp2 from '../components/PortTemp2'
 export default {
     data() {
         return {
@@ -15,7 +16,8 @@ export default {
     })
     },
     components: {
-        "port1": portTemp1
+        "port1": portTemp1,
+        'port2': portTemp2
     }
 }
 </script>
