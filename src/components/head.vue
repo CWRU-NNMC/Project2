@@ -7,9 +7,9 @@
                 <span class="font-weight-light text-lowercase fontify"> ...Yeah, kinda</span>
             </v-toolbar-title>
 <v-spacer></v-spacer>
-            <v-btn light v-if='!user' @click="goTo('signup')"><span class="fontify">Sign Up</span></v-btn>
-            <v-btn light v-if='!user' @click="goTo('login')"><span class="fontify">Login</span></v-btn>
-            <v-btn light v-if='user' @click="logout()"><span class="fontify">Logout</span></v-btn>
+            <v-btn light v-if='!loggedIn' @click="goTo('signUp')"><span class="fontify">Sign Up</span></v-btn>
+            <v-btn light v-if='!loggedIn' @click="goTo('login')"><span class="fontify">Login</span></v-btn>
+            <v-btn light v-if='loggedIn' @click="logout()"><span class="fontify">Logout</span></v-btn>
         </v-toolbar>
 </v-content>
 </template>

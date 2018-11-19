@@ -26,6 +26,7 @@ export default new Vuex.Store({
             template: 0,
             projects: []
         }
+        currentProject: {},
     },
     mutations: {
         setPage(state, data) {
@@ -73,15 +74,16 @@ export default new Vuex.Store({
             return axios.post(queryString, userData) 
                 .then(({res}) => res ? commit('setPage', res) : router.push({name: `/login`}))
         },
-        authUser({state, commit}){
-            let userCredentials = {userName: state.userName, password: state.password}
-            return axios.post('/api/user/auth/', userCredentials).then(res => {
+        authUser({commit}, credentials){
+            return axios.post('/api/user/auth/', credentials).then(res => {
                 if (res.data.auth){
                     commit('setToken', res.data.token)
-                    commit('setUserName', data.userName)
+                    commit('setUserName', res.data.userName)
+                    
                 }
                 else {
                 commit('setFailState', res.message)
+                console.log('invalid user')
                 }
             })
         },
