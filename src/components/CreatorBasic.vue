@@ -7,9 +7,9 @@
 				<v-flex md6 sm12 offset-sm3>
 					<v-card>
 						<v-img
-                            src='https://cdn.vuetifyjs.com/images/carousel/planet.jpg'
-                            aspect-ratio="2.75">
-                        </v-img>
+              src='https://cdn.vuetifyjs.com/images/carousel/planet.jpg'
+              aspect-ratio="2.75">
+            </v-img>
 						<v-container>							
 								<v-tabs
 									centered
@@ -51,7 +51,7 @@
            							<v-btn v-if='!nextPage' @click='storeData' :disabled='processing'><span class="fontify">Submit</span></v-btn> 
 										<div v-if='nextPage'>        
 											<h3>Stored!</h3>
-											<router-link v-if='nextPage' to='skills'>Next: Skills And Technologies</router-link>
+											<router-link v-if='nextPage' to='skills'><span class="fontify"><v-btn>Next: Skills And Technologies</v-btn></span></router-link>
        									</div>
 						</v-container>
 					</v-card>

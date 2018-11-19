@@ -7,7 +7,7 @@
 		<v-layout>
 			<v-flex md6 sm12 offset-sm3>
 				<v-card>
-											<v-img
+						<v-img
                             src='https://cdn.vuetifyjs.com/images/carousel/planet.jpg'
                             aspect-ratio="2.75">
                         </v-img>
@@ -26,7 +26,7 @@
 										<v-card>
 											<v-container>
 												<p><span class="fontify">Here you can create your portfolio.</span></p>
-    											<router-link to='basic'><span class="fontify">Begin!</span></router-link>
+    											<router-link to='basic'><span class="fontify"><v-btn>Begin!</v-btn></span></router-link>
 											</v-container>
 										</v-card>
 									</v-tab-item>
