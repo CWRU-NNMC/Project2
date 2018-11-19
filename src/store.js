@@ -9,25 +9,28 @@ dotenv.config()
 Vue.use(Vuex);
 Vue.use(VueAxios, axios);
 
+
+
 export default new Vuex.Store({
     state: {
         userLoggedIn: false,
         userName: '',
+        usersid: 0, 
         password: '',
         userToken: '',
         userAuthorized: false,
         currentPageJson: {},
         currentProjectImg: '',
-        nameAvailable: false,
+        nameAvailable: false, 
         error: '',
-        portfolioBuildInfo: {
-            name: '',
-            bio: '',
+        portfolioBuildInfo: { 
+            portfolioName: '',
+            description: '',
             template: 0,
             projects: [],
             technologies: [],
-            portfolioId: 0,
-            usersId: 0
+            portfolioid: 0,
+            config: {"a": "b"}
          }
     },
     mutations: {
@@ -55,6 +58,9 @@ export default new Vuex.Store({
         
         setCurrentProjectImg (state, url) {
             state.currentProjectImg = url
+        },
+        setPortfolioId (state, id) {
+            state.portfolioBuildInfo.portfolioid = id
         }
     },
     getters: {
@@ -97,8 +103,12 @@ export default new Vuex.Store({
         addUserOrPort (context, {name, data, pageType}){
             if (!context.state.nameAvailable) return false;
             else{
-                let queryString = `/api/manage/${pageType}/${name}`
-                return axios.post(queryString, data).then(() => true)
+                let queryString = `/api/manage/${pageType}/asdf`
+                return axios.post(queryString, data).then(res => {
+                    // console.log(res)
+                    context.commit('setPortfolioId', res.data.insertId)
+                    return true
+                })
             }
         },
         uploadProjectImg ({state, commit}, data) {
