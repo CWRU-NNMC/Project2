@@ -45,10 +45,12 @@ export default {
     //   .then(() => store.getters.getNameAvailable)
     // },
     storeData() {      
-      this.nameChecked = true
       this.process = true
       this.$store.dispatch('checkNameAvailable', {name: this.portfolioName, pageType: 'portfolio'})
-        .then(() => this.$store.getters.getNameAvailable)
+        .then(() => {
+          this.nameChecked = true
+          return this.$store.getters.getNameAvailable
+          })
       // .then(x => console.log(x))
         .then((avail) => {
           console.log(avail)

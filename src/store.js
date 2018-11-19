@@ -22,7 +22,10 @@ export default new Vuex.Store({
             name: '',
             bio: '',
             template: 0,
-            projects: []
+            projects: [],
+            technologies: [],
+            portfolioId: 0,
+            usersId: 0
          }
     },
     mutations: {

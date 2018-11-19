@@ -1,39 +1,20 @@
 <template>
   <div>
-    <h2>Which Technologies Would You Like To Highlight?</h2>
-    <form>
-      <div>
-        <label for="React">
-          <input type="checkbox" id="React" value="React" v-model='techs'> React
+    <form v-if='!nextPage'> 
+      <h2>Which Technologies Would You Like To Highlight?</h2>
+      <div v-for='tech in techList'>
+        <label :for="tech">
+          <input type="checkbox" :id="tech" :value="tech" v-model='techs'> {{ tech }}
         </label>
       </div>
       <div>
-        <label for="Angular">
-          <input type="checkbox" id="Angular" value="Angular" v-model='techs'> Angular
-        </label>
-      </div>
-      <div>
-        <label for="Vue">
-          <input type="checkbox" id="Vue" value="Vue" v-model='techs'> Vue
-        </label>
-      </div>
-      <div>
-        <label for="MySQL">
-          <input type="checkbox" id="MySQL" value="MySQL" v-model='techs'> MySQL
-        </label>
-      </div>
-      <div>
-        <label for="MongoDB">
-          <input type="checkbox" id="MongoDB" value="MongoDB" v-model='techs'> MongoDB
-        </label>
+        <v-btn  @click='storeData'>Submit</v-btn>
       </div>
     </form>
-
-    <ul>
-      <li v-for='item in techs'>{{ item }}</li>
-    </ul>
-    <router-link to='basic'>Back: Basic Info</router-link>
-    <router-link to='projects'>Next: Add A Project</router-link>
+    <div v-if='nextPage'>
+      <h2>Stored!</h2>
+      <router-link to='projects'>Next: Add A Project</router-link>    
+    </div>
 
   </div>
 </template>
@@ -43,13 +24,22 @@
 export default {
   data () {
     return {
-      techs: []
+      techs: [],
+      techList: ['Node', 'PHP', 'SASS', 'Bootstrap', 'React', 'Angular', 'Vue', 'MySQL', 'MongoDB'],
+      stored: false
+    }
+  },
+  methods: {
+    storeData() {        
+            this.$store.commit('buildPortfolio', {key: 'technologies', value: this.techs})    
+            this.stored = true
+            this.process = false
+            // console.log(this.$store.state)
     }
   },
   computed: {
-    techsObject() {
-      let techList = ['React', 'Angular', 'Vue', 'MySQL', 'MongoDB']
-      techList.map(tech => {})
+    nextPage() {
+      return this.stored
     }
   }
 }
