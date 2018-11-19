@@ -83,7 +83,11 @@ export default {
               userName,
               token: userToken
             }})
-          })).then(x => console.log(x))
+          })).then(x => {
+            if (x.every(item => item)) {
+              this.$router.push({name: 'user'})
+            }
+          })
         })
     }
   }
