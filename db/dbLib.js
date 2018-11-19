@@ -111,16 +111,29 @@ const dbLib = (() => {
       if (data.length === 0) throw new Error(`500: No such portfolio '${name}' found.`)
       const id = data[0].id
       return selectSomeJoin('portfolios', 'projects', ['config', 'name', 'public'], ['id', 'imageurl', 'githuburl', 'description', 'liveurl'], 'portfolios.id', 'projects.portfolioid', 'portfolios.id', id)
-    }).then(results => {
-      return selectSomeWhere('portfolios', 'name', name, ['description'])
+    })
+    .then(results => {
+      return selectSomeWhere('portfolios', 'name', name, ['description', 'usersid'])
         .then(desc => {
           return results.map(item => {
             const portfolioDescription = desc[0].description
+            const usersid = desc[0].usersid
             return {
               ...item,
-              portfolioDescription
+              portfolioDescription,
+              usersid
             }
           })
+        })
+    })
+    .then(results => {
+      const id = results[0].usersid
+      return selectSomeWhere('users', 'id', id, ['username', 'email', 'userimage', 'location'])
+        .then(userInfo => {
+          return {
+            userInfo,
+            portfolioInfo: results
+          }
         })
     })
   }
