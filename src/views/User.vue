@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import head from '../components/Head'
+import head from '../components/head'
 import git from '../components/UserSkillsEdu'
 import gen from '../components/UserBio'
 

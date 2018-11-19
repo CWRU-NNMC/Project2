@@ -47,7 +47,7 @@
                                                                 ref="file"
                                                                 accept="image/*"
                                                                 v-on:change="processUpload()" />
-                                                            <v-btn @click="goTo('login')" id="btn">Sign Up</v-btn>
+                                                                <router-link to="login"><v-btn><span class='fontify'>Sign Up</span></v-btn></router-link>                                                         
                                                         </v-form>
                                                     </v-container>
                                                 </v-card-text>
@@ -65,7 +65,7 @@
 </template>
 
 <script>
-import head from '../components/Head'
+import head from '../components/head'
 export default {
     data () {
       return {
@@ -100,11 +100,5 @@ export default {
     .fontify {
         font-family: 'Orbitron', sans-serif;
         text-align: center
-    }
-    #btn {
-        font-family: 'Orbitron', sans-serif;
-        text-align: center;
-		background-image: radial-gradient(gainsboro,skyblue,gainsboro);
-		color: white
     }
 </style>
