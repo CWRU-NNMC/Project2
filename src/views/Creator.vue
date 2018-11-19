@@ -14,22 +14,13 @@
 
 
 <script>
-// import creatorBio from '../components/CreatorBio'
-// import creatorSkillsEdu from '../components/CreatorSkillsEdu'
-// import creatorProject from '../components/CreatorProject'
-// import creatorChooseTemplate from '../components/CreatorChooseTemplate'
-
 export default {
-  // components: {
-  //   creatorBio,
-  //   creatorSkillsEdu,
-  //   creatorProject,
-  //   creatorChooseTemplate
-  // },
-  methods: {
-    goTo(item) {
-      this.$router.push({name: item})
-    }
-  }
 }
 </script>
+
+
+<style scoped>
+  div {
+    text-align: center;
+  }
+</style>
