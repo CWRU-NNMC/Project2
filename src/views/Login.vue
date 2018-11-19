@@ -20,6 +20,7 @@
 										name= "username"
 										v-model="input.username"
 										:counter="16"
+										maxlength='16'
 										label="Username"
 										required>
 									</v-text-field>
@@ -27,7 +28,9 @@
 										name= "password"
 										v-model="input.password"
 										:counter="16"
+										type= 'password'
 										label="Password"
+										maxlength='16'
 										required>
 									</v-text-field>
                                     <v-btn @click='login()'>Login</v-btn>
@@ -62,35 +65,27 @@
         methods: {
             login() {
 				this.errors = [];
+				//check for username input
 				if(!this.input.username) {
 								this.errors.push("Username required.");
-								this.input.username = null;
-								this.$emit("authenticated", false);
 							} 
+				//check for password input
 				else if(!this.input.password) {
 							 	this.errors.push("Password required.");
-								this.input.password = null;
-								this.$emit("authenticated", false);
-							}				
+							}			
+				//check if the credentials are valid and respond accordingly	
                 if(this.input.username !== null && this.input.password !== null) {
 							this.errors = [];
-							if(this.input.username == this.$parent.Account.username && this.input.password == this.$parent.Account.password) {								
-								this.$emit("authenticated", true);
-								this.$router.replace({ name: "secure" });
-							}
-							if(this.input.username != this.$parent.Account.username ) {
-								this.errors.push("That username/password is invalid");
-								this.input.username = null;
-								this.input.password = null;
-								this.$emit("authenticated", false);
-							}
-							else if (this.input.username = this.$parent.Account.username && this.input.password != this.$parent.Account.password ) {
-								this.errors.push("Invalid password");
-								this.input.username = null;
-								this.input.password = null;
-								this.$emit("authenticated", false);
+							var credentials = {
+								userName: this.input.username,
+								password: this.input.password
 							}
 
+							this.$store.dispatch('authUser', credentials)
+							.then(() =>{
+								this.$router.push({name: 'user'})
+								})
+							.catch(err => console.log(err))
 						}
 					}
                 }

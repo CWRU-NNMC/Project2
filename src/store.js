@@ -42,7 +42,9 @@ export default new Vuex.Store({
     getters: {
         getPageInfo: state => state.currentPageJson,
         getPageHidden: state => state.currentPageJson.public,
-        getNameAvailable: state => state.nameAvailable
+        getNameAvailable: state => state.nameAvailable,
+        getUser: state => state.userName,
+        getToken: state => state.userToken
     },
     actions: {
         getPortfolioJson({commit}, {to}) {
@@ -56,15 +58,16 @@ export default new Vuex.Store({
             return axios.post(queryString, userData) 
                 .then(({res}) => res ? commit('setPage', res) : router.push({name: `/login`}))
         },
-        authUser({state, commit}){
-            let userCredentials = {userName: state.userName, password: state.password}
-            return axios.post('/api/user/auth/', userCredentials).then(res => {
-                if (res.auth){
-                    commit('setToken', res.token)
-                    commit('setUserName', res.userName)
+        authUser({commit}, credentials){
+            return axios.post('/api/user/auth/', credentials).then(res => {
+                if (res.data.auth){
+                    commit('setToken', res.data.token)
+                    commit('setUserName', res.data.userName)
+                    
                 }
                 else {
                 commit('setFailState', res.message)
+                console.log('invalid user')
                 }
             })
         },

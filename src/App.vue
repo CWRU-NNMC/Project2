@@ -1,8 +1,7 @@
 <template>
   <div>
     <app-header></app-header>
-    <router-link v-if="authenticated" to="/login" v-on:click.native="logout()" replace>Logout</router-link>
-    <router-view @authenticated="setAuthenticated" />
+    <router-view></router-view>
     <app-footer></app-footer>
   </div>
 </template>
@@ -22,35 +21,13 @@ import portTemp2 from './views/portTemp2'
 export default {
   name: 'App',
   data() {
-            return {
-                authenticated: false,
-                Account: {
-                    username: "TwoCats",
-                    password: "password"
-                }
-            }
-        },
-  mounted() {
-            if(!this.authenticated) {
-                this.$router.replace({ name: "home" });
-            }
-        },
-  methods: {
-            setAuthenticated(status) {
-                this.authenticated = status;
-            },
-            logout() {
-                this.authenticated = false;
-            }
-        },            
+          return {
+              
+          }      
+        },         
   components: {
     'app-header': head,
     'app-footer': foot,
-    'app-home': home,
-    'app-user': user,
-    'app-login': login,
-    'app-port1': portTemp1,
-    'app-port2': portTemp2
   }
 }
 </script>
