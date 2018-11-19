@@ -36,7 +36,7 @@ const dbLib = (() => {
 
   const authUser = loginObject => {
     let { userName, password } = loginObject
-    return selectSomeWhere('users', 'username', userName, ['username', 'pw'])
+    return selectSomeWhere('users', 'username', userName, ['username', 'pw', 'id'])
     .then(data => {
       if (data.length === 0) return {
         code: 404,
@@ -53,7 +53,8 @@ const dbLib = (() => {
           code: 200,
           auth: true,
           token,
-          userName
+          userName,
+          usersid: data[0].id
         }      
     })
   }
@@ -105,15 +106,22 @@ const dbLib = (() => {
 
   // takes a portfolio name, and return relevant information needed to render the page. Can also be used on a User Dashboard page
   const portfolioPageFunction = name => {
-    // let name = reqObject.portfolioName
-    // grab the corresponding portfolio ID
     return selectSomeWhere('portfolios', 'name', name, ['id'])
     .then(data => {
-      console.log(data)
       if (data.length === 0) throw new Error(`500: No such portfolio '${name}' found.`)
-      let id = data[0].id
-      console.log(id)
-      return selectSomeJoin('portfolios', 'projects', ['config', 'name', 'public'], ['id', 'imageurl', 'githuburl', 'description'], 'portfolios.id', 'projects.portfolioid', 'portfolios.id', id)
+      const id = data[0].id
+      return selectSomeJoin('portfolios', 'projects', ['config', 'name', 'public'], ['id', 'imageurl', 'githuburl', 'description', 'liveurl'], 'portfolios.id', 'projects.portfolioid', 'portfolios.id', id)
+    }).then(results => {
+      return selectSomeWhere('portfolios', 'name', name, ['description'])
+        .then(desc => {
+          return results.map(item => {
+            const portfolioDescription = desc[0].description
+            return {
+              ...item,
+              portfolioDescription
+            }
+          })
+        })
     })
   }
 
