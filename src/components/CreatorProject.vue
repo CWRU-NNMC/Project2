@@ -3,16 +3,20 @@
     <v-app>
       <v-content>
         <h2>Add A Project</h2>
+        <label for="description">
+          <input type="text" v-model='description'>
+        </label>
         <v-container>
           <input type="file" name='file' id="projectImg" ref="file" accept="image/*" v-on:change="processUpload()" />
-          <v-btn @click='submitProject()'>Submit</v-btn>
+          <v-btn @click='submitImage()'>Add Image</v-btn>
         </v-container>
       </v-content>
+
+      <router-link to='templates'>Choose A Template</router-link>
     </v-app>
    
 
-    <router-link to='skills'>Back: Skills And Technologies</router-link>
-    <router-link to='templates'>Choose A Template</router-link>
+
   </div>
 </template>
 
@@ -24,7 +28,7 @@
               file: '',
               description: '',
               repo: '',
-              live: ''
+              live: ''              
           }
       },
       methods: {
@@ -32,7 +36,7 @@
               this.file = this.$refs.file.files[0]
               console.log('here')
           },
-          submitProject() {
+          submitImage() {
               let formData = new FormData();
               formData.append('file', this.file);
               formData.append('format', 'kfunjy1s') // auto formatting 
