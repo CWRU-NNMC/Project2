@@ -21,14 +21,14 @@ import gen from '../components/UserBio'
 export default {
     data() {
         return {
-            pageJson: $store.getters.getPageInfo,
+            pageJson: this.$store.getters.getPageInfo,
             // ^ probably descructure this so it's not a pain 
         }
     },
-    beforeRouteUpdate(to, from, next) {
-        $store.dispatch('getPageJson', {to}).then(() => {
-    })
-    },
+    // beforeRouteUpdate(to, from, next) {
+    //     $store.dispatch('getPageJson', {to}).then(() => {
+    // })
+    // },
     components: {
         'app-head': head,
         'app-git': git,

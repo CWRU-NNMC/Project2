@@ -50,9 +50,10 @@ export default new Router({
       name: 'portfolio',
       component: Portfolio,
       beforeEnter: (to, from, next) => {
-        store.dispatch('getPageJson', {to}).then(res => {
-          if(!res) next('/invalid-portfolio')
-          else if (store.getters.getPageHidden) next('/construction')
+        store.dispatch('getPortfolioJson', {to}).then(res => {
+          console.log(store.getters.getPageInfo)
+          if(!store.getters.getPageInfo.data) next('/invalid-portfolio')
+          if (store.getters.getPageHidden) next('/construction')
           else next()
         })
       }
@@ -78,11 +79,10 @@ export default new Router({
         { path: 'templates', component: CreatorChooseTemplate},
         { path: '', component: CreatorHome }
       ]
+    },
+    {
+      path: '*',
+      redirect: '/'
     }
-    // ,
-    // {
-    //   path: '*',
-    //   redirect: '/'
-    // }
   ]
 })

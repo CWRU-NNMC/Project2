@@ -98,18 +98,37 @@ const dbLib = (() => {
 
   // takes a portfolio name, and return relevant information needed to render the page. Can also be used on a User Dashboard page
   const portfolioPageFunction = name => {
-    // let name = reqObject.portfolioName
-    // grab the corresponding portfolio ID
     return selectSomeWhere('portfolios', 'name', name, ['id'])
     .then(data => {
-      console.log(data)
       if (data.length === 0) throw new Error(`500: No such portfolio '${name}' found.`)
-      let id = data[0].id
-      console.log(id)
-      return selectSomeJoin('portfolios', 'projects', ['config', 'name', 'public'], ['id', 'imageurl', 'githuburl', 'description'], 'portfolios.id', 'projects.portfolioid', 'portfolios.id', id)
+      const id = data[0].id
+      return selectSomeJoin('portfolios', 'projects', ['config', 'name', 'public'], ['id', 'imageurl', 'githuburl', 'description', 'liveurl'], 'portfolios.id', 'projects.portfolioid', 'portfolios.id', id)
+    })
+    .then(results => {
+      return selectSomeWhere('portfolios', 'name', name, ['description', 'usersid'])
+        .then(desc => {
+          return results.map(item => {
+            const portfolioDescription = desc[0].description
+            const usersid = desc[0].usersid
+            return {
+              ...item,
+              portfolioDescription,
+              usersid
+            }
+          })
+        })
+    })
+    .then(results => {
+      const id = results[0].usersid
+      return selectSomeWhere('users', 'id', id, ['username', 'email', 'userimage', 'location'])
+        .then(userInfo => {
+          return {
+            userInfo,
+            portfolioInfo: results
+          }
+        })
     })
   }
-
   // adds a new user to the database, takes a user object with the following keys: 
   // userName, email, pw, preferences (JSON), location (optional), userImage (optional)
   // returns confirmation message

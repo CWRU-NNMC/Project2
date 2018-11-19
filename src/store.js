@@ -58,14 +58,14 @@ export default new Vuex.Store({
     },
     getters: {
         getPageInfo: state => state.currentPageJson,
-        getPageHidden: state => state.currentPageJson.public,
+        getPageHidden: state => state.currentPageJson.portfolioInfo[0].public,
         getNameAvailable: state => state.nameAvailable,
         getImgUrl: state => state.currentProjectImg
     },
     actions: {
         getPortfolioJson({commit}, {to}) {
                 let queryString = `/api${to.fullPath}`
-                return axios.post(queryString, to.id)
+                return axios.post(queryString, to.params)
                 .then(({data}) => commit('setPage', {data}))
                 .catch(error => commit('setFailState', error))
         },
@@ -132,29 +132,6 @@ export default new Vuex.Store({
         deleteElement (context, {name, pageType}){
             let queryString = `/api/manage/${pageType}/${name}`
             return axios.delete(queryString, name).then(() => true)
-        },
-        
-        uploadProjectImg ({state, commit}, data) {
-            return axios.post('/api/upload', data, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            }).then(res => commit('setCurrentProjectImg', res))
-        },
-        uploadUserImg ({state}, data) {
-            return axios.post('/api/upload', data, {
-                headers: {
-                'Content-Type': 'multipart/form-data'
-                }
-            }).then(res => {
-                let userImgData = {
-                    userName: state.userName,
-                    token: state.token,
-                    updates: {userimage: res}
-                }
-                axios.put(`/api/manage/user/${state.userName}`, userImgData)
-            })
-
         },
     }
 })
