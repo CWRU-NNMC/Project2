@@ -96,14 +96,26 @@ export default new Vuex.Store({
                 return axios.post(queryString, data).then(() => true)
             }
         },
-        uploadProjectImg ({state, commit}, data) {
+        uploadProjectImg ({commit}, data) {
             return axios.post('/api/upload', data, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             }).then(res => commit('setCurrentProjectImg', res))
         },
-        uploadUserImg () {
+        uploadUserImg ({state}, data) {
+            return axios.post('/api/upload', data, {
+                headers: {
+                'Content-Type': 'multipart/form-data'
+                }
+            }).then(res => {
+                let userImgData = {
+                    userName: state.userName,
+                    token: state.token,
+                    updates: {userimage: res}
+                }
+                axios.put(`/api/manage/user/${state.userName}`, userImgData)
+            })
 
         },
         addProject (context, {name, data}) {

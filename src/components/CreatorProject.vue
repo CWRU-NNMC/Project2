@@ -26,13 +26,11 @@
         methods: {
             processUpload () {
                 this.file = this.$refs.file.files[0]
-                console.log('here')
             },
             submitProject() {
                 let formData = new FormData();
                 formData.append('file', this.file);
                 formData.append('format', 'kfunjy1s') // auto formatting 
-                console.log(this.file)
                 this.$store.dispatch('uploadProjectImg', formData).then(() => console.log (this.$store.getters.getImgUrl))
             }
         }
