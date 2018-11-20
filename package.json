@@ -11,6 +11,7 @@
     "dev": "npm-run-all --parallel watch dev:server"
   },
   "dependencies": {
+    "aws-sdk": "^2.359.0",
     "axios": "^0.18.0",
     "bcrypt": "^3.0.2",
     "cloudinary": "^1.13.2",
