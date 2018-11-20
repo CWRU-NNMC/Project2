@@ -84,14 +84,14 @@
                                                 height="600"
                                                 max-width="800">
                                                 <v-carousel-item
-                                                    v-for="(item,i) in items"
+                                                    v-for="(project, i) in projects"
                                                     :key="i"
-                                                    :src="item.src">
+                                                    :src="project.imageurl">
                                                 <v-container>
                                                     <v-layout align-center>
                                                         <v-flex>
-                                                        <h3 class="display-3 fontify">{{ item.title }}</h3>
-                                                        <span class="subheading fontify">{{ item.description }}</span>
+                                                        <h3 class="display-3 fontify">{{ project.title }}</h3>
+                                                        <span class="subheading fontify">{{ project.description }}</span>
                                                         </v-flex>
                                                     </v-layout>
                                                 </v-container>
@@ -99,7 +99,6 @@
                                             </v-carousel>
                                         </v-layout>
                                     </v-container>
-                             
                             </v-card>
                         </v-flex>
                 </v-layout>
@@ -113,29 +112,25 @@
     export default {
     data () {
       return {
-        items: [
-          {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg',
-            title: 'one',
-            description: 'one'
-          },
-          {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg',
-            title: 'two',
-            description: 'two'
-          },
-          {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/bird.jpg',
-            title: 'three',
-            description: 'three'
-          },
-          {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg',
-            title: 'four',
-            description: 'four'
-          }
-        ]
+        name: '',
+        bio: '',
+        location: '',
+        userImage: '',
+        projects: [],
       }
+    },
+    beforeRouteEnter (to, from, next) {
+        let dataJson = this.$store.getters.getPageInfo
+        this.fillData(dataJson)
+    },
+    methods: {
+        fillData(({userInfo, portfolioInfo})) {
+            this.name = `${userInfo.firstname} ${userInfo.lastname}`
+            this.bio = portfolioInfo[0].portfolioDescription
+            this.location = userInfo.location
+            this.userImage = userImage
+              
+        }
     }
 }
 </script>
