@@ -46,13 +46,14 @@
 												</v-form>
 												</v-container>
 											</v-card>
-									</v-tab-item>
-								</v-tabs>
-           							<v-btn v-if='!nextPage' @click='storeData' :disabled='processing'><span class="fontify">Submit</span></v-btn> 
-										<div v-if='nextPage'>        
-											<h3>Stored!</h3>
+									</v-tab-item>        
+                  </v-tabs>
+                  <div v-if='nextPage'>        
+											<span class="fontify"><h3>Stored!</h3></span>
 											<router-link v-if='nextPage' to='skills'><span class="fontify"><v-btn>Next: Skills And Technologies</v-btn></span></router-link>
        									</div>
+								    
+           							<v-btn v-if='!nextPage' @click='storeData' :disabled='processing'><span class="fontify">Submit</span></v-btn> 
 						</v-container>
 					</v-card>
 				</v-flex>
