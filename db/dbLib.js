@@ -167,7 +167,7 @@ const dbLib = (() => {
     })
   }
   
-  const addNewPortfolio = ({ technologies, description, usersid, config, portfolioName, token, userName }) => {
+  const addNewPortfolio = ({ technologies, description, usersid, config, portfolioName, token, userName, template }) => {
     verifyToken(userName, token)
     let configJSON = JSON.stringify(config)
     let techJSON = JSON.stringify(technologies)
@@ -176,7 +176,7 @@ const dbLib = (() => {
       // console.log('too long')
       throw new Error('500: Portfolio name exceeds length (20 characters maximum')
     }
-    return insertOne('portfolios', ['technologies', 'description', 'usersid', 'config', 'name'], [techJSON, description, usersid, configJSON, portfolioName])
+    return insertOne('portfolios', ['technologies', 'description', 'usersid', 'config', 'name', 'template'], [techJSON, description, usersid, configJSON, portfolioName, template])
     .then(results => {
       // console.log('results returned')
       if (results.affectedRows === 0) throw new Error('500: Portfolio not added.')
@@ -193,9 +193,9 @@ const dbLib = (() => {
     })
   }
 
-  const addNewProject = ({ imageurl, githuburl, description, usersid, portfolioid, userName, token, liveurl }) => {
+  const addNewProject = ({ imageurl, githuburl, description, usersid, portfolioid, userName, token, liveurl, projectname }) => {
     verifyToken(userName, token)
-    return insertOne('projects', ['imageurl', 'githuburl', 'description', 'usersid', 'portfolioid', 'liveurl'], [imageurl, githuburl, description, usersid, portfolioid, liveurl])
+    return insertOne('projects', ['imageurl', 'githuburl', 'description', 'usersid', 'portfolioid', 'liveurl', 'projectname'], [imageurl, githuburl, description, usersid, portfolioid, liveurl, projectname])
     .then(results => {
       if (results.affectedRows === 0) throw new Error('500: Project not added.')
       return results

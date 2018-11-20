@@ -79,14 +79,15 @@ export default {
           console.log(this.$store.state)
         },
     finishPortfolio() {
-      let { portfolioName, technologies, description, config } = this.$store.state.portfolioBuildInfo
+      let { portfolioName, technologies, description, config, template } = this.$store.state.portfolioBuildInfo
       let { userName, userToken, usersid } = this.$store.state
       let buildInfo = {
         technologies,
         portfolioName,
         description,
         config,
-        userName,
+				userName,
+				template,
         token: userToken,
         usersid
       }
