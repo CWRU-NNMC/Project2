@@ -112,7 +112,6 @@
                             </v-container>
                         </v-card>
                     </v-flex>
-        </v-layout>
                     <br>
                     <br>
         </v-layout>
