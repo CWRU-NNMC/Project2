@@ -73,7 +73,7 @@ export default {
     }
   }, 
   components: {
-	  'app-head': head
+	  'app-head': Head
   }
 }
 </script>

@@ -102,7 +102,7 @@ import head from '../components/Head'
 					}
                 },
 				components: {
-					'app-head': head
+					'app-head': Head
 				}
             }
 </script>
