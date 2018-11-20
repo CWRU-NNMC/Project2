@@ -1,11 +1,10 @@
 <template>
     <v-content>
-		<app-head></app-head>
         <v-layout>
             <v-flex xs12 sm8 offset-sm2 pl-4>
                 <v-container>
-                    <router-link :to='{path: "portfolio-creator/"}' replace>FUCK MY LIFE</router-link>
                     <app-gen></app-gen>
+                    <v-btn @click='$router.push({ path: "portfolio-creator/"})'>Create A New Portfolio</v-btn>
                     <app-git></app-git> 
                 </v-container>
             </v-flex>     
