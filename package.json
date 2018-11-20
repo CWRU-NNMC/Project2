@@ -8,7 +8,8 @@
     "lint": "vue-cli-service lint",
     "dev:server": "node-dev server.js",
     "watch": "cross-env VUE_CLI_API_MODE=development webpack --config ./node_modules/@vue/cli-service/webpack.config.js --watch",
-    "dev": "npm-run-all --parallel watch dev:server"
+    "dev": "npm-run-all --parallel watch dev:server",
+    "start": "node server.js"
   },
   "dependencies": {
     "aws-sdk": "^2.359.0",
