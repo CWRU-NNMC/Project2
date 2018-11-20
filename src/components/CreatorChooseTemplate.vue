@@ -33,14 +33,16 @@
 														</label>
 														<label for="temp2"> Template 2
 															<input type="radio" id="temp2" value="2" v-model="template">
-														</label>		
+
+														</label>					
+
 													<v-btn @click='storeData'><span class="fontify">Submit Template</span></v-btn>
 												</v-flex>
 											</v-layout>
 										</v-form>
 											<div v-if='nextPage'>
-												<v-btn @click='finishPortfolio'>Finalize And Submit</v-btn>
-												<p>This May Take A Few Seconds...</p>
+												<span class="fontify"><v-btn @click='finishPortfolio'>Finalize And Submit</v-btn>
+												<p>This May Take A Few Seconds...</p></span>
 											</div>							
 									</v-container>
 								</v-card>

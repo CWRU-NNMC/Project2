@@ -20,7 +20,7 @@
 									<v-tab-item>
 									<v-card>
 										<v-container>
-											<v-flex offset-sm5>
+											<v-flex offset-sm2>
 												<form v-if='!nextPage'> 
 											<div v-for='(tech, i) in techList' :key='i'>
 												<label :for="tech">
@@ -32,8 +32,8 @@
 											</div>
 											</form>
 											<div v-if='nextPage'>
-											<h2>Stored!</h2>
-											<router-link to='projects'>Next: Add A Project</router-link>    
+											<span class="fontify"><h2>Stored!</h2>
+											<router-link to='projects'>Next: Add A Project</router-link></span>   
 											</div>
 											</v-flex>
 										</v-container>
@@ -65,7 +65,6 @@ export default {
             this.$store.commit('buildPortfolio', {key: 'technologies', value: this.techs})    
             this.stored = true
             this.process = false
-            // console.log(this.$store.state)
     }
   },
   computed: {
@@ -78,3 +77,9 @@ export default {
   }
 }
 </script>
+
+<style>
+  .fontify {
+	  font-family: 'Orbitron', sans-serif;
+  }
+</style>

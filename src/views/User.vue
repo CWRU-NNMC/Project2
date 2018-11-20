@@ -1,15 +1,24 @@
 <template>
-    <v-content>
+<v-app>
+<v-content>
         <v-layout>
             <v-flex xs12 sm8 offset-sm2 pl-4>
                 <v-container>
                     <app-gen></app-gen>
-                    <v-btn @click='$router.push({ path: "portfolio-creator/"})'>Create A New Portfolio</v-btn>
-                    <app-git></app-git> 
                 </v-container>
-            </v-flex>     
+            </v-flex>
+        </v-layout>           
+        <v-layout text-center>
+            <v-flex md12 sm8 offset-md5 pl-3>
+                <v-btn @click='$router.push({ path: "portfolio-creator/"})'>Create A New Portfolio</v-btn>
+            </v-flex>
         </v-layout>
-    </v-content>
+    
+        <app-git></app-git> 
+                             
+               
+<v-content>
+</v-app>
 </template>
 
 <script>
