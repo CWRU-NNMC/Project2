@@ -1,12 +1,5 @@
 <template>
   <div>
-    <h1>Portfolio Creator</h1>
-
-    <router-link to='basic'>Basic info</router-link> |
-    <router-link to='skills'>Skills</router-link> |
-    <router-link to='projects'>Projects</router-link> |
-    <router-link to='templates'>Templates</router-link>
-
     <router-view></router-view>
 
   </div>
