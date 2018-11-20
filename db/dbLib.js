@@ -103,7 +103,8 @@ const dbLib = (() => {
         lastname: user.lastname,
         linkedin: user.linkedin,
         githuburl: user.usergithuburl,
-        userPortfolios: portfolioArray
+        userPortfolios: portfolioArray,
+        userBio: user.userbio
       }
     })
   }
