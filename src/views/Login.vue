@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import head from '../components/Head'
+import head from '../components/head'
     export default {
         name: 'Login',
         data() {

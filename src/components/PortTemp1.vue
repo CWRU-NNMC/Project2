@@ -75,14 +75,31 @@
                             <v-card>
                                 <v-card-title class="card-title" primary-title> 
                                     <div>
-                                        <h3 class="headline mb-1 wut">Links to Repo With Images?</h3>
+                                        <h3 class="headline mb-1 wut">My Projects</h3>
                                     </div>
                                 </v-card-title>
-                                    <v-container>
-                                        <p> Maybe this should be a carousel</p>
-                                        <br>
-                                        <p> ...Or Maybe a grid </p>
+                                  <v-container>
+                                        <v-layout>
+                                            <v-carousel
+                                                height="600"
+                                                max-width="800">
+                                                <v-carousel-item
+                                                    v-for="(item,i) in items"
+                                                    :key="i"
+                                                    :src="item.src">
+                                                <v-container>
+                                                    <v-layout align-center>
+                                                        <v-flex>
+                                                        <h3 class="display-3 fontify">{{ item.title }}</h3>
+                                                        <span class="subheading fontify">{{ item.description }}</span>
+                                                        </v-flex>
+                                                    </v-layout>
+                                                </v-container>
+                                                </v-carousel-item>
+                                            </v-carousel>
+                                        </v-layout>
                                     </v-container>
+                             
                             </v-card>
                         </v-flex>
                 </v-layout>
@@ -91,6 +108,37 @@
     </v-app>
 </div>
 </template>
+
+<script>
+    export default {
+    data () {
+      return {
+        items: [
+          {
+            src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg',
+            title: 'one',
+            description: 'one'
+          },
+          {
+            src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg',
+            title: 'two',
+            description: 'two'
+          },
+          {
+            src: 'https://cdn.vuetifyjs.com/images/carousel/bird.jpg',
+            title: 'three',
+            description: 'three'
+          },
+          {
+            src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg',
+            title: 'four',
+            description: 'four'
+          }
+        ]
+      }
+    }
+}
+</script>
 
 <style scoped>
     .v-content {

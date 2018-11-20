@@ -87,6 +87,32 @@
                             </v-container>
                         </v-card>
                     </v-flex>
+					<v-layout>
+            <v-flex xs12 sm6 offset-sm3>
+						<v-card>
+							<v-container>
+								<div>
+								<v-tabs
+									centered
+									color=""
+									dark
+									hide-slider
+									icons-and-text>
+								<v-tab>
+									<span class="fontify">My Technologies</span>
+									<v-icon>desktop_mac</v-icon>
+								</v-tab>
+                                <v-tab-item>
+                                    <span class="fontify"><p>
+                                        user.technologies or whatevs
+                                    </p></span>
+                                </v-tab-item>
+                                </v-tabs>
+                                </div>
+                            </v-container>
+                        </v-card>
+                    </v-flex>
+        </v-layout>
                     <br>
                     <br>
         </v-layout>

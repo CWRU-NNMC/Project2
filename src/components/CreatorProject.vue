@@ -1,43 +1,76 @@
 <template>
-  <div>
-    <v-app>
-      <v-content>
-        <form v-if='!nextPage'>
-          <h2>Add A Project</h2>
-          <label for="description"> Description of your project.
-            <input type="textarea" v-model='description' id='description'>
-          </label>
-          <label for="repo"> Link to this project's GitHub repository.
-            <input type="text" v-model='repo' id='repo'>
-          </label>
-          <label for="live"> Link to this deployed project.
-            <input type="text" v-model='live' id='live'>
-          </label>
-          <v-container>
-            <label for="projectImg"> Upload an image of your project. A 4:3 aspect ratio yields best results.
-              <input type="file" name='file' id="projectImg" ref="file" accept="image/*" v-on:change="processUpload()" />
-              <v-btn @click='submitImage()'>Add Image</v-btn>
-            </label>
-          </v-container>
-          <v-btn @click='storeData'>Submit Project</v-btn>
-        </form>
-
-        <div v-if='nextPage'>
-          <v-btn @click='newProject'>Add Another Project</v-btn> OR
-
-          <router-link to='templates'>Next: Choose A Template</router-link>
-
-        </div>
-      </v-content>
-    </v-app>
-   
-
-
-  </div>
+<v-app>
+	<v-content>
+		<app-head></app-head>
+		<br>
+		<v-layout>
+			<v-flex md6 sm12 offset-sm3>
+				<v-card>
+					<v-img
+						src='https://cdn.vuetifyjs.com/images/carousel/planet.jpg'
+						aspect-ratio="2.75">
+					</v-img>
+						<v-container>							
+						<v-tabs
+							centered
+							color="orange lighten-2"
+							dark
+							hide-slider
+							icons-and-text>
+						<v-tab>
+							<span class="fontify">Add a Project</span>
+								<v-icon>create</v-icon>
+						</v-tab>
+						<v-tab-item>
+							<v-card>
+								<v-container>
+									<v-form v-if='!nextPage'>
+										<v-text-field 
+											type="textarea" 
+											v-model='description' 
+											id='description'
+											label="Project Description">
+										</v-text-field>
+										<v-text-field 
+											type="text" 
+											v-model='repo' 
+											id='repo'
+											label="Add A Link to This Project's GitHub Repository">
+										</v-text-field>
+										<v-text-field 
+											type="text" 
+											v-model='live' 
+											id='live'
+											label="Link to the Deployed Project">
+										</v-text-field>
+									</v-form>
+								<v-container>
+									<label for="projectImg"><span class="fontify">Upload an image of your project. A 4:3 aspect ratio yields best results.</span>
+										<input type="file" name='file' id="projectImg" ref="file" accept="image/*" v-on:change="processUpload()" />
+										<v-btn @click='submitImage()'><span class="fontify">Add Image</span></v-btn>
+									</label>
+										<v-btn @click='storeData'><span class="fontify">Submit Project</span></v-btn>
+											<div v-if='nextPage'>
+												<v-btn @click='newProject'><span class="fontify">Add Another Project</span></v-btn> OR
+												<router-link to='templates'><span class="fontify">Next: Choose A Template</span></router-link>
+											</div>
+								</v-container>			
+								</v-container>
+							</v-card>
+						</v-tab-item>
+						</v-tabs>
+					</v-container>
+				</v-card>
+			</v-flex>
+		</v-layout>
+	</v-content>
+</v-app>
 </template>
 
 
 <script>
+import head from '../components/head'
+
   export default {
     data () {
       return {
@@ -86,12 +119,16 @@
       nextPage() {
         return this.stored
       }
-    }
-  }
+    },
+	components: {
+		'app-head': head
+	}
 </script>
 
-
 <style scoped>
+  .v-content {
+	  background-image: radial-gradient(gainsboro,orange,gray,skyblue,gray)
+  }
 input {
   border: 1px solid black;
 }

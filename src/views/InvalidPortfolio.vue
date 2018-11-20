@@ -1,6 +1,6 @@
 <template>
 <v-app>
-        <v-content>
+    <v-content>
         <app-head></app-head>
             <v-container>
                 <v-layout>
@@ -22,7 +22,7 @@
 									icons-and-text>
 								<v-tab>
 									<span class="fontify">Access Denied</span>
-									<v-icon>build</v-icon>
+									<v-icon>not_interested</v-icon>
 									</v-tab>
 										<v-tab-item>
 											<v-card>
@@ -44,7 +44,7 @@
 </template>
 
 <script>
-    import head from '../components/Head'
+    import head from '../components/head'
 
     export default {
     components: {
