@@ -24,8 +24,7 @@ export default {
         }
     },
     created () {
-        console.log(this.$store.getters.getPageInfo)
-        this.userImage = this.$store.getters.getUserImage
+        this.userImage = this.$store.getters.getPageInfo.data.userImage
     }
 }
 </script>
