@@ -84,8 +84,8 @@ const dbLib = (() => {
       let id = data[0].id
       // make two DB calls, one for user info and one for portfolio info
       return Promise.all([
-        selectSomeWhere('users', 'id', id, ['id', 'username','email', 'userimage', 'location']),
-        selectSomeWhere('portfolios', 'usersid', id, ['id', 'description', 'name'])
+        selectSomeWhere('users', 'id', id, ['id', 'username','email', 'userimage', 'location', 'firstname', 'lastname', 'linkedin', 'usergithuburl', 'userbio']),
+        selectSomeWhere('portfolios', 'usersid', id, ['id', 'description', 'name', 'template'])
       ])
     })
     // parse the user info and portfolio info into a single object
@@ -99,6 +99,10 @@ const dbLib = (() => {
         userEmail: user.email,
         userLocation: user.location,
         userImage: user.userimage,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        linkedin: user.linkedin,
+        githuburl: user.usergithuburl,
         userPortfolios: portfolioArray
       }
     })
@@ -110,7 +114,7 @@ const dbLib = (() => {
     .then(data => {
       if (data.length === 0) throw new Error(`500: No such portfolio '${name}' found.`)
       const id = data[0].id
-      return selectSomeJoin('portfolios', 'projects', ['config', 'name', 'public'], ['id', 'imageurl', 'githuburl', 'description', 'liveurl'], 'portfolios.id', 'projects.portfolioid', 'portfolios.id', id)
+      return selectSomeJoin('portfolios', 'projects', ['config', 'name', 'public', 'template'], ['id', 'imageurl', 'githuburl', 'description', 'liveurl', 'projectname'], 'portfolios.id', 'projects.portfolioid', 'portfolios.id', id)
     })
     .then(results => {
       return selectSomeWhere('portfolios', 'name', name, ['description', 'usersid'])
@@ -128,7 +132,7 @@ const dbLib = (() => {
     })
     .then(results => {
       const id = results[0].usersid
-      return selectSomeWhere('users', 'id', id, ['username', 'email', 'userimage', 'location'])
+      return selectSomeWhere('users', 'id', id, ['username', 'email', 'userimage', 'location', 'usergithuburl', 'linkedin', 'firstname', 'lastname', 'userbio'])
         .then(userInfo => {
           return {
             userInfo,
