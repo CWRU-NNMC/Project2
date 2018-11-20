@@ -21,7 +21,7 @@ import gen from '../components/UserBio'
 export default {
     data() {
         return {
-            pageJson: $store.getters.getPageInfo,
+            pageJson: this.$store.getters.getPageInfo,
             // ^ probably descructure this so it's not a pain 
         }
     },
