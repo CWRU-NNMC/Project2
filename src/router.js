@@ -52,7 +52,7 @@ export default new Router({
       beforeEnter: (to, from, next) => {
         store.dispatch('getPortfolioJson', {to}).then(() => {
           if(!store.getters.getPageInfo.portfolioInfo) next('/invalid-portfolio')
-          if (!store.getPageInfo.portfolioInfo[0].public) next('/construction')
+          if (store.getters.getPageInfo.portfolioInfo[0].public) next('/construction')
           else next()
         })
       }

@@ -1,6 +1,8 @@
 <template>
-     <port1></port1>
-    <!-- <port2></port2> -->
+<div>
+    <port1 v-if="template === 1"></port1>
+    <port2 v-else></port2>
+</div>
 </template>
 <script>
 import portTemp1 from "../components/PortTemp1"
@@ -9,15 +11,14 @@ import store from '../store.js'
 export default {
     data() {
         return {
-            pageJson: store.getters.getPageInfo
-            // ^ probably descructure this so it's not a pain 
+            template: 0
         }
     },
+    created() {
+        this.template = this.$store.getters.getPageInfo.portfolioInfo[0].template
+    },
     beforeRouteUpdate(to, from, next) {
-        store.dispatch('getPageJson', {to}).then(() => {
-            console.log(store.getters.getPageInfo)
-            next()
-    })
+        store.dispatch('getPageJson', {to}).then(() =>  next())
     },
     components: {
         "port1": portTemp1,
