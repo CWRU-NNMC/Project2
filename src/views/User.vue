@@ -1,16 +1,24 @@
 <template>
-    <v-content>
-		<app-head></app-head>
+<v-app>
+<v-content>
         <v-layout>
             <v-flex xs12 sm8 offset-sm2 pl-4>
                 <v-container>
-                    <router-link :to='{path: "portfolio-creator/"}' replace>FUCK MY LIFE</router-link>
                     <app-gen></app-gen>
-                    <app-git></app-git> 
                 </v-container>
-            </v-flex>     
+            </v-flex>
+        </v-layout>           
+        <v-layout text-center>
+            <v-flex md12 sm8 offset-md5 pl-3>
+                <v-btn @click='$router.push({ path: "portfolio-creator/"})'>Create A New Portfolio</v-btn>
+            </v-flex>
         </v-layout>
-    </v-content>
+    
+        <app-git></app-git> 
+                             
+               
+<v-content>
+</v-app>
 </template>
 
 <script>
@@ -21,7 +29,7 @@ import gen from '../components/UserBio'
 export default {
     data() {
         return {
-            pageJson: $store.getters.getPageInfo,
+            pageJson: this.$store.getters.getPageInfo,
             // ^ probably descructure this so it's not a pain 
         }
     },

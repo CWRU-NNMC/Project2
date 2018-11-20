@@ -50,10 +50,9 @@ export default new Router({
       name: 'portfolio',
       component: Portfolio,
       beforeEnter: (to, from, next) => {
-        store.dispatch('getPortfolioJson', {to}).then(res => {
-          console.log(store.getters.getPageInfo)
-          if(!store.getters.getPageInfo.data) next('/invalid-portfolio')
-          if (store.getters.getPageHidden) next('/construction')
+        store.dispatch('getPortfolioJson', {to}).then(() => {
+          if(!store.getters.getPageInfo.portfolioInfo) next('/invalid-portfolio')
+          if (store.getters.getPageInfo.portfolioInfo[0].public) next('/construction')
           else next()
         })
       }
@@ -61,7 +60,10 @@ export default new Router({
     {
       path: '/login',
       name: 'login',
-      component: Login
+      component: Login,
+      beforeEnter : (to, from, next) => {
+        store.state.userToken ? next('/user') : next()
+      },
     },
     {
       path: '/signup',
@@ -70,14 +72,13 @@ export default new Router({
     },
     {
       path: '/portfolio-creator',
-      name: 'creator',
       component: Creator,
       children: [
         { path: 'basic', component: CreatorBasic },
         { path: 'skills', component: CreatorSkillsEdu },
         { path: 'projects', component: CreatorProject },
         { path: 'templates', component: CreatorChooseTemplate},
-        { path: '', component: CreatorHome }
+        { path: '', name: 'creator', component: CreatorHome }
       ]
     },
     {

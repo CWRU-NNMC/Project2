@@ -26,6 +26,12 @@
 								<v-container>
 									<v-form v-if='!nextPage'>
 										<v-text-field 
+											type="text" 
+											v-model='projectname' 
+											id='projectname'
+											label="Enter A Name For Your Project">
+										</v-text-field>
+										<v-text-field 
 											type="textarea" 
 											v-model='description' 
 											id='description'
@@ -37,6 +43,7 @@
 											id='repo'
 											label="Add A Link to This Project's GitHub Repository">
 										</v-text-field>
+
 										<v-text-field 
 											type="text" 
 											v-model='live' 
@@ -44,15 +51,15 @@
 											label="Link to the Deployed Project">
 										</v-text-field>
 									</v-form>
-								<v-container>
-									<label for="projectImg"><span class="fontify">Upload an image of your project. A 4:3 aspect ratio yields best results.</span>
-										<input type="file" name='file' id="projectImg" ref="file" accept="image/*" v-on:change="processUpload()" />
-										<v-btn @click='submitImage()'><span class="fontify">Add Image</span></v-btn>
+								<v-container >
+									<label for="projectImg"><span class="fontify" v-if='!nextPage'>Upload an image of your project. A 4:3 aspect ratio yields best results.</span>
+										<input v-if='showChooseButton' type="file" name='file' id="projectImg" ref="file" accept="image/*" v-on:change="processUpload()" />
+										<v-btn @click='submitImage()' v-if='showAddImageButton' :disabled='processing'><span class="fontify">Add Image</span></v-btn>
 									</label>
-										<v-btn @click='storeData'><span class="fontify">Submit Project</span></v-btn>
+										<v-btn v-if='!nextPage && showImageSuccess' @click='storeData'><span class="fontify">Submit Project</span></v-btn>
 											<div v-if='nextPage'>
 												<v-btn @click='newProject'><span class="fontify">Add Another Project</span></v-btn> OR
-												<router-link to='templates'><span class="fontify">Next: Choose A Template</span></router-link>
+												<v-btn @click='$router.push({ path: "templates" })'><span class="fontify">Next: Choose A Template</span></v-btn>
 											</div>
 								</v-container>			
 								</v-container>
@@ -74,32 +81,42 @@ import Head from '../components/Head'
   export default {
     data () {
       return {
-        file: '',
+				file: '',
+				projectname: '',
         description: '',
         repo: '',
         live: '',
         stored: false,
-        imageurl: ''              
+				imageurl: '',
+				fileChosen: false,
+				fileAdded: false,
+				process: false
       }
     },
     methods: {
         processUpload () {
             this.file = this.$refs.file.files[0]
-            console.log('here')
+						// console.log('here')
+						this.fileChosen = true
         },
         submitImage() {
+						this.process = true
             let formData = new FormData();
             formData.append('file', this.file);
             formData.append('format', 'kfunjy1s') // auto formatting 
             console.log(this.file)
-            this.$store.dispatch('uploadProjectImg', formData).then(() => this.imageurl = this.$store.getters.getImgUrl.data)
+						this.$store.dispatch('uploadProjectImg', formData)
+							.then(() => this.imageurl = this.$store.getters.getImgUrl.data)
+							.then(() => this.fileAdded = true)
+							.catch(() => this.process = false)
         },
         storeData() {        
           let projectsPayload = this.$store.state.portfolioBuildInfo.projects.concat({
             imageurl: this.imageurl,
             githuburl: this.repo,
             description: this.description,
-            liveurl: this.live
+						liveurl: this.live,
+						projectname: this.projectname
           })
           console.log('payload', projectsPayload)
           this.$store.commit('buildPortfolio', {key: 'projects', value: projectsPayload})    
@@ -112,13 +129,29 @@ import Head from '../components/Head'
           this.repo= ''
           this.live= ''
           this.stored= false
-          this.imageurl= ''   
+					this.imageurl= ''   
+					this.projectname = '',
+					this.fileChosen = false,
+					this.fileAdded = false,
+					this.process = false
         }
     },
     computed: {
       nextPage() {
         return this.stored
-      }
+      },
+			showChooseButton() {
+				return !this.fileChosen
+			},
+			showAddImageButton() {
+				return this.fileChosen && !this.fileAdded
+			},
+			showImageSuccess() {
+				return this.fileAdded
+			},
+			processing() {
+				return this.process
+			}
     },
 	components: {
 		'app-head': Head

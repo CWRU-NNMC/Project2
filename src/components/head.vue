@@ -3,8 +3,7 @@
     <v-toolbar dark>
         <v-toolbar-side-icon><v-icon @click="goTo('home')">home</v-icon></v-toolbar-side-icon>
             <v-toolbar-title class="headline text-uppercase">
-                <span class="fontify">Bro, Do You Even Vue? </span>
-                <span class="font-weight-light text-lowercase fontify"> ...Yeah, kinda</span>
+                <span class="fontify">Portfoliate</span>
             </v-toolbar-title>
 <v-spacer></v-spacer>
             <v-btn light v-if='!loggedIn' @click="goTo('signup')"><span class="fontify">Sign Up</span></v-btn>

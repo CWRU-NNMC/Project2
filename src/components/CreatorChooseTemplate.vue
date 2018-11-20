@@ -24,8 +24,8 @@
 							<v-tab-item>
 								<v-card>
 									<v-container>
-										<v-form v-if='!nextPage'>
-											<v-layout>
+										<v-form>
+											<v-layout v-if='!nextPage'>
 												<v-flex md6 sm12 offset-sm3 pl-3>
 													<h2><span class="fontify">Choose Your Template</span></h2>
 														<label for="temp1"> Template 1
@@ -33,17 +33,16 @@
 														</label>
 														<label for="temp2"> Template 2
 															<input type="radio" id="temp2" value="2" v-model="template">
-														</label>
-														<label for="temp3"> Template 3
-															<input type="radio" id="temp3" value="3" v-model="template">
-														</label>						
+
+														</label>					
+
 													<v-btn @click='storeData'><span class="fontify">Submit Template</span></v-btn>
 												</v-flex>
 											</v-layout>
 										</v-form>
 											<div v-if='nextPage'>
-												<v-btn @click='finishPortfolio'>Finalize And Submit</v-btn>
-												<p>This May Take A Few Seconds...</p>
+												<span class="fontify"><v-btn @click='finishPortfolio'>Finalize And Submit</v-btn>
+												<p>This May Take A Few Seconds...</p></span>
 											</div>							
 									</v-container>
 								</v-card>
@@ -70,7 +69,7 @@ export default {
   computed: {
     nextPage() {
       return this.stored
-    }
+    },
   },
   methods: {
     storeData() {        
@@ -79,14 +78,15 @@ export default {
           console.log(this.$store.state)
         },
     finishPortfolio() {
-      let { portfolioName, technologies, description, config } = this.$store.state.portfolioBuildInfo
+      let { portfolioName, technologies, description, config, template } = this.$store.state.portfolioBuildInfo
       let { userName, userToken, usersid } = this.$store.state
       let buildInfo = {
         technologies,
         portfolioName,
         description,
         config,
-        userName,
+				userName,
+				template,
         token: userToken,
         usersid
       }
@@ -96,14 +96,14 @@ export default {
           if (!portAdded) throw new Error('portfolio not added') 
           let { portfolioid, projects } = this.$store.state.portfolioBuildInfo
           Promise.all(projects.map(proj => {
-            return this.$store.dispatch('addProject', {name: 'asdf', data: {
+            return this.$store.dispatch('addProject', {name: 'add', data: {
               ...proj,
               usersid,
               portfolioid,
               userName,
               token: userToken
             }})
-          })).then(x => console.log(x))
+          })).then(() => this.$router.push({ name: 'user' }))
         })
     }
   },

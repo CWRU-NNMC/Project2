@@ -24,16 +24,13 @@ import Head from '../components/Head'
       return {
         items: [
           {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg'
+            src: 'https://66.media.tumblr.com/158f6a0fc8a76859e48edf6c62c429b8/tumblr_piiboojvhR1xdm0hjo1_1280.png'
           },
           {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg'
+            src: 'https://66.media.tumblr.com/4e5eee7e85a8688de405cef9156fd5c0/tumblr_pihcrus2HJ1xdm0hjo1_1280.png'
           },
           {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/bird.jpg'
-          },
-          {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg'
+            src: 'https://66.media.tumblr.com/f0a6d87d1c2519b57fdccff7e2b57b99/tumblr_pihcrus2HJ1xdm0hjo2_1280.png'
           }
         ]
       }
