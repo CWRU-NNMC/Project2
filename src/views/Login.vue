@@ -25,28 +25,27 @@
 										<v-tab-item>
 											<v-card>
 												<v-container>
-													<v-form class="form">
+													<v-form ref="form" class="form">
 														<v-text-field 
 															name= "username"
-															v-model="input.username"
+															v-model="username"
 															label="Username"
-															required>
+															counter
+															:rules="rules">
 														</v-text-field>
 														<v-text-field
 															name= "password"
-															v-model="input.password"
+															:append-icon="show1 ? 'visibility_off' : 'visibility'"
+															v-model="password"
 															label="Password"
-															:type="show ? 'text' : 'password'"
+															:rules="rules"
+															hint="Between 4 and 45 Characters"
+															:type="show1 ? 'text' : 'password'"
 															class="input-group--focused"
-															required>
+															counter
+															@click:append="show1 = !show1">
 														</v-text-field>
-														<v-btn @click='login()' id="btn">Login</v-btn>
-															<p v-if="errors.length">
-																<b>Please correct the following error(s):</b>
-																	<ul class = 'errors'>
-																	<li v-for="error in errors">{{ error }}</li>
-																	</ul>
-															</p>
+														<v-btn @click='submit' :disabled="!valid" id="btn">Login</v-btn>
 													</v-form>
 												</v-container>
 											</v-card>
@@ -67,44 +66,37 @@ import Head from '../components/Head'
     export default {
         name: 'Login',
         data() {
-            return {		
-				errors:[],		
-                input: {
-                    username: null,
-                    password: null
-                }
+            return {	
+				username: '',
+				password: '',	
+				valid: true,
+				show1: false,
+				rules: [
+					data => !!data || 'Required.',
+					data => data.length < 4 ? 'Too few characters.' : true,
+					data => data.length > 45 ? 'Too many characters.' : true
+				],	
             }
-        },
+		},
         methods: {
-            login() {
-				this.errors = [];
-				//check for username input
-				if(!this.input.username) {
-								this.errors.push("Username required.");
-							} 
-				//check for password input
-				else if(!this.input.password) {
-							 	this.errors.push("Password required.");
-							}			
-				//check if the credentials are valid and respond accordingly	
-                if(this.input.username !== null && this.input.password !== null) {
-							this.errors = [];
-							const credentials = {
-								userName: this.input.username,
-								password: this.input.password
+			submit() {
+				if(this.$refs.form.validate()){
+					const credentials = {
+					userName: this.username,
+					password: this.password
 							}
-							this.$store.dispatch('authUser', credentials)
-							.then(() =>{
-								this.$router.push({name: 'user'})
-								})
-							.catch(err => console.log(err))
-						}
-					}
-                },
-				components: {
-					'app-head': Head
+					this.$store.dispatch('authUser', credentials)
+						.then(() => {
+							this.$store.state.userToken ? this.$router.push({name: 'user'}) : this.password = ''
+						})
 				}
-            }
+				
+			},
+		},
+		components: {
+			'app-head': Head
+			}
+        }
 </script>
 
 <style scoped>
