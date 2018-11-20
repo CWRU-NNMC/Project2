@@ -61,6 +61,9 @@ export default new Vuex.Store({
         },
         setPortfolioId (state, id) {
             state.portfolioBuildInfo.portfolioid = id
+        },
+        setUserId (state, id) {
+            state.usersid = id
         }
     },
     getters: {
@@ -76,17 +79,17 @@ export default new Vuex.Store({
                 .then(({data}) => commit('setPage', {data}))
                 .catch(error => commit('setFailState', error))
         },
-        getUserPage({ commit }, {userData}){
+        getUserPage({ commit }, userData){
             let queryString = `/api/user/${userData.userName}`
             return axios.post(queryString, userData) 
-                .then(({res}) => res ? commit('setPage', res) : router.push({name: `/login`}))
+                .then(res => res ? commit('setPage', res) : router.push({name: `/login`}))
         },
         authUser({commit}, credentials){
             return axios.post('/api/user/auth/', credentials).then(res => {
                 if (res.data.auth){
                     commit('setToken', res.data.token)
                     commit('setUserName', res.data.userName)
-                    
+                    commit('setUserId', res.data.id)                    
                 }
                 else {
                 commit('setFailState', res.message)
