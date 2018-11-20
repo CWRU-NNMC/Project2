@@ -89,7 +89,7 @@ export default new Vuex.Store({
                 if (res.data.auth){
                     commit('setToken', res.data.token)
                     commit('setUserName', res.data.userName)
-                    commit('setUserId', res.data.id)                    
+                    commit('setUserId', res.data.usersid)                    
                 }
                 else {
                 commit('setFailState', res.message)
