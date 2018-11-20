@@ -44,7 +44,7 @@
 </template>
 
 <script>
-    import head from '../components/Head'
+    import Head from '../components/Head'
 
     export default {
     components: {
