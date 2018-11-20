@@ -3,10 +3,10 @@ import Vuex from 'vuex'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import router from './router'
-import bcrypt from 'bcrypt'
-const saltRounds = 10
-const dotenv = require('dotenv')
-dotenv.config()
+// import bcrypt from 'bcrypt'
+// const saltRounds = 10
+// const dotenv = require('dotenv')
+// dotenv.config()
 
 Vue.use(Vuex);
 Vue.use(VueAxios, axios);
@@ -72,13 +72,14 @@ export default new Vuex.Store({
         getPageInfo: state => state.currentPageJson,
         getPageHidden: state => state.currentPageJson.portfolioInfo[0].public,
         getNameAvailable: state => state.nameAvailable,
-        getImgUrl: state => state.currentProjectImg
+        getImgUrl: state => state.currentProjectImg,
+        getUserImage: state => state.currentPageJson.data.userImage
     },
     actions: {
         getPortfolioJson({commit}, {to}) {
                 let queryString = `/api${to.fullPath}`
                 return axios.post(queryString, to.params)
-                .then(({data}) => commit('setPage', {data}))
+                .then(({data}) => commit('setPage', data))
                 .catch(error => commit('setFailState', error))
         },
         getUserPage({ commit }, userData){
@@ -110,7 +111,7 @@ export default new Vuex.Store({
         addUserOrPort (context, {name, data, pageType}){
             if (!context.state.nameAvailable) return false;
             else{
-                let queryString = `/api/manage/${pageType}/asdf`
+                let queryString = `/api/manage/${pageType}/${name}`
                 return axios.post(queryString, data).then(res => {
                     // console.log(res)
                     context.commit('setPortfolioId', res.data.insertId)
@@ -118,7 +119,7 @@ export default new Vuex.Store({
                 })
             }
         },
-        uploadProjectImg ({state, commit}, data) {
+        uploadProjectImg ({commit}, data) {
             return axios.post('/api/upload', data, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
@@ -136,7 +137,7 @@ export default new Vuex.Store({
                     token: state.token,
                     updates: {userimage: res}
                 }
-                axios.put('/api/manage/user/${state.userName}', userImgData)
+                axios.put(`/api/manage/user/${state.userName}`, userImgData)
             })
         },
         addProject (context, {name, data}) {

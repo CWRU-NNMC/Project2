@@ -21,6 +21,7 @@
 									<v-card>
 										<v-container>
 											<v-flex offset-sm5>
+												<form v-if='!nextPage'> 
 											<div v-for='tech in techList'>
 												<label :for="tech">
 												<input type="checkbox" :id="tech" :value="tech" v-model='techs'><span class="fontify"> {{ tech }} </span>

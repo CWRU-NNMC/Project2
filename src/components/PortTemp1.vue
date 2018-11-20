@@ -9,12 +9,12 @@
                             <v-avatar size="250px">
                                 <img
                                     class="img-circle elevation-13 mb-1"
-                                    src="../assets/logo.png"
+                                    :src="userImage"
                                     alt="Pro Image">
                             </v-avatar>
                             <br>
                             <br>
-                        <div class="headline"><span class="text-lowercase">LOWER </span><span class="text-uppercase" style="font-weight:bold"> upper</span></div>
+                        <div class="headline"><span class="text-uppercase" style="font-weight:bold"> {{ name }} </span></div>
                             <br>
                             <v-layout pl-3>
                             <v-layout pl-5>
@@ -56,18 +56,7 @@
                                     </div>
                                 </v-card-title>
                                     <v-container>
-                                        <p>Please</p>
-                                        <br>
-                                        <p>Hire</p>
-                                        <br>
-                                        <p>Me</p>
-                                        <br>
-                                        <p>I</p>
-                                        <br>
-                                        <p>Am</p>
-                                        <br>
-                                        <p>Poor</p>
-                                        <br>
+                                    <p>{{ bio }}</p>
                                     </v-container>
                             </v-card>
                         </v-flex>
@@ -80,64 +69,55 @@
                                 </v-card-title>
                                   <v-container>
                                         <v-layout>
-                                            <v-carousel
-                                                height="600"
-                                                max-width="800">
-                                                <v-carousel-item
-                                                    v-for="(item,i) in items"
-                                                    :key="i"
-                                                    :src="item.src">
+                                          <v-carousel height="600" max-width="800">
+                                            <v-carousel-item v-for="(project, i) in projects" :key="i" :src="project.imageurl">
                                                 <v-container>
                                                     <v-layout align-center>
                                                         <v-flex>
-                                                        <h3 class="display-3 fontify">{{ item.title }}</h3>
-                                                        <span class="subheading fontify">{{ item.description }}</span>
+                                                            <h3 class="display-3 fontify">{{ project.title }}</h3>
+                                                            <span class="subheading fontify">{{ project.description }}</span>
                                                         </v-flex>
                                                     </v-layout>
                                                 </v-container>
-                                                </v-carousel-item>
-                                            </v-carousel>
-                                        </v-layout>
-                                    </v-container>
-                             
+                                            </v-carousel-item>
+                                        </v-carousel>
+                                    </v-layout>
+                                </v-container>
                             </v-card>
                         </v-flex>
-                </v-layout>
-            </v-container>
-        </v-content>
-    </v-app>
-</div>
+                    </v-layout>
+                </v-container>
+            </v-content>
+        </v-app>
+    </div>
 </template>
 
 <script>
     export default {
-    data () {
-      return {
-        items: [
-          {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg',
-            title: 'one',
-            description: 'one'
-          },
-          {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg',
-            title: 'two',
-            description: 'two'
-          },
-          {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/bird.jpg',
-            title: 'three',
-            description: 'three'
-          },
-          {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg',
-            title: 'four',
-            description: 'four'
-          }
-        ]
-      }
+        data() {
+            return {
+                name: '',
+                bio: '',
+                location: '',
+                userImage: '',
+                projects: [],
+            }
+        },
+        created() {
+            let dataJson = this.$store.getters.getPageInfo
+            this.fillData(dataJson)
+        },
+        methods: {
+            fillData({userInfo, portfolioInfo}) {
+                let user = userInfo[0]
+                this.name = `${user.firstname} ${user.lastname}`
+                this.bio = portfolioInfo[0].portfolioDescription
+                this.location = user.location
+                this.userImage = user.userimage
+                this.projects.push(...portfolioInfo)
+            }
+        }
     }
-}
 </script>
 
 <style scoped>
