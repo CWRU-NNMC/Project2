@@ -22,7 +22,7 @@
 										<v-container>
 											<v-flex offset-sm5>
 												<form v-if='!nextPage'> 
-											<div v-for='tech in techList'>
+											<div v-for='(tech, i) in techList' :key='i'>
 												<label :for="tech">
 												<input type="checkbox" :id="tech" :value="tech" v-model='techs'><span class="fontify"> {{ tech }} </span>
 												</label>
