@@ -1,6 +1,6 @@
 <template>
-    <!-- <port1></port1> -->
-    <port2></port2>
+     <port1></port1>
+    <!-- <port2></port2> -->
 </template>
 <script>
 import portTemp1 from "../components/PortTemp1"
