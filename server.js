@@ -6,7 +6,7 @@ const upload = multer({
 });
 require('dotenv').config()
 const cloudinary = require('cloudinary')
-const  { userPageFunction, portfolioPageFunction, checkUserName, checkPortfolioName, addNewUser, addNewPortfolio, addNewProject, updateUser, updatePortfolio, updateProject, deletePortfolio, deleteProject, deleteUser, authUser } = require('./db/dbLib')
+const  { quickVerify, userPageFunction, portfolioPageFunction, getUserId, checkUserName, checkPortfolioName, addNewUser, addNewPortfolio, addNewProject, updateUser, updatePortfolio, updateProject, deletePortfolio, deleteProject, deleteUser, authUser } = require('./db/dbLib')
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({
@@ -15,6 +15,11 @@ app.use(express.urlencoded({
 
 app.use(express.static('./dist'))
 
+
+// development route for quickly verifying tokens
+app.post('/api/dev/token/', (req, res) => {
+    res.send(quickVerify(req.body.userName, req.body.token)) 
+})
 
 // ** AUTH route for validating users. takes an object with two keys: userName and password
 //    returns an object, object.auth is a boolean indicating success
@@ -25,6 +30,13 @@ app.post('/api/user/auth/', (req, res) => {
 })
 
 // ** "GET" routes that are actually written as POST routes because of Vue-reasons
+
+// returns a userid for a user
+app.post('/api/user/query/idquery/:name', (req, res) => {
+    getUserId(req.params.name)
+        .then(reply => res.send(reply))
+        .catch(err => res.status(500).send(err))
+})
 
 
 // checks whether a user name is available for use. Returns true if available.
@@ -43,7 +55,7 @@ app.post('/api/portfolio/query/:name', (req, res) => {
 
 // returns an object with all relevant information on a user
 app.post('/api/user/:name', (req, res) => {
-    console.log(req.body.userName, req.body.token)
+    // console.log(req.body.userName, req.body.token)
     userPageFunction(req.body.userName, req.body.token)
         .then(json => res.status(200).send(json))
         // .catch(err => console.log(err))

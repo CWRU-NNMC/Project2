@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Portfolio Creater</h1>
+    <h1>Portfolio Creator</h1>
 
     <router-link to='basic'>Basic info</router-link> |
     <router-link to='skills'>Skills</router-link> |

@@ -20,6 +20,9 @@ const dbLib = (() => {
     return result
   }
 
+  const quickVerify = (userName, token) => {
+    return verifyToken(userName, token)
+  }
 
   const checkUserName = name => {
     return selectSomeWhere('users', 'username', name, ['username'])
@@ -33,7 +36,7 @@ const dbLib = (() => {
 
   const authUser = loginObject => {
     let { userName, password } = loginObject
-    return selectSomeWhere('users', 'username', userName, ['username', 'pw'])
+    return selectSomeWhere('users', 'username', userName, ['username', 'pw', 'id'])
     .then(data => {
       if (data.length === 0) return {
         code: 404,
@@ -50,11 +53,16 @@ const dbLib = (() => {
           code: 200,
           auth: true,
           token,
-          userName
+          userName,
+          usersid: data[0].id
         }      
     })
   }
 
+  const getUserId = name => {
+    return selectSomeWhere('users', 'username', name, ['id'])
+      .then(data => data[0].id)
+  }
 
   // takes a user name, and returns relevant information for their user info page
   const userPageFunction = (name, token) => {
@@ -158,9 +166,15 @@ const dbLib = (() => {
   const addNewPortfolio = ({ technologies, description, usersid, config, portfolioName, token, userName }) => {
     verifyToken(userName, token)
     let configJSON = JSON.stringify(config)
-    if (portfolioName.length > 20) throw new Error('500: Portfolio name exceeds length (20 characters maximum')
-    return insertOne('portfolios', ['technologies', 'description', 'usersid', 'config', 'name'], [technologies, description, usersid, configJSON, portfolioName])
+    let techJSON = JSON.stringify(technologies)
+    // console.log(technologies)
+    if (portfolioName.length > 20) {
+      // console.log('too long')
+      throw new Error('500: Portfolio name exceeds length (20 characters maximum')
+    }
+    return insertOne('portfolios', ['technologies', 'description', 'usersid', 'config', 'name'], [techJSON, description, usersid, configJSON, portfolioName])
     .then(results => {
+      // console.log('results returned')
       if (results.affectedRows === 0) throw new Error('500: Portfolio not added.')
       return results
     })
@@ -175,9 +189,9 @@ const dbLib = (() => {
     })
   }
 
-  const addNewProject = ({ imageurl, githuburl, description, usersid, portfolioid, userName, token }) => {
+  const addNewProject = ({ imageurl, githuburl, description, usersid, portfolioid, userName, token, liveurl }) => {
     verifyToken(userName, token)
-    return insertOne('projects', ['imageurl', 'githuburl', 'description', 'usersid', 'portfolioid'], [imageurl, githuburl, description, usersid, portfolioid])
+    return insertOne('projects', ['imageurl', 'githuburl', 'description', 'usersid', 'portfolioid', 'liveurl'], [imageurl, githuburl, description, usersid, portfolioid, liveurl])
     .then(results => {
       if (results.affectedRows === 0) throw new Error('500: Project not added.')
       return results
@@ -236,6 +250,7 @@ const dbLib = (() => {
   }
   // public methods
   return {
+    getUserId,
     checkUserName,
     checkPortfolioName,
     userPageFunction,
@@ -250,7 +265,8 @@ const dbLib = (() => {
     deleteUser,
     deletePortfolio,
     deleteProject,
-    authUser
+    authUser,
+    quickVerify
   }
 })()
 

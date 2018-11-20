@@ -4,6 +4,7 @@
         <v-layout>
             <v-flex xs12 sm8 offset-sm2 pl-4>
                 <v-container>
+                    <router-link :to='{path: "portfolio-creator/"}' replace>FUCK MY LIFE</router-link>
                     <app-gen></app-gen>
                     <app-git></app-git> 
                 </v-container>
@@ -13,7 +14,7 @@
 </template>
 
 <script>
-import head from '../components/Head'
+import head from '../components/head'
 import git from '../components/UserSkillsEdu'
 import gen from '../components/UserBio'
 
@@ -24,10 +25,10 @@ export default {
             // ^ probably descructure this so it's not a pain 
         }
     },
-    beforeRouteUpdate(to, from, next) {
-        $store.dispatch('getPageJson', {to}).then(() => {
-    })
-    },
+    // beforeRouteUpdate(to, from, next) {
+    //     $store.dispatch('getPageJson', {to}).then(() => {
+    // })
+    // },
     components: {
         'app-head': head,
         'app-git': git,

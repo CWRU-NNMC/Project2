@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import foot from './components/Foot'
+import foot from './components/foot'
 
 export default {
   name: 'App',

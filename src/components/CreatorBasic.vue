@@ -1,31 +1,70 @@
 <template>
-  <div>
-    <h2>Basic Portfolio Info</h2>
-      <form v-if='!nextPage'>
-        <div>
-          <label for="portfolioName">Portfolio Name</label>
-          <input type="text" id="portfolioName" v-model='portfolioName' @click='nameChecked = false'>        
-          <!-- <v-btn @click='checkAvail'>Check Availability</v-btn> -->
-          <!-- <i v-if="greenCheck">AVAILABLE!!</i> -->
-          <i v-if="redCheck">NOT AVAILABLE!!</i>
-        </div>    
-        <div >
-          <label for="description">Description</label>
-          <input type="text" id="description" v-model='description'>
-        </div>
-        <div>
-          <v-btn v-if='!nextPage' @click='storeData' :disabled='processing'>Submit</v-btn>
-        </div>
-      </form>
-      <div v-if='nextPage'>        
-        <h3>Stored!</h3>
-        <router-link v-if='nextPage' to='skills'>Next: Skills And Technologies</router-link>
-      </div>
-  </div>
+<div>
+	<v-content>
+	<app-head></app-head>
+		<v-layout>
+			<v-container>
+				<v-flex md6 sm12 offset-sm3>
+					<v-card>
+						<v-img
+              src='https://cdn.vuetifyjs.com/images/carousel/planet.jpg'
+              aspect-ratio="2.75">
+            </v-img>
+						<v-container>							
+								<v-tabs
+									centered
+									color="orange lighten-2"
+									dark
+									hide-slider
+									icons-and-text>
+								<v-tab>
+									<span class="fontify">Basic Portfolio Info</span>
+									<v-icon>info</v-icon>
+									</v-tab>
+									<v-tab-item>
+											<v-card>
+												<v-container>
+												<v-form v-if='!nextPage'>
+													<v-text-field 
+													label="Portfolio Name"
+													type="text"
+													id="portfolioName"
+													v-model='portfolioName'
+													@click='nameChecked = false'>
+													</v-text-field>
+												<div>     
+												<!-- <v-btn @click='checkAvail'>Check Availability</v-btn> -->
+												<!-- <i v-if="greenCheck">AVAILABLE!!</i> -->
+												<i v-if="redCheck">NOT AVAILABLE!!</i>
+												</div>    
+													<v-text-field
+														label="Description"
+														type="text"
+														id="description"
+														v-model="description">
+													</v-text-field>
+												</v-form>
+												</v-container>
+											</v-card>
+									</v-tab-item>
+								</v-tabs>
+           							<v-btn v-if='!nextPage' @click='storeData' :disabled='processing'><span class="fontify">Submit</span></v-btn> 
+										<div v-if='nextPage'>        
+											<h3>Stored!</h3>
+											<router-link v-if='nextPage' to='skills'><span class="fontify"><v-btn>Next: Skills And Technologies</v-btn></span></router-link>
+       									</div>
+						</v-container>
+					</v-card>
+				</v-flex>
+			</v-container>
+		</v-layout>
+	</v-content>
+</div>
 </template>
 
 
 <script>
+import head from '../components/head'
 export default {
   data() {
     return {
@@ -55,8 +94,8 @@ export default {
         .then((avail) => {
           console.log(avail)
           if (avail) {
-            this.$store.commit('buildPortfolio', {key: 'name', value: this.portfolioName})
-            this.$store.commit('buildPortfolio', {key: 'bio', value: this.description})           
+            this.$store.commit('buildPortfolio', {key: 'portfolioName', value: this.portfolioName})
+            this.$store.commit('buildPortfolio', {key: 'description', value: this.description})           
             this.stored = true
             this.process = false
           }
@@ -80,7 +119,10 @@ export default {
     processing() {
       return this.process
     }
-  }
+  },
+  components: {
+    'app-head': head
+  }    
 }
 </script>
 
@@ -88,8 +130,10 @@ export default {
   div {
     text-align: center;
   }
-  input {
-    border: 1px solid black;
+  .fontify {
+	  font-family: 'Orbitron', sans-serif;
+  }
+  .v-content {
+	  background-image: radial-gradient(gainsboro,orange,gray,skyblue,gray)
   }
 </style>
-
