@@ -113,7 +113,7 @@ export default {
         }
     },
     created () {
-        this.userBio = this.$store.getters.getUserBio
+        this.userBio = this.$store.getters.getPageInfo.data.userBio
         this.userPortfolios = this.$store.getters.getPageInfo.data.userPortfolios
     }
 }
