@@ -22,7 +22,13 @@
                                                         <v-form class='form'>
                                                             <v-text-field name="newName" label="Pick a Username" v-model='userName'>
                                                             </v-text-field>
-                                                            <v-text-field name="newPassword" label="Create a Password" v-model='password'>
+                                                            <v-text-field 
+                                                                name="newPassword" 
+                                                                label="Create a Password"
+                                                                v-model='password'
+                                                                :append-icon="show1 ? 'visibility_off' : 'visibility'"
+                                                                :type="show1 ? 'text' : 'password'"
+                                                                @click:append="show1 = !show1">
                                                             </v-text-field>
                                                             <v-text-field name="newEmail" label="Enter your email address" v-model='email'>
                                                             </v-text-field>
@@ -80,7 +86,8 @@
                 linkedin: '' ,
                 usergithuburl: '' ,
                 imageurl: '',
-                userbio: ''
+                userbio: '',
+                show1: false,
             }
         },
         methods: {
