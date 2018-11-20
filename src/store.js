@@ -72,7 +72,7 @@ export default new Vuex.Store({
         getPageInfo: state => state.currentPageJson,
         getPageHidden: state => state.currentPageJson.portfolioInfo[0].public,
         getNameAvailable: state => state.nameAvailable,
-        getImgUrl: state => state.currentProjectImg,
+        getImgUrl: state => state.currentProjectImg,        
         getUserImage: state => state.currentPageJson.data.userImage
     },
     actions: {
@@ -114,7 +114,7 @@ export default new Vuex.Store({
                 let queryString = `/api/manage/${pageType}/${name}`
                 return axios.post(queryString, data).then(res => {
                     // console.log(res)
-                    context.commit('setPortfolioId', res.data.insertId)
+                    if (pageType === 'portfolio') context.commit('setPortfolioId', res.data.insertId)
                     return true
                 })
             }
@@ -131,14 +131,16 @@ export default new Vuex.Store({
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
-            }).then(res => {
-                let userImgData = {
-                    userName: state.userName,
-                    token: state.token,
-                    updates: {userimage: res}
-                }
-                axios.put(`/api/manage/user/${state.userName}`, userImgData)
             })
+            // .then(res => {
+            //     let userImgData = {
+            //         userName: state.userName,
+            //         token: state.token,
+            //         updates: {userimage: res}
+            //     }
+            //     axios.put(`/api/manage/user/${state.userName}`, userImgData)
+            // })
+            
         },
         addProject (context, {name, data}) {
             let queryString = `/api/manage/project/${name}`
