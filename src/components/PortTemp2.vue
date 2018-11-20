@@ -14,7 +14,8 @@
         <br>
         <v-layout>
             <v-flex md12 offset-md5 pl-2>
-                        <div class="headline"><span class="text-uppercase" style="font-weight:bold"> {{ name }} </span></div>
+                        <div class="headline"><span class="text-uppercase fontify" style="font-weight:bold"> {{ name }} </span></div>
+                        <div class="headline"><span class="text-uppercase fontify" style="font-weight:bold"> {{ location }} </span></div>
             </v-flex>
         </v-layout>
         <br>
@@ -34,7 +35,7 @@
 									<v-icon>account_circle</v-icon>
 								</v-tab>
                                 <v-tab-item>
-                                    <span class="fontify"><p>
+                                    <span class="fontify colorize"><p>
                                         {{ bio }}
                                     </p></span>
                                 </v-tab-item>
@@ -62,18 +63,18 @@
                                     <v-container>
                                         <v-layout>
                                             <v-carousel
-                                                height="600"
-                                                max-width="800">
-                                                <v-carousel-item v-for="(project, i) in projects" :key="i" :src="project.imageurl">
+                                                height="800"
+                                                max="800">
+                                                <v-carousel-item class ="sizer" v-for="(project, i) in projects" :key="i" :src="project.imageurl">
                                                 <v-container>
                                                     <v-layout align-center>
                                                         <v-flex>
-                                                        <h3 class="display-3 fontify">{{ project.title }}</h3>
-                                                        <span class="subheading fontify">{{ project.description }}</span>
+                                                            <v-subheader class="fontify colorize">{{ project.description }}</v-subheader>
                                                         </v-flex>
                                                     </v-layout>
                                                 </v-container>
                                                 </v-carousel-item>
+                                                
                                             </v-carousel>
                                         </v-layout>
                                     </v-container>
@@ -151,5 +152,13 @@
 .fontify {
     font-family: 'Orbitron', sans-serif;
     text-align: center
+}
+.colorize {
+    color: black;
+    font-weight: bolder
+}
+.sizer {
+    width: auto;
+    height: auto
 }
 </style>
