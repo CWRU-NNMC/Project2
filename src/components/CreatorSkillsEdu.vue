@@ -49,7 +49,7 @@
 
 
 <script>
-import head from '../components/head'
+import head from '../components/Head'
 
 export default {
   data () {
