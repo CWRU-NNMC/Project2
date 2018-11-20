@@ -70,7 +70,9 @@ export default new Vuex.Store({
     },
     getters: {
         getNameAvailable: state => state.nameAvailable,
-        getImgUrl: state => state.currentProjectImg
+        getImgUrl: state => state.currentProjectImg,
+        getPageInfo: state => state.currentPageJson,
+
     },
     actions: {
         getPortfolioJson({commit}, {to}) {
