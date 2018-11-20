@@ -3,6 +3,8 @@ import Vuex from 'vuex'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import router from './router'
+import bcrypt from 'bcrypt'
+const saltRounds = 10
 const dotenv = require('dotenv')
 dotenv.config()
 
@@ -85,11 +87,13 @@ export default new Vuex.Store({
                 .then(res => res ? commit('setPage', res) : router.push({name: `/login`}))
         },
         authUser({commit}, credentials){
+            const { rawPassword } = credentials
+            
             return axios.post('/api/user/auth/', credentials).then(res => {
                 if (res.data.auth){
                     commit('setToken', res.data.token)
                     commit('setUserName', res.data.userName)
-                    commit('setUserId', res.data.id)                    
+                    commit('setUserId', res.data.usersid)                    
                 }
                 else {
                 commit('setFailState', res.message)

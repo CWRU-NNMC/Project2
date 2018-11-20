@@ -18,9 +18,9 @@
 <script>
     // gets user image 
 export default {
-    data () {
+    // data () {
         
-    }
+    // }
 }
 </script>
 
