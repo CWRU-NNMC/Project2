@@ -84,8 +84,8 @@ const dbLib = (() => {
       let id = data[0].id
       // make two DB calls, one for user info and one for portfolio info
       return Promise.all([
-        selectSomeWhere('users', 'id', id, ['id', 'username','email', 'userimage', 'location']),
-        selectSomeWhere('portfolios', 'usersid', id, ['id', 'description', 'name'])
+        selectSomeWhere('users', 'id', id, ['id', 'username','email', 'userimage', 'location', 'firstname', 'lastname', 'linkedin', 'usergithuburl', 'userbio']),
+        selectSomeWhere('portfolios', 'usersid', id, ['id', 'description', 'name', 'template'])
       ])
     })
     // parse the user info and portfolio info into a single object
@@ -99,6 +99,10 @@ const dbLib = (() => {
         userEmail: user.email,
         userLocation: user.location,
         userImage: user.userimage,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        linkedin: user.linkedin,
+        githuburl: user.usergithuburl,
         userPortfolios: portfolioArray
       }
     })
@@ -110,7 +114,7 @@ const dbLib = (() => {
     .then(data => {
       if (data.length === 0) throw new Error(`500: No such portfolio '${name}' found.`)
       const id = data[0].id
-      return selectSomeJoin('portfolios', 'projects', ['config', 'name', 'public'], ['id', 'imageurl', 'githuburl', 'description', 'liveurl'], 'portfolios.id', 'projects.portfolioid', 'portfolios.id', id)
+      return selectSomeJoin('portfolios', 'projects', ['config', 'name', 'public', 'template'], ['id', 'imageurl', 'githuburl', 'description', 'liveurl', 'projectname'], 'portfolios.id', 'projects.portfolioid', 'portfolios.id', id)
     })
     .then(results => {
       return selectSomeWhere('portfolios', 'name', name, ['description', 'usersid'])
@@ -128,7 +132,7 @@ const dbLib = (() => {
     })
     .then(results => {
       const id = results[0].usersid
-      return selectSomeWhere('users', 'id', id, ['username', 'email', 'userimage', 'location'])
+      return selectSomeWhere('users', 'id', id, ['username', 'email', 'userimage', 'location', 'usergithuburl', 'linkedin', 'firstname', 'lastname', 'userbio'])
         .then(userInfo => {
           return {
             userInfo,
@@ -143,8 +147,11 @@ const dbLib = (() => {
   const addNewUser = user => {
     let location = user.location || null
     let userImage = user.userImage || null
+    let linkedin = user.linkedin || null
+    let usergithuburl = user.usergithuburl || null
+    let userbio = user.userbio || null
     let preferences = JSON.stringify(user.preferences)
-    return insertOne('users', ['username', 'email', 'pw', 'preferences', 'location', 'userimage'], [user.userName, user.email, user.pw, preferences, location, userImage])
+    return insertOne('users', ['username', 'email', 'pw', 'preferences', 'location', 'userimage', 'firstname', 'lastname', 'linkedin', 'usergithuburl', 'userbio'], [user.userName, user.email, user.pw, preferences, location, userImage, user.firstname, user.lastname, linkedin, usergithuburl, userbio])
     .then(results => {
       if (results.affectedRows === 0) throw new Error(`500: User '${user.userName}' not added.`)
       return results
@@ -163,7 +170,7 @@ const dbLib = (() => {
     })
   }
   
-  const addNewPortfolio = ({ technologies, description, usersid, config, portfolioName, token, userName }) => {
+  const addNewPortfolio = ({ technologies, description, usersid, config, portfolioName, token, userName, template }) => {
     verifyToken(userName, token)
     let configJSON = JSON.stringify(config)
     let techJSON = JSON.stringify(technologies)
@@ -172,7 +179,7 @@ const dbLib = (() => {
       // console.log('too long')
       throw new Error('500: Portfolio name exceeds length (20 characters maximum')
     }
-    return insertOne('portfolios', ['technologies', 'description', 'usersid', 'config', 'name'], [techJSON, description, usersid, configJSON, portfolioName])
+    return insertOne('portfolios', ['technologies', 'description', 'usersid', 'config', 'name', 'template'], [techJSON, description, usersid, configJSON, portfolioName, template])
     .then(results => {
       // console.log('results returned')
       if (results.affectedRows === 0) throw new Error('500: Portfolio not added.')
@@ -189,9 +196,9 @@ const dbLib = (() => {
     })
   }
 
-  const addNewProject = ({ imageurl, githuburl, description, usersid, portfolioid, userName, token, liveurl }) => {
+  const addNewProject = ({ imageurl, githuburl, description, usersid, portfolioid, userName, token, liveurl, projectname }) => {
     verifyToken(userName, token)
-    return insertOne('projects', ['imageurl', 'githuburl', 'description', 'usersid', 'portfolioid', 'liveurl'], [imageurl, githuburl, description, usersid, portfolioid, liveurl])
+    return insertOne('projects', ['imageurl', 'githuburl', 'description', 'usersid', 'portfolioid', 'liveurl', 'projectname'], [imageurl, githuburl, description, usersid, portfolioid, liveurl, projectname])
     .then(results => {
       if (results.affectedRows === 0) throw new Error('500: Project not added.')
       return results
