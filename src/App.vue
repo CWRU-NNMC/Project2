@@ -11,7 +11,7 @@ import foot from './components/Foot'
 export default {
   name: 'App',
   components: {
-    'app-footer': foot
+    'app-footer': Foot
   }
 }
 </script>

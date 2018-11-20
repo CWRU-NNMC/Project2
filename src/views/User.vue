@@ -30,7 +30,7 @@ export default {
     // })
     // },
     components: {
-        'app-head': head,
+        'app-head': Head,
         'app-git': git,
         'app-gen': gen
     },
