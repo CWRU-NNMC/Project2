@@ -147,8 +147,11 @@ const dbLib = (() => {
   const addNewUser = user => {
     let location = user.location || null
     let userImage = user.userImage || null
+    let linkedin = user.linkedin || null
+    let usergithuburl = user.usergithuburl || null
+    let userbio = user.userbio || null
     let preferences = JSON.stringify(user.preferences)
-    return insertOne('users', ['username', 'email', 'pw', 'preferences', 'location', 'userimage'], [user.userName, user.email, user.pw, preferences, location, userImage])
+    return insertOne('users', ['username', 'email', 'pw', 'preferences', 'location', 'userimage', 'firstname', 'lastname', 'linkedin', 'usergithuburl', 'userbio'], [user.userName, user.email, user.pw, preferences, location, userImage, user.firstname, user.lastname, linkedin, usergithuburl, userbio])
     .then(results => {
       if (results.affectedRows === 0) throw new Error(`500: User '${user.userName}' not added.`)
       return results
