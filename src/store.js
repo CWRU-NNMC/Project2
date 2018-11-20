@@ -69,11 +69,9 @@ export default new Vuex.Store({
         }
     },
     getters: {
-        getPageInfo: state => state.currentPageJson,
-        getPageHidden: state => state.currentPageJson.portfolioInfo[0].public,
         getNameAvailable: state => state.nameAvailable,
-        getImgUrl: state => state.currentProjectImg,        
-        getUserImage: state => state.currentPageJson.data.userImage
+        getImgUrl: state => state.currentProjectImg,
+        getPageInfo: state => state.currentPageJson,
     },
     actions: {
         getPortfolioJson({commit}, {to}) {
