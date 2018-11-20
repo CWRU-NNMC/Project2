@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import head from '../components/Head'
+import Head from '../components/Head'
 import git from '../components/UserSkillsEdu'
 import gen from '../components/UserBio'
 
