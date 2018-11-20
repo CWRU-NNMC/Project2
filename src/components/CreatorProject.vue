@@ -26,6 +26,12 @@
 								<v-container>
 									<v-form v-if='!nextPage'>
 										<v-text-field 
+											type="text" 
+											v-model='projectname' 
+											id='projectname'
+											label="Enter A Name For Your Project">
+										</v-text-field>
+										<v-text-field 
 											type="textarea" 
 											v-model='description' 
 											id='description'
@@ -37,6 +43,7 @@
 											id='repo'
 											label="Add A Link to This Project's GitHub Repository">
 										</v-text-field>
+
 										<v-text-field 
 											type="text" 
 											v-model='live' 
@@ -74,7 +81,8 @@ import Head from '../components/Head'
   export default {
     data () {
       return {
-        file: '',
+				file: '',
+				projectname: '',
         description: '',
         repo: '',
         live: '',
@@ -99,7 +107,8 @@ import Head from '../components/Head'
             imageurl: this.imageurl,
             githuburl: this.repo,
             description: this.description,
-            liveurl: this.live
+						liveurl: this.live,
+						projectname: this.projectname
           })
           console.log('payload', projectsPayload)
           this.$store.commit('buildPortfolio', {key: 'projects', value: projectsPayload})    
@@ -112,7 +121,8 @@ import Head from '../components/Head'
           this.repo= ''
           this.live= ''
           this.stored= false
-          this.imageurl= ''   
+					this.imageurl= ''   
+					this.projectname = ''
         }
     },
     computed: {
