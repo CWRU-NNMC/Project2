@@ -94,8 +94,8 @@ export default {
         .then((avail) => {
           console.log(avail)
           if (avail) {
-            this.$store.commit('buildPortfolio', {key: 'name', value: this.portfolioName})
-            this.$store.commit('buildPortfolio', {key: 'bio', value: this.description})           
+            this.$store.commit('buildPortfolio', {key: 'portfolioName', value: this.portfolioName})
+            this.$store.commit('buildPortfolio', {key: 'description', value: this.description})           
             this.stored = true
             this.process = false
           }

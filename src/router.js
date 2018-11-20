@@ -31,7 +31,7 @@ export default new Router({
       name: 'user',
       component: User,
       beforeEnter: (to, from, next) => {
-        if (store.state.userToken) store.dispatch('getUserPage', {userName: store.state.userName, userToken: store.state.userToken}).then(() => next())
+        if (store.state.userToken) store.dispatch('getUserPage', {userName: store.state.userName, token: store.state.userToken}).then(() => next())
         else next('/login')
       }
     },
@@ -78,11 +78,10 @@ export default new Router({
         { path: 'templates', component: CreatorChooseTemplate},
         { path: '', component: CreatorHome }
       ]
+    },
+    {
+      path: '*',
+      redirect: '/'
     }
-    // ,
-    // {
-    //   path: '*',
-    //   redirect: '/'
-    // }
   ]
 })

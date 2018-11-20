@@ -89,7 +89,7 @@ import head from '../components/head'
 				//check if the credentials are valid and respond accordingly	
                 if(this.input.username !== null && this.input.password !== null) {
 							this.errors = [];
-							var credentials = {
+							const credentials = {
 								userName: this.input.username,
 								password: this.input.password
 							}

@@ -91,15 +91,6 @@ export default {
         usersid
       }
       // console.log(portfolioName)
-      let buildInfo2 = {
-        technologies: ["a", "b"],
-        portfolioName: "jazzy",
-        description: "a",
-        config: {"a": "b"},
-        userName: "nate",
-        token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoibmF0ZSIsImlhdCI6MTU0MjY0NTgzNiwiZXhwIjoxNTQyODE4NjM2LCJpc3MiOiJsb2NhbGhvc3QifQ.14dVe0HChNvhLFZ6faW8J06SWhvr1K0cN3c-UwD8XEo",
-        usersid: "1"
-      }
       this.$store.dispatch('addUserOrPort', {name: portfolioName, data: buildInfo, pageType: 'portfolio'})
         .then(portAdded => {
           if (!portAdded) throw new Error('portfolio not added') 

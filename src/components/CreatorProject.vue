@@ -123,11 +123,13 @@ import head from '../components/head'
 	components: {
 		'app-head': head
 	}
-  }
 </script>
 
 <style scoped>
   .v-content {
 	  background-image: radial-gradient(gainsboro,orange,gray,skyblue,gray)
   }
+input {
+  border: 1px solid black;
+}
 </style>
