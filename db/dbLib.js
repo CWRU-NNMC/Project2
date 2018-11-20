@@ -137,7 +137,6 @@ const dbLib = (() => {
         })
     })
   }
-
   // adds a new user to the database, takes a user object with the following keys: 
   // userName, email, pw, preferences (JSON), location (optional), userImage (optional)
   // returns confirmation message

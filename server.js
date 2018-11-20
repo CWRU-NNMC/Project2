@@ -64,7 +64,7 @@ app.post('/api/user/:name', (req, res) => {
 
 // returns an object with all the relevant information on a portfolio
 app.post('/api/portfolio/:name', (req, res) => {
-    portfolioPageFunction(req.body.portfolioName)
+    portfolioPageFunction(req.body.name)
         .then(json => res.status(200).send(json))
         .catch(err => res.status(err.code || 500).send(err.message || 'Server Error.'))
 })
