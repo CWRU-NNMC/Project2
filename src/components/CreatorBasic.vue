@@ -33,9 +33,7 @@
 													@click='nameChecked = false'>
 													</v-text-field>
 												<div>     
-												<!-- <v-btn @click='checkAvail'>Check Availability</v-btn> -->
-												<!-- <i v-if="greenCheck">AVAILABLE!!</i> -->
-												<i v-if="redCheck">NOT AVAILABLE!!</i>
+												<i v-if="notAvail">NOT AVAILABLE!!</i>
 												</div>    
 													<v-text-field
 														label="Description"
@@ -78,12 +76,6 @@ export default {
     }
   },
   methods: {
-    // checkAvail() {
-    //   console.log(this.portfolioName)
-    //   this.nameChecked = true
-    //   this.$store.dispatch('checkNameAvailable', {name: this.portfolioName, pageType: 'portfolio'})
-    //   .then(() => store.getters.getNameAvailable)
-    // },
     storeData() {      
       this.process = true
       this.$store.dispatch('checkNameAvailable', {name: this.portfolioName, pageType: 'portfolio'})
@@ -91,9 +83,7 @@ export default {
           this.nameChecked = true
           return this.$store.getters.getNameAvailable
           })
-      // .then(x => console.log(x))
         .then((avail) => {
-          console.log(avail)
           if (avail) {
             this.$store.commit('buildPortfolio', {key: 'portfolioName', value: this.portfolioName})
             this.$store.commit('buildPortfolio', {key: 'description', value: this.description})           
@@ -105,13 +95,7 @@ export default {
     }
   },
   computed: {
-    // avail() {
-    //   return this.$store.getters.getNameAvailable
-    // },
-    // greenCheck() {
-    //   return this.nameChecked && this.$store.getters.getNameAvailable
-    // },
-    redCheck() {
+    notAvail() {
       return this.nameChecked && !this.$store.getters.getNameAvailable
     },
     nextPage() {
