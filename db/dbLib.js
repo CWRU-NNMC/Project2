@@ -1,6 +1,8 @@
 const { selectSomeWhere, selectSomeJoin, insertOne, updateOne, deleteOne } = require('./orm')
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
+const bcrypt = require('bcrypt')
+const saltRounds = 10
 
 
 
@@ -8,7 +10,7 @@ require('dotenv').config()
 const dbLib = (() => {
 
   // jwt params
-  const options = { expiresIn: '2d', issuer: 'localhost' }
+  const options = { expiresIn: '2d', issuer: 'https://dynamic-portfolio-tool.herokuapp.com' }
   const secret = process.env.JWT_SECRET
 
   const verifyToken = (userName, token) => {    
@@ -33,6 +35,7 @@ const dbLib = (() => {
 
   const authUser = loginObject => {
     let { userName, password } = loginObject
+    
     return selectSomeWhere('users', 'username', userName, ['username', 'pw', 'id'])
     .then(data => {
       if (data.length === 0) return {
@@ -40,19 +43,37 @@ const dbLib = (() => {
         message: `The username '${userName}' is incorrect.`,
         auth: false
       }
-      if (data[0].pw !== password) return {
-        code: 403,
-        message: 'The password you entered is incorrect.',
-        auth: false
-      } 
-      const token = jwt.sign({ user: userName }, secret, options)
-        return {
-          code: 200,
-          auth: true,
-          token,
-          userName,
-          usersid: data[0].id
-        }      
+
+      return bcrypt.compare(password, data[0].pw)
+        .then(valid => {
+          if (!valid) return {
+            code: 403,
+            message: 'The password you entered is incorrect.',
+            auth: false
+          }
+          const token = jwt.sign({ user: userName }, secret, options)
+          return {
+            code: 200,
+            auth: true,
+            token,
+            userName,
+            usersid: data[0].id
+          }
+        })
+
+      // if (data[0].pw !== password) return {
+      //   code: 403,
+      //   message: 'The password you entered is incorrect.',
+      //   auth: false
+      // } 
+      // const token = jwt.sign({ user: userName }, secret, options)
+      //   return {
+      //     code: 200,
+      //     auth: true,
+      //     token,
+      //     userName,
+      //     usersid: data[0].id
+      //   }      
     })
   }
 
@@ -144,11 +165,17 @@ const dbLib = (() => {
     const usergithuburl = user.usergithuburl || null
     const userbio = user.userbio || null
     const preferences = JSON.stringify(user.preferences)
-    return insertOne('users', ['username', 'email', 'pw', 'preferences', 'location', 'userimage', 'firstname', 'lastname', 'linkedin', 'usergithuburl', 'userbio'], [user.userName, user.email, user.pw, preferences, location, userImage, user.firstname, user.lastname, linkedin, usergithuburl, userbio])
-    .then(results => {
-      if (results.affectedRows === 0) throw new Error(`500: User '${user.userName}' not added.`)
-      return results
-    })
+    return bcrypt.hash(user.pw, saltRounds)
+      .then(hash => {
+        return insertOne('users', 
+                        ['username', 'email', 'pw', 'preferences', 'location', 'userimage', 'firstname', 'lastname', 'linkedin', 'usergithuburl', 'userbio'], 
+                        [user.userName, user.email, hash, preferences, location, userImage, user.firstname, user.lastname, linkedin, usergithuburl, userbio])
+        .then(results => {
+          if (results.affectedRows === 0) throw new Error(`500: User '${user.userName}' not added.`)
+          return results
+        })
+      })
+
   }
 
   // updates user information, takes a user object with two keys: userName and updates.

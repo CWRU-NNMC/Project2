@@ -3,10 +3,6 @@ import Vuex from 'vuex'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import router from './router'
-// import bcrypt from 'bcrypt'
-// const saltRounds = 10
-// const dotenv = require('dotenv')
-// dotenv.config()
 
 Vue.use(Vuex);
 Vue.use(VueAxios, axios);
