@@ -60,20 +60,6 @@ const dbLib = (() => {
             usersid: data[0].id
           }
         })
-
-      // if (data[0].pw !== password) return {
-      //   code: 403,
-      //   message: 'The password you entered is incorrect.',
-      //   auth: false
-      // } 
-      // const token = jwt.sign({ user: userName }, secret, options)
-      //   return {
-      //     code: 200,
-      //     auth: true,
-      //     token,
-      //     userName,
-      //     usersid: data[0].id
-      //   }      
     })
   }
 
@@ -159,19 +145,15 @@ const dbLib = (() => {
   // userName, email, pw, preferences (JSON), location (optional), userImage (optional)
   // returns confirmation message
   const addNewUser = user => {
-    const location = user.location || null
-    const userImage = user.userImage || null
-    const linkedin = user.linkedin || null
-    const usergithuburl = user.usergithuburl || null
-    const userbio = user.userbio || null
+    const { location = null, userImage = null, linkedin = null, usergithuburl = null, userbio = null, pw, userName, email, firstname, lastname } = user
     const preferences = JSON.stringify(user.preferences)
-    return bcrypt.hash(user.pw, saltRounds)
+    return bcrypt.hash(pw, saltRounds)
       .then(hash => {
         return insertOne('users', 
                         ['username', 'email', 'pw', 'preferences', 'location', 'userimage', 'firstname', 'lastname', 'linkedin', 'usergithuburl', 'userbio'], 
-                        [user.userName, user.email, hash, preferences, location, userImage, user.firstname, user.lastname, linkedin, usergithuburl, userbio])
+                        [userName, email, hash, preferences, location, userImage, firstname, lastname, linkedin, usergithuburl, userbio])
         .then(results => {
-          if (results.affectedRows === 0) throw new Error(`500: User '${user.userName}' not added.`)
+          if (results.affectedRows === 0) throw new Error(`500: User '${userName}' not added.`)
           return results
         })
       })
