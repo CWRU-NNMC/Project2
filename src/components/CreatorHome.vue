@@ -25,8 +25,8 @@
 									<v-tab-item>
 										<v-card>
 											<v-container>
-												<p><span class="fontify">Here you can create your portfolio.</span></p>
-    											<router-link to='basic'><span class="fontify"><v-btn>Begin!</v-btn></span></router-link>
+												<p><span class="fontify">Complete these easy steps to create your portfolio.</span></p>
+    											<router-link to='basic'><span class="fontify"><v-btn>Get Started!</v-btn></span></router-link>
 											</v-container>
 										</v-card>
 									</v-tab-item>

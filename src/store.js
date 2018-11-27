@@ -3,10 +3,6 @@ import Vuex from 'vuex'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import router from './router'
-// import bcrypt from 'bcrypt'
-// const saltRounds = 10
-// const dotenv = require('dotenv')
-// dotenv.config()
 
 Vue.use(Vuex);
 Vue.use(VueAxios, axios);
@@ -86,8 +82,6 @@ export default new Vuex.Store({
                 .then(res => res ? commit('setPage', res) : router.push({name: `/login`}))
         },
         authUser({commit}, credentials){
-            const { rawPassword } = credentials
-            
             return axios.post('/api/user/auth/', credentials).then(res => {
                 if (res.data.auth){
                     commit('setToken', res.data.token)
@@ -96,7 +90,6 @@ export default new Vuex.Store({
                 }
                 else {
                 commit('setFailState', res.message)
-                console.log('invalid user')
                 }
             })
         },
@@ -111,7 +104,6 @@ export default new Vuex.Store({
             else{
                 let queryString = `/api/manage/${pageType}/${name}`
                 return axios.post(queryString, data).then(res => {
-                    // console.log(res)
                     if (pageType === 'portfolio') context.commit('setPortfolioId', res.data.insertId)
                     return true
                 })
@@ -130,6 +122,7 @@ export default new Vuex.Store({
                     'Content-Type': 'multipart/form-data'
                 }
             })
+            /////// This is left in because we will eventually want to decouple user creation from user image adding, and this accomplishes that
             // .then(res => {
             //     let userImgData = {
             //         userName: state.userName,
