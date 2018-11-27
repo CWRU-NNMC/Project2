@@ -34,10 +34,7 @@ const orm = (() => {
     const selectSomeWhere = (table, whereCol, whereVal, selectCols) => {
         return new Promise((resolve, reject) => {            
             let queryString = `SELECT ${dblQuestions(selectCols.length)} FROM ${table} WHERE ?? = ?`;
-            // let q2 = `SELECT ?,?,? FROM ${table} WHERE ?? = ?`
             let vals = [...selectCols, whereCol, whereVal]
-            // console.log('query', queryString)
-            // console.log('vals', vals)
             connection.query(queryString, vals, (err, res) => {
                 if (err) reject(err);
                 resolve(res);
@@ -50,9 +47,6 @@ const orm = (() => {
             let table1Selectors = t1Cols.map(value => `${table1}.${value}`)
             let table2Selectors = t2Cols.map(value => `${table2}.${value}`)
             let selectors = [...table1Selectors, ...table2Selectors]
-            
-            // console.log('t1', table1Selectors)
-            // console.log('t2', table2Selectors)
             let queryString = `SELECT ${dblQuestions(selectors.length)} FROM ?? INNER JOIN ?? ON ?? = ?? WHERE ?? = ?`
             let vals = [...table1Selectors, ...table2Selectors, table1, table2, t1Key, t2Key, conditionCol, conditionVal]
             connection.query(queryString, vals, (err, res) => {
@@ -64,7 +58,6 @@ const orm = (() => {
     const insertOne = (table, cols, vals) => {
         return new Promise((resolve, reject) => {
             let queryString = `INSERT INTO ${table} (${cols.toString()}) VALUES (${questions(vals.length)});`;
-            // console.log(queryString)
             connection.query(queryString, vals, (err, res) => {
                 if (err) reject(err);
                 resolve(res);

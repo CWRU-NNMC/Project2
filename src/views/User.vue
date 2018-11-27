@@ -30,13 +30,8 @@ export default {
     data() {
         return {
             pageJson: this.$store.getters.getPageInfo,
-            // ^ probably descructure this so it's not a pain 
         }
     },
-    // beforeRouteUpdate(to, from, next) {
-    //     $store.dispatch('getPageJson', {to}).then(() => {
-    // })
-    // },
     components: {
         'app-head': Head,
         'app-git': git,

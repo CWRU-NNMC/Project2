@@ -6,7 +6,7 @@ const upload = multer({
 });
 require('dotenv').config()
 const cloudinary = require('cloudinary')
-const  { quickVerify, userPageFunction, portfolioPageFunction, getUserId, checkUserName, checkPortfolioName, addNewUser, addNewPortfolio, addNewProject, updateUser, updatePortfolio, updateProject, deletePortfolio, deleteProject, deleteUser, authUser } = require('./db/dbLib')
+const  { userPageFunction, portfolioPageFunction, getUserId, checkUserName, checkPortfolioName, addNewUser, addNewPortfolio, addNewProject, updateUser, updatePortfolio, updateProject, deletePortfolio, deleteProject, deleteUser, authUser } = require('./db/dbLib')
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({
@@ -16,10 +16,7 @@ app.use(express.urlencoded({
 app.use(express.static('./dist'))
 
 
-// development route for quickly verifying tokens
-app.post('/api/dev/token/', (req, res) => {
-    res.send(quickVerify(req.body.userName, req.body.token)) 
-})
+
 
 // ** AUTH route for validating users. takes an object with two keys: userName and password
 //    returns an object, object.auth is a boolean indicating success
@@ -55,10 +52,8 @@ app.post('/api/portfolio/query/:name', (req, res) => {
 
 // returns an object with all relevant information on a user
 app.post('/api/user/:name', (req, res) => {
-    // console.log(req.body.userName, req.body.token)
     userPageFunction(req.body.userName, req.body.token)
         .then(json => res.status(200).send(json))
-        // .catch(err => console.log(err))
         .catch(err => res.status(err.code || '500').send(err.message || 'Internal server error'))
 })
 
@@ -73,11 +68,6 @@ app.post('/api/portfolio/:name', (req, res) => {
 
 // adds a new user to the DB
 app.post('/api/manage/user/:name', (req, res) => {
-    // checkUserName(req.params.name)
-    // .then(reply => {
-    //     if (!reply) throw new Error('This username is unavailable.')
-    //     return addNewUser(req.body)
-    // })
     addNewUser(req.body)
     .then(results => res.send(results))
     .catch(err => res.status(500).send(`${err}`))
@@ -85,11 +75,6 @@ app.post('/api/manage/user/:name', (req, res) => {
 
 // adds a new portfolio to the DB
 app.post('/api/manage/portfolio/:name', (req, res) => {
-    // checkPortfolioName(req.params.name)
-    // .then(reply => {
-    //     if (!reply) throw new Error('This Portfolio Name is unavailable.')
-    //     return addNewPortfolio(req.body)
-    // })
     addNewPortfolio(req.body)
     .then(results => res.send(results))
     .catch(err => res.status(500).send(`${err}`))

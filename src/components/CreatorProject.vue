@@ -52,7 +52,7 @@
 										</v-text-field>
 									</v-form>
 								<v-container >
-									<label for="projectImg"><span class="fontify" v-if='!nextPage'>Upload an image of your project. A 4:3 aspect ratio yields best results.</span>
+									<label for="projectImg"><span class="fontify" v-if='!nextPage'>Upload an image of your project.</span>
 										<input v-if='showChooseButton' type="file" name='file' id="projectImg" ref="file" accept="image/*" v-on:change="processUpload()" />
 										<v-btn @click='submitImage()' v-if='showAddImageButton' :disabled='processing'><span class="fontify">Add Image</span></v-btn>
 									</label>
@@ -96,7 +96,6 @@ import Head from '../components/Head'
     methods: {
         processUpload () {
             this.file = this.$refs.file.files[0]
-						// console.log('here')
 						this.fileChosen = true
         },
         submitImage() {
@@ -104,7 +103,6 @@ import Head from '../components/Head'
             let formData = new FormData();
             formData.append('file', this.file);
             formData.append('format', 'kfunjy1s') // auto formatting 
-            console.log(this.file)
 						this.$store.dispatch('uploadProjectImg', formData)
 							.then(() => this.imageurl = this.$store.getters.getImgUrl.data)
 							.then(() => this.fileAdded = true)
@@ -118,10 +116,8 @@ import Head from '../components/Head'
 						liveurl: this.live,
 						projectname: this.projectname
           })
-          console.log('payload', projectsPayload)
           this.$store.commit('buildPortfolio', {key: 'projects', value: projectsPayload})    
           this.stored = true
-          console.log(this.$store.state)
         },
         newProject() {
           this.file= ''

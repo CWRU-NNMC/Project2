@@ -75,7 +75,6 @@ export default {
     storeData() {        
           this.$store.commit('buildPortfolio', {key: 'template', value: this.template})    
           this.stored = true
-          console.log(this.$store.state)
         },
     finishPortfolio() {
       let { portfolioName, technologies, description, config, template } = this.$store.state.portfolioBuildInfo
@@ -90,7 +89,6 @@ export default {
         token: userToken,
         usersid
       }
-      // console.log(portfolioName)
       this.$store.dispatch('addUserOrPort', {name: portfolioName, data: buildInfo, pageType: 'portfolio'})
         .then(portAdded => {
           if (!portAdded) throw new Error('portfolio not added') 

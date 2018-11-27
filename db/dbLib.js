@@ -1,6 +1,8 @@
-const { selectAll, selectSome, selectSomeWhere, selectSomeJoin, insertOne, updateOne, deleteOne } = require('./orm')
+const { selectSomeWhere, selectSomeJoin, insertOne, updateOne, deleteOne } = require('./orm')
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
+const bcrypt = require('bcrypt')
+const saltRounds = 10
 
 
 
@@ -8,7 +10,7 @@ require('dotenv').config()
 const dbLib = (() => {
 
   // jwt params
-  const options = { expiresIn: '2d', issuer: 'localhost' }
+  const options = { expiresIn: '2d', issuer: 'https://dynamic-portfolio-tool.herokuapp.com' }
   const secret = process.env.JWT_SECRET
 
   const verifyToken = (userName, token) => {    
@@ -20,9 +22,6 @@ const dbLib = (() => {
     return result
   }
 
-  const quickVerify = (userName, token) => {
-    return verifyToken(userName, token)
-  }
 
   const checkUserName = name => {
     return selectSomeWhere('users', 'username', name, ['username'])
@@ -36,6 +35,7 @@ const dbLib = (() => {
 
   const authUser = loginObject => {
     let { userName, password } = loginObject
+    
     return selectSomeWhere('users', 'username', userName, ['username', 'pw', 'id'])
     .then(data => {
       if (data.length === 0) return {
@@ -43,19 +43,23 @@ const dbLib = (() => {
         message: `The username '${userName}' is incorrect.`,
         auth: false
       }
-      if (data[0].pw !== password) return {
-        code: 403,
-        message: 'The password you entered is incorrect.',
-        auth: false
-      } 
-      const token = jwt.sign({ user: userName }, secret, options)
-        return {
-          code: 200,
-          auth: true,
-          token,
-          userName,
-          usersid: data[0].id
-        }      
+
+      return bcrypt.compare(password, data[0].pw)
+        .then(valid => {
+          if (!valid) return {
+            code: 403,
+            message: 'The password you entered is incorrect.',
+            auth: false
+          }
+          const token = jwt.sign({ user: userName }, secret, options)
+          return {
+            code: 200,
+            auth: true,
+            token,
+            userName,
+            usersid: data[0].id
+          }
+        })
     })
   }
 
@@ -74,14 +78,9 @@ const dbLib = (() => {
         message: `No such user '${name}' found.`
       }
       // grab the user name requested, verify that it corresponds to the token, else throw an error
-      let userName = data[0].username
-      // let result = jwt.verify(token, secret, options)
-      // if (userName !== result.user) throw {
-      //   code: 403,
-      //   message: `You do not have access to this user page.`
-      // }
+      const userName = data[0].username
       verifyToken(userName, token)
-      let id = data[0].id
+      const id = data[0].id
       // make two DB calls, one for user info and one for portfolio info
       return Promise.all([
         selectSomeWhere('users', 'id', id, ['id', 'username','email', 'userimage', 'location', 'firstname', 'lastname', 'linkedin', 'usergithuburl', 'userbio']),
@@ -90,9 +89,9 @@ const dbLib = (() => {
     })
     // parse the user info and portfolio info into a single object
     .then(userData => {
-      let user = userData[0][0]
+      const user = userData[0][0]
       
-      let portfolioArray = userData[1].length === 0 ? [] : userData[1]
+      const portfolioArray = userData[1].length === 0 ? [] : userData[1]
       return {
         userName: user.username,
         userId: user.id,
@@ -146,17 +145,19 @@ const dbLib = (() => {
   // userName, email, pw, preferences (JSON), location (optional), userImage (optional)
   // returns confirmation message
   const addNewUser = user => {
-    let location = user.location || null
-    let userImage = user.userImage || null
-    let linkedin = user.linkedin || null
-    let usergithuburl = user.usergithuburl || null
-    let userbio = user.userbio || null
-    let preferences = JSON.stringify(user.preferences)
-    return insertOne('users', ['username', 'email', 'pw', 'preferences', 'location', 'userimage', 'firstname', 'lastname', 'linkedin', 'usergithuburl', 'userbio'], [user.userName, user.email, user.pw, preferences, location, userImage, user.firstname, user.lastname, linkedin, usergithuburl, userbio])
-    .then(results => {
-      if (results.affectedRows === 0) throw new Error(`500: User '${user.userName}' not added.`)
-      return results
-    })
+    const { location = null, userImage = null, linkedin = null, usergithuburl = null, userbio = null, pw, userName, email, firstname, lastname } = user
+    const preferences = JSON.stringify(user.preferences)
+    return bcrypt.hash(pw, saltRounds)
+      .then(hash => {
+        return insertOne('users', 
+                        ['username', 'email', 'pw', 'preferences', 'location', 'userimage', 'firstname', 'lastname', 'linkedin', 'usergithuburl', 'userbio'], 
+                        [userName, email, hash, preferences, location, userImage, firstname, lastname, linkedin, usergithuburl, userbio])
+        .then(results => {
+          if (results.affectedRows === 0) throw new Error(`500: User '${userName}' not added.`)
+          return results
+        })
+      })
+
   }
 
   // updates user information, takes a user object with two keys: userName and updates.
@@ -175,14 +176,11 @@ const dbLib = (() => {
     verifyToken(userName, token)
     let configJSON = JSON.stringify(config)
     let techJSON = JSON.stringify(technologies)
-    // console.log(technologies)
     if (portfolioName.length > 20) {
-      // console.log('too long')
       throw new Error('500: Portfolio name exceeds length (20 characters maximum')
     }
     return insertOne('portfolios', ['technologies', 'description', 'usersid', 'config', 'name', 'template'], [techJSON, description, usersid, configJSON, portfolioName, template])
     .then(results => {
-      // console.log('results returned')
       if (results.affectedRows === 0) throw new Error('500: Portfolio not added.')
       return results
     })
@@ -247,15 +245,17 @@ const dbLib = (() => {
 
 
   // Handles errors that are thrown by MySQL. Stick this in the catch block to 'translate' them
-  const dbErrorHandler = error => {
-    const errorInfo = {
-      1062: 'Sorry, this name is already taken, please choose another.',
-      1048: 'Missing information, ensure all fields are filled out.',
-      1452: 'The parent user or portfolio in question does not exist.'
-    }
-    let message = errorInfo[error.errno] || `Undocumented error code ${error.errno || error}`
-    console.log(message)
-  }
+  // const dbErrorHandler = error => {
+  //   const errorInfo = {
+  //     1062: 'Sorry, this name is already taken, please choose another.',
+  //     1048: 'Missing information, ensure all fields are filled out.',
+  //     1452: 'The parent user or portfolio in question does not exist.'
+  //   }
+  //   let message = errorInfo[error.errno] || `Undocumented error code ${error.errno || error}`
+  //   console.log(message)
+  // }
+
+
   // public methods
   return {
     getUserId,
@@ -269,12 +269,11 @@ const dbLib = (() => {
     updatePortfolio,
     addNewProject,
     updateProject,
-    dbErrorHandler,
+    // dbErrorHandler,
     deleteUser,
     deletePortfolio,
     deleteProject,
     authUser,
-    quickVerify
   }
 })()
 
